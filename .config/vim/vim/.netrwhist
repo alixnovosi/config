@@ -1,4 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/Users/amichaud/temp'
-let g:netrw_dirhist_2='/qfs/tmp/amichaud/RMRTutorial/top100.s20120402.e20120403'
