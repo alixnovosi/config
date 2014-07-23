@@ -3,19 +3,31 @@
 set nocompatible
 filetype off
 
-set rtp+=$XDG_CONFIG_HOME/vim/vim/bundle/Vundle.vim
-call vundle#begin("/Users/amichaud/.config/vim/vim/bundle")
+let g:vundle_lazy_load=0
+
+if has("unix")
+    let s:uname = system("uname -s")
+    if s:uname ==? "Darwin\n"
+        set rtp+=/Users/amichaud/.config/vim/vim/common_bundles/Vundle.vim
+        let bundles_dir = '~/.config/vim/vim/osx_bundles'
+    else
+        set rtp+=$XDG_CONFIG_HOME/vim/vim/common_bundles/Vundle.vim
+        let bundles_dir = '~/.config/vim/vim/linux_bundles'
+    endif
+else
+    echom "Eww, windows"
+endif
+
+call vundle#rc(bundles_dir)
 
 Bundle 'gmarik/Vundle.vim'
 
 """ Vundle bundles.
 Bundle 'majutsushi/tagbar'
-Bundle 'mantiz/vim-plugin-dirsettings'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 Bundle 'vim-scripts/a.vim'
-Bundle 'argtextobj.vim'
 Bundle 'fholgado/minibufexpl.vim'
 " auto-completion magic
 Bundle 'Valloric/YouCompleteMe'
