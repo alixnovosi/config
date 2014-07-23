@@ -1,0 +1,60 @@
+set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+set -g default-terminal screen-256color
+setw -g xterm-keys on
+
+# Status bar
+set-option -g status on
+set -g status-utf8 on
+set -g status-interval 5
+
+# colors
+set-option -g status-bg "#8888DD" #"#222266"
+set-option -g status-fg default # "#ffffff"
+
+set-window-option -g window-status-bg default #"#222266"
+set-window-option -g window-status-fg default #"#eeeeee"
+
+set-window-option -g window-status-current-bg default #"#FFFFFF"
+set-window-option -g window-status-current-fg default #"#000000"
+
+#set -g mode-mouse on
+
+# reload config without killing server
+bind R source-file ~/.config/tmux/config \; display-message "  Config reloaded..".
+
+# more intuitive keybindings for splitting
+# Vertical
+unbind %
+bind v split-window -v
+
+# Horizontal
+unbind '"'
+bind h split-window -h
+
+# copy tmux buffer to clipboard
+bind C-y run "tmux show-buffer | xsel -b"
+# move x clipboard into tmux paste buffer
+bind C-p run "tmux set-buffer \"$(xsel -o)\"; tmux paste-buffer"
+
+# pane selection
+bind Left select-pane -L
+bind Right select-pane -R
+bind Up select-pane -U
+bind Down select-pane -D
+
+# scrollback buffer n lines
+set -g history-limit 5000
+
+# enable auto renaming
+setw -g automatic-rename on
+
+# border colour
+set -g pane-border-fg white
+set -g pane-border-bg default
+set -g pane-active-border-fg blue
+set -g pane-active-border-bg default
+
+# wm window title string (uses statusbar variables)
+
+# status bar settings
+set-option -g status-interval 1
