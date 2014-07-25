@@ -9,16 +9,17 @@ if [[ $- != *i* ]] ; then
 fi
 
 ## OS-INDEPENDENT - PRE OS CHECK ##
+if [[ -z "$EDITOR" ]]; then
+    export EDITOR=/usr/bin/vim
+fi
 
-# Set path.
-mkdir -p "${HOME}/bin"
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$HOME/bin
+if [[ -z "$PAGER" ]]; then
+    export PAGER=/bin/less
+fi
 
-# Gopath.
-mkdir -p "${HOME}/src/go"
-GOPATH="${HOME}/src/go"
-export GOPATH
-PATH=$PATH:${GOPATH}/bin
+if [[ -z "$VISUAL" ]]; then
+    export VISUAL=/usr/bin/vim
+fi
 
 # XDG base spec.  OS-independent, theoretically.
 if [ -z "${XDG_DATA_HOME}" ]; then
@@ -42,6 +43,16 @@ fi
 if [[ -z "$XDG_DATA_DIRS" ]]; then
     export XDG_DATA_DIRS=/usr/local/share/:/usr/share/
 fi
+
+# Set path.
+mkdir -p "${HOME}/bin"
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$HOME/bin
+
+# Gopath.
+mkdir -p "${HOME}/src/go"
+GOPATH="${HOME}/src/go"
+export GOPATH
+PATH=$PATH:${GOPATH}/bin
 
 ################################################################################
 #########################    OS DETECTION       ################################
@@ -125,49 +136,18 @@ elif [ "$(uname -s)" == "Linux" ]; then
     # Password-store completion
     source /etc/bash_completion.d/password-store
 
-    # Programs I (currently) only run on linux.
-    alias ncmpcpp="ncmpcpp -c ${XDG_CONFIG_HOME}/ncmpcpp/config"
-    alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config"
-    alias mpdscribble="mpdscribble --conf {$XDG_CONFIG_HOME}/mpdscribble/config"
-
     if [[ -z "$DISPLAY" ]]; then
         export BROWSER=chromium
     fi
 
 fi
 
-if [[ -z "$EDITOR" ]]; then
-    export EDITOR=/usr/bin/vim
-fi
-
-if [[ -z "$PAGER" ]]; then
-    export PAGER=/bin/less
-fi
-
-if [[ -z "$VISUAL" ]]; then
-    export VISUAL=/usr/bin/vim
-fi
-
-# Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
-alias vim="vim -u ${XDG_CONFIG_HOME}/vim/.vimrc"
-alias view="view -u ${XDG_CONFIG_HOME}/vim/.vimrc"
-
-alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/config"
-
-# Color grep and ls.  Works on mac and linux.
-alias grep="grep --color=auto"
-
-# Useful aliases.
-alias ll="ls -al"
-alias la='ls -A'
-alias l='ls -CF'
+# append to the history file, don't overwrite it
+shopt -s histappend
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
-shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
@@ -178,7 +158,15 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 # System-specific stuff.
-for f in $XDG_CONFIG_HOME/bash/extra/*; do source $f; done
+for f in ${XDG_CONFIG_HOME}/bash/extra/*; do
+    if [ -f $f ]; then
+        . $f
+    fi
+done
+
+if [ -f ${XDG_CONFIG_HOME}/bash/bash_aliases ]; then
+    . ${XDG_CONFIG_HOME}/bash/bash_aliases ]
+fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

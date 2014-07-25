@@ -1,4 +1,3 @@
-
 " Set up vundle
 set nocompatible
 filetype off
@@ -7,12 +6,11 @@ let g:vundle_lazy_load=0
 
 if has("unix")
     let s:uname = system("uname -s")
+    set rtp+=$XDG_CONFIG_HOME/vim/vim/common_bundles/Vundle.vim
     if s:uname ==? "Darwin\n"
-        set rtp+=/Users/amichaud/.config/vim/vim/common_bundles/Vundle.vim
-        let bundles_dir = '~/.config/vim/vim/osx_bundles'
+        let bundles_dir = expand('$XDG_CONFIG_HOME/vim/vim/osx_bundles')
     else
-        set rtp+=$XDG_CONFIG_HOME/vim/vim/common_bundles/Vundle.vim
-        let bundles_dir = '~/.config/vim/vim/linux_bundles'
+        let bundles_dir = expand('$XDG_CONFIG_HOME/vim/vim/linux_bundles')
     endif
 else
     echom "Eww, windows"
@@ -54,6 +52,17 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gno
     set t_Co=256
 endif
 
+""" OS-Dependent stuff that has to happen after bundles load.
+if has("unix")
+    let s:uname = system("uname -s")
+    if s:uname ==? "Darwin\n"
+        """ Put vim-go stuff in a reasonable place.
+        let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/mac-vim-go")
+    else
+        let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/linux-vim-go")
+    endif
+endif
+
 """ Colorscheme
 syntax enable
 set background=dark
@@ -88,8 +97,13 @@ set foldnestmax=10 "deepest fold is 10 levels."
 set foldlevel=1
 
 """ Store cache files elsewhere.
-set directory=$XDG_CACHE_HOME/vim,.,/tmp
-set backupdir=$XDG_CACHE_HOME/vim,.,/tmp
+""" Store backup files
+set backup
+set dir=$XDG_CACHE_HOME/vim/swap,.,/tmp
+set backupdir=$XDG_CACHE_HOME/vim/backup,.,/tmp
+""" Also viminfo.
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+
 
 "remap jk to escape for 3xtr4 l33t h4xx|ng
 inoremap jk <Esc>
@@ -158,8 +172,5 @@ autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 """"""""""""""""""""""""""""""""
 """ PER-ENVIRONMENT NONSENSE """
 """"""""""""""""""""""""""""""""
-autocmd BufNewFile,BufRead /mnt/home/amichaud/courses/cs134/dai_gurren/* set noexpandtab shiftwidth=8 tabstop=8
-
-""" auto remove whitespace on buffer save
-"autocmd! BufWrite * mark ' | silent! %s/\s\+$// | norm ''
+autocmd BufNewFile,BufRead ~/courses/cs134/dai_gurren/* set noexpandtab shiftwidth=8 tabstop=8
 

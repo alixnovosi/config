@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
+alias ncmpcpp="ncmpcpp -c ${XDG_CONFIG_HOME}/ncmpcpp/config"
+alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config"
+alias mpdscribble="mpdscribble --conf {$XDG_CONFIG_HOME}/mpdscribble/config"
+alias vim="vim -u ${XDG_CONFIG_HOME}/vim/.vimrc"
+alias view="view -u ${XDG_CONFIG_HOME}/vim/.vimrc"
+alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/config"
+
+# Color grep and ls.  Works on mac and linux.
+alias grep="grep --color=auto"
+
+# Useful aliases.
+alias ll="ls -al"
+alias la='ls -A'
+alias l='ls -CF'
+
+
