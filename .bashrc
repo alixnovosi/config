@@ -8,45 +8,9 @@ if [[ $- != *i* ]] ; then
     return
 fi
 
-## OS-INDEPENDENT - PRE OS CHECK ##
-if [[ -z "$EDITOR" ]]; then
-    export EDITOR=/usr/bin/vim
-fi
-
-if [[ -z "$PAGER" ]]; then
-    export PAGER=/bin/less
-fi
-
-if [[ -z "$VISUAL" ]]; then
-    export VISUAL=/usr/bin/vim
-fi
-
-# XDG base spec.  OS-independent, theoretically.
-if [ -z "${XDG_DATA_HOME}" ]; then
-    mkdir -p "${HOME}/.local/share"
-    XDG_DATA_HOME="${HOME}/.local/share"
-    export XDG_DATA_HOME
-fi
-
-if [ -z "${XDG_CONFIG_HOME}" ]; then
-    mkdir -p "${HOME}/.config"
-    XDG_CONFIG_HOME="${HOME}/.config"
-    export XDG_CONFIG_HOME
-fi
-
-if [ -z "${XDG_CACHE_HOME}" ]; then
-    mkdir -p "${HOME}/.cache"
-    XDG_CACHE_HOME="${HOME}/.cache"
-    export XDG_CACHE_HOME
-fi
-
-if [[ -z "$XDG_DATA_DIRS" ]]; then
-    export XDG_DATA_DIRS=/usr/local/share/:/usr/share/
-fi
-
 # Set path.
 mkdir -p "${HOME}/bin"
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$HOME/bin
+PATH=${HOME}/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # Gopath.
 mkdir -p "${HOME}/src/go"
@@ -135,11 +99,6 @@ elif [ "$(uname -s)" == "Linux" ]; then
 
     # Password-store completion
     source /etc/bash_completion.d/password-store
-
-    if [[ -z "$DISPLAY" ]]; then
-        export BROWSER=chromium
-    fi
-
 fi
 
 # append to the history file, don't overwrite it

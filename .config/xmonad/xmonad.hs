@@ -96,7 +96,7 @@ myTrayer :: String
 myTrayer = "trayer --edge top --align right " ++
            "--widthtype pixel --width 100 " ++
            "--expand true --SetDockType true --SetPartialStrut true " ++
-           "--transparent false --expand true " ++
+           "--transparent true --tint " ++ bgTrayer ++ " --expand true " ++
            "--heighttype pixel --height 16 --padding 2"
 
 -- Bitmaps used to represent current layout.
@@ -109,6 +109,9 @@ bgXmonad = "#383a3b"
 
 bgDzen :: String
 bgDzen = "'#383a3b'"
+
+bgTrayer :: String
+bgTrayer = "0x383a3b"
 
 -- Stuff common to both dzen bars.
 myDzenStyle :: String
