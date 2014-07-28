@@ -36,8 +36,6 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'bronson/vim-trailing-whitespace'
 " go
 Plugin 'fatih/vim-go'
-" indentation marking
-Bundle 'Yggdroot/indentLine'
 
 call vundle#end()
 filetype plugin indent on
