@@ -1,71 +1,113 @@
-
-! terminal colors ------------------------------------------------------------
-! tangoesque scheme
-*background: #111111
-*foreground: #babdb6
-! Black (not tango) + DarkGrey
-*color0:  #000000
-*color8:  #555753
-! DarkRed + Red
-*color1:  #ff6565
-*color9:  #ff8d8d
-! DarkGreen + Green
-*color2:  #93d44f
-*color10: #c8e7a8
-! DarkYellow + Yellow
-*color3:  #eab93d
-*color11: #ffc123
-! DarkBlue + Blue
-*color4:  #204a87
-*color12: #3465a4
-! DarkMagenta + Magenta
-*color5:  #ce5c00
-*color13: #f57900
-!DarkCyan + Cyan (both not tango)
-*color6:  #89b6e2
-*color14: #46a4ff
-! LightGrey + White
-*color7:  #cccccc
-*color15: #ffffff
-
+!Solarized color scheme for the X Window System
+!
+! http://ethanschoonover.com/solarized
+!
+!
+! Common
+!
+#define S_yellow        #b58900
+#define S_orange        #cb4b16
+#define S_red           #dc322f
+#define S_magenta       #d33682
+#define S_violet        #6c71c4
+#define S_blue          #268bd2
+#define S_cyan          #2aa198
+#define S_green         #859900
+!
+!
+! Dark
+!
+#define S_base03        #002b36
+#define S_base02        #073642
+#define S_base01        #586e75
+#define S_base00        #657b83
+#define S_base0         #839496
+#define S_base1         #93a1a1
+#define S_base2         #eee8d5
+#define S_base3         #fdf6e3
+!
+!
+! Light
+!
+! #define S_base03        #fdf6e3
+! #define S_base02        #eee8d5
+! #define S_base01        #93a1a1
+! #define S_base00        #839496
+! #define S_base0         #657b83
+! #define S_base1         #586e75
+! #define S_base2         #073642
+! #define S_base3         #002b36
+!
+!
+! To only apply colors to your terminal, for example, prefix
+! the color assignment statement with its name. Example:
+!
+! URxvt*background:            S_base03
+!
+*background:              S_base03
+*foreground:              S_base0
+*fading:                  40
+*fadeColor:               S_base03
+*cursorColor:             S_base1
+*pointerColorBackground:  S_base01
+*pointerColorForeground:  S_base1
+!
+*color0:                  S_base02
+*color1:                  S_red
+*color2:                  S_green
+*color3:                  S_yellow
+*color4:                  S_blue
+*color5:                  S_magenta
+*color6:                  S_cyan
+*color7:                  S_base2
+*color8:                  S_base03
+*color9:                  S_orange
+*color10:                 S_base01
+*color11:                 S_base00
+*color12:                 S_base0
+*color13:                 S_violet
+*color14:                 S_base1
+*color15:                 S_base3
 ! xscreensaver ---------------------------------------------------------------
 
-!font settings
-xscreensaver.Dialog.headingFont:        -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
-xscreensaver.Dialog.bodyFont:           -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
-xscreensaver.Dialog.labelFont:          -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
-xscreensaver.Dialog.unameFont:          -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
-xscreensaver.Dialog.buttonFont:         -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
-xscreensaver.Dialog.dateFont:           -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
-xscreensaver.passwd.passwdFont:         -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
+*.font: -*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1
 
-!general dialog box (affects main hostname, username, password text)
-xscreensaver.Dialog.foreground:         #ffffff
-xscreensaver.Dialog.background:         #111111
-xscreensaver.Dialog.topShadowColor:     #111111
-xscreensaver.Dialog.bottomShadowColor:  #111111
-xscreensaver.Dialog.Button.foreground:  #666666
-xscreensaver.Dialog.Button.background:  #ffffff
+! font settings
+!xscreensaver.Dialog.headingFont:        -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
+!xscreensaver.Dialog.bodyFont:           -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
+!xscreensaver.Dialog.labelFont:          -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
+!xscreensaver.Dialog.unameFont:          -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
+!xscreensaver.Dialog.buttonFont:         -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
+!xscreensaver.Dialog.dateFont:           -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
+!xscreensaver.passwd.passwdFont:         -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
 
-!username/password input box and date text colour
-xscreensaver.Dialog.text.foreground:    #666666
-xscreensaver.Dialog.text.background:    #ffffff
+! general dialog box (affects main hostname, username, password text)
+xscreensaver.Dialog.foreground:         !ffffff
+xscreensaver.Dialog.background:         !111111
+xscreensaver.Dialog.topShadowColor:     !111111
+xscreensaver.Dialog.bottomShadowColor:  !111111
+xscreensaver.Dialog.Button.foreground:  !666666
+xscreensaver.Dialog.Button.background:  !ffffff
+
+! username/password input box and date text colour
+xscreensaver.Dialog.text.foreground:    !666666
+xscreensaver.Dialog.text.background:    !ffffff
 xscreensaver.Dialog.internalBorderWidth:0
 xscreensaver.Dialog.borderWidth:        0
 xscreensaver.Dialog.shadowThickness:    0
 
-!timeout bar (background is actually determined by Dialog.text.background)
-xscreensaver.passwd.thermometer.foreground:  #1111aa
-xscreensaver.passwd.thermometer.background:  #000000
+! timeout bar (background is actually determined by Dialog.text.background)
+xscreensaver.passwd.thermometer.foreground:  !1111aa
+xscreensaver.passwd.thermometer.background:  !000000
 xscreensaver.passwd.thermometer.width:       8
 
-!datestamp format--see the strftime(3) manual page for details
+! datestamp format--see the strftime(3) manual page for details
 xscreensaver.dateFormat:    %I:%M%P %a %b %d, %Y
 
 
 ! xterm
 xterm*faceName:           Terminus:style=Regular:size=10
-xterm*font:               -*-dina-medium-r-*-*-16-*-*-*-*-*-*-*
+!xterm*font:               -*-dina-medium-r-*-*-16-*-*-*-*-*-*-*
 xterm*dynamicColors:      true
 xterm*utf8:               2
 xterm*eightBitInput:      true
@@ -90,51 +132,51 @@ Xft.hintstyle: hintslight
 ! xclock --------------------------------------------------------------------------------
 
 xclock*update:            1
-xclock*analog:            false
+xclock*analog:            true
 
 !xcalc-----------------------------------------------------------------------
 
 xcalc*geometry:                        200x275
-xcalc.ti.bevel.background:             #111111
-xcalc.ti.bevel.screen.background:      #000000
-xcalc.ti.bevel.screen.DEG.background:  #000000
+xcalc.ti.bevel.background:             !111111
+xcalc.ti.bevel.screen.background:      !000000
+xcalc.ti.bevel.screen.DEG.background:  !000000
 xcalc.ti.bevel.screen.DEG.foreground:  LightSeaGreen
-xcalc.ti.bevel.screen.GRAD.background: #000000
+xcalc.ti.bevel.screen.GRAD.background: !000000
 xcalc.ti.bevel.screen.GRAD.foreground: LightSeaGreen
-xcalc.ti.bevel.screen.RAD.background:  #000000
+xcalc.ti.bevel.screen.RAD.background:  !000000
 xcalc.ti.bevel.screen.RAD.foreground:  LightSeaGreen
-xcalc.ti.bevel.screen.INV.background:  #000000
+xcalc.ti.bevel.screen.INV.background:  !000000
 xcalc.ti.bevel.screen.INV.foreground:  Red
-xcalc.ti.bevel.screen.LCD.background:  #000000
+xcalc.ti.bevel.screen.LCD.background:  !000000
 xcalc.ti.bevel.screen.LCD.foreground:  LightSeaGreen
 xcalc.ti.bevel.screen.LCD.shadowWidth: 0
-xcalc.ti.bevel.screen.M.background:    #000000
+xcalc.ti.bevel.screen.M.background:    !000000
 xcalc.ti.bevel.screen.M.foreground:    LightSeaGreen
-xcalc.ti.bevel.screen.P.background:    #000000
+xcalc.ti.bevel.screen.P.background:    !000000
 xcalc.ti.bevel.screen.P.foreground:    Yellow
 xcalc.ti.Command.foreground:  White
-xcalc.ti.Command.background:  #777777
+xcalc.ti.Command.background:  !777777
 xcalc.ti.button5.background:  Orange3
-xcalc.ti.button19.background: #611161
-xcalc.ti.button18.background: #611161
-xcalc.ti.button20.background: #611111
+xcalc.ti.button19.background: !611161
+xcalc.ti.button18.background: !611161
+xcalc.ti.button20.background: !611111
 !uncomment to change label on division button
 !xcalc.ti.button20.label:      /
-xcalc.ti.button25.background: #722222
-xcalc.ti.button30.background: #833333
-xcalc.ti.button35.background: #944444
-xcalc.ti.button40.background: #a55555
-xcalc.ti.button22.background: #222262
-xcalc.ti.button23.background: #222262
-xcalc.ti.button24.background: #222272
-xcalc.ti.button27.background: #333373
-xcalc.ti.button28.background: #333373
-xcalc.ti.button29.background: #333373
-xcalc.ti.button32.background: #444484
-xcalc.ti.button33.background: #444484
-xcalc.ti.button34.background: #444484
-xcalc.ti.button37.background: #555595
-xcalc.ti.button38.background: #555595
-xcalc.ti.button39.background: #555595
+xcalc.ti.button25.background: !722222
+xcalc.ti.button30.background: !833333
+xcalc.ti.button35.background: !944444
+xcalc.ti.button40.background: !a55555
+xcalc.ti.button22.background: !222262
+xcalc.ti.button23.background: !222262
+xcalc.ti.button24.background: !222272
+xcalc.ti.button27.background: !333373
+xcalc.ti.button28.background: !333373
+xcalc.ti.button29.background: !333373
+xcalc.ti.button32.background: !444484
+xcalc.ti.button33.background: !444484
+xcalc.ti.button34.background: !444484
+xcalc.ti.button37.background: !555595
+xcalc.ti.button38.background: !555595
+xcalc.ti.button39.background: !555595
 XCalc*Cursor:                 hand2
 XCalc*ShapeStyle:             rectangle

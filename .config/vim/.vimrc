@@ -12,8 +12,6 @@ if has("unix")
     else
         let bundles_dir = expand('$XDG_CONFIG_HOME/vim/vim/linux_bundles')
     endif
-else
-    echom "Eww, windows"
 endif
 
 call vundle#rc(bundles_dir)
@@ -45,10 +43,7 @@ let g:indentLine_char='│'
 """ Nice backspacing.
 set backspace=indent,eol,start
 
-""" Setup term color support.
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-    set t_Co=256
-endif
+set t_Co=256
 
 """ OS-Dependent stuff that has to happen after bundles load.
 if has("unix")
@@ -85,7 +80,7 @@ set expandtab     "use spaces
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set modeline      "show modeline
+set nomodeline      "don't show modeline
 set showcmd       "show command as it is typed
 
 """ Folding?

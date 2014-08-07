@@ -1,23 +1,61 @@
-set -g terminal-overrides 'xterm*:smcup@:rmcup@'
-set -g default-terminal screen-256color
+#----------------------------------------------------------------------------------------
+# file: $XDG_CONFIG_HOME/tmux/conf
+# author: andrew michaud - http://andrewmichaud.com/
+#
+#----------------------------------------------------------------------------------------
+# Based on many.
+
+# What do these do?
+set -g status-utf8 on
+set -g utf8 on
 setw -g xterm-keys on
 
 # Status bar
-set-option -g status on
-set -g status-utf8 on
+# What do these do?
+set -g status on
 set -g status-interval 5
 
-# colors
-set-option -g status-bg "#8888DD" #"#222266"
-set-option -g status-fg default # "#ffffff"
+##########################################################################################
+######################################## COLORS ##########################################
+##########################################################################################
+# Solarized colors.
 
-set-window-option -g window-status-bg default #"#222266"
-set-window-option -g window-status-fg default #"#eeeeee"
+# Force 256 colors.
+set -g terminal-overrides "xterm:colors=256"
 
-set-window-option -g window-status-current-bg default #"#FFFFFF"
-set-window-option -g window-status-current-fg default #"#000000"
+# Default statusbar colors.
+set -g status-fg yellow
+set -g status-bg black
 
-#set -g mode-mouse on
+# Default window title colors
+setw -g window-status-fg brightblue
+setw -g window-status-bg default
+
+# Active window title colors.
+setw -g window-status-current-fg yellow
+setw -g window-status-current-bg default
+setw -g window-status-current-attr dim
+
+# Pane border
+set -g pane-border-fg black
+set -g pane-border-bg default
+set -g pane-active-border-fg yellow
+set -g pane-active-border-bg default
+
+# Command line/ message text
+set -g message-fg yellow
+set -g message-bg black
+
+# Pane number display
+setw -g display-panes-active-colour yellow
+setw -g display-panes-colour brightblue
+
+# Clock
+setw -g clock-mode-colour yellow
+
+##########################################################################################
+#################################### END COLORS ##########################################
+##########################################################################################
 
 # reload config without killing server
 bind R source-file ~/.config/tmux/config \; display-message "  Config reloaded..".
@@ -25,14 +63,18 @@ bind R source-file ~/.config/tmux/config \; display-message "  Config reloaded..
 # more intuitive keybindings for splitting
 # Vertical
 unbind %
-bind v split-window -v
+bind v split-window -v -c '#{pane_current_path}'
 
 # Horizontal
 unbind '"'
-bind h split-window -h
+bind h split-window -h -c '#{pane_current_path}'
+
+# New window
+unbind c
+bind c new-window -c '#{pane_current_path}'
 
 # copy tmux buffer to clipboard
-bind C-y run "tmux show-buffer | xsel -b"
+bind C-y run "tmux show-buffer | xsel -b"ggg
 # move x clipboard into tmux paste buffer
 bind C-p run "tmux set-buffer \"$(xsel -o)\"; tmux paste-buffer"
 
@@ -48,13 +90,9 @@ set -g history-limit 5000
 # enable auto renaming
 setw -g automatic-rename on
 
-# border colour
-set -g pane-border-fg white
-set -g pane-border-bg default
-set -g pane-active-border-fg blue
-set -g pane-active-border-bg default
+# Rename terminal emulator.
+set -g set-titles on
+set -g set-titles-string "#T"
 
-# wm window title string (uses statusbar variables)
-
-# status bar settings
-set-option -g status-interval 1
+# Resize window based on smallest client actually viewing.
+setw -g aggressive-resize on

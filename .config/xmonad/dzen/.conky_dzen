@@ -19,64 +19,64 @@ ${endif}  \
 \
 ^fg(darkgray)c: \
 ${if_match ${cpu cpu1} > 75}\
-^fg(\#FF8888)${cpu cpu1} \
+^fg(\#FF8888)${cpu cpu1}\
 ${endif}\
 ${if_match ${cpu cpu1} <= 75}\
 ${if_match ${cpu cpu1} > 25 }\
-^fg(\#FFFF88)${cpu cpu1} \
+^fg(\#FFFF88)${cpu cpu1}\
 ${endif}\
 ${endif}\
 ${if_match ${cpu cpu1} <= 25}\
-^fg(\#88FF88)${cpu cpu1} \
-${endif} \
+^fg(\#88FF88)${cpu cpu1}\
+${endif}\
 \
 ${if_match ${cpu cpu2} > 75}\
-^fg(\#FF8888)${cpu cpu2} \
+^fg(\#FF8888)${cpu cpu2}\
 ${endif}\
 ${if_match ${cpu cpu2} <= 75}\
 ${if_match ${cpu cpu2} > 25 }\
-^fg(\#FFFF88)${cpu cpu2} \
+^fg(\#FFFF88)${cpu cpu2}\
 ${endif}\
 ${endif}\
 ${if_match ${cpu cpu2} <= 25}\
-^fg(\#88FF88)${cpu cpu2} \
-${endif} \
+^fg(\#88FF88)${cpu cpu2}\
+${endif}\
 \
 ${if_match ${cpu cpu3} > 75}\
-^fg(\#FF8888)${cpu cpu3} \
+^fg(\#FF8888)${cpu cpu3}\
 ${endif}\
 ${if_match ${cpu cpu3} <= 75}\
 ${if_match ${cpu cpu3} > 25 }\
-^fg(\#FFFF88)${cpu cpu3} \
+^fg(\#FFFF88)${cpu cpu3}\
 ${endif}\
 ${endif}\
 ${if_match ${cpu cpu3} <= 25}\
-^fg(\#88FF88)${cpu cpu3} \
-${endif} \
+^fg(\#88FF88)${cpu cpu3}\
+${endif}\
 \
 ${if_match ${cpu cpu4} > 75}\
-^fg(\#FF8888)${cpu cpu4} \
+^fg(\#FF8888)${cpu cpu4}\
 ${endif}\
 ${if_match ${cpu cpu4} <= 75}\
 ${if_match ${cpu cpu4} > 25 }\
-^fg(\#FFFF88)${cpu cpu4} \
+^fg(\#FFFF88)${cpu cpu4}\
 ${endif}\
 ${endif}\
 ${if_match ${cpu cpu4} <= 25}\
-^fg(\#88FF88)${cpu cpu4} \
-${endif}  \
+^fg(\#88FF88)${cpu cpu4}\
+${endif}\
 \
 ^fg(darkgray)m: \
 ${if_match ${memperc} > 75}\
-^fg(\#FF8888)${memperc} \
+^fg(\#FF8888)${memperc}\
 ${endif}\
 ${if_match ${memperc} <= 75}\
 ${if_match ${memperc} > 25 }\
-^fg(\#FFFF88)${memperc} \
+^fg(\#FFFF88)${memperc}\
 ${endif}\
 ${endif}\
 ${if_match ${memperc} <= 25}\
-^fg(\#88FF88)${memperc} \
-${endif}  \
+^fg(\#88FF88)${memperc}\
+${endif}\
 \
 ^fg(white)${time %a %b %d %H:%M} 
