@@ -23,6 +23,7 @@ import Graphics.X11.ExtraTypes.XF86
 import Graphics.X11.Xlib
 
 import Data.Char
+import Data.List
 
 import System.IO
 import System.Posix.Unistd -- to get hostname
@@ -35,8 +36,27 @@ import qualified XMonad.StackSet as W
 -----------------------------VARIABLES AND STUFF------------------------------------------
 ------------------------------------------------------------------------------------------
 
+-- Color variables.
+solarizedBase03  = "#002b36"
+solarizedBase02  = "#073642"
+solarizedBase01  = "#586e75"
+solarizedBase00  = "#657b83"
+solarizedBase0   = "#839496"
+solarizedBase1   = "#93a1a1"
+solarizedBase2   = "#eee8d5"
+solarizedBase3   = "#fdf6e3"
+solarizedYellow  = "#b58900"
+solarizedOrange  = "#cb4b16"
+solarizedRed     = "#dc322f"
+solarizedMagenta = "#d33682"
+solarizedViolet  = "#6c71c4"
+solarizedBlue    = "#268bd2"
+solarizedCyan    = "#2aa198"
+solarizedGreen   = "#859900"
+
+
 home :: String
-home = "~/.xmonad"
+home = "/home/amichaud/.xmonad"
 
 -- Use XFCE4 terminal without menubar
 myTerminal :: String
@@ -54,10 +74,10 @@ myModMask = mod4Mask
 
 --Borders
 myFocusedBorderColor :: String
-myFocusedBorderColor = "turquoise"
+myFocusedBorderColor = solarizedCyan
 
 myNormalBorderColor :: String
-myNormalBorderColor = "#333333"
+myNormalBorderColor = solarizedBase1
 
 myBorderWidth :: Dimension
 myBorderWidth = 2
@@ -124,37 +144,48 @@ myTrayer = "trayer --edge top --align right " ++
 myBitmapsPath :: String
 myBitmapsPath = home ++ "/dzen/bitmaps/"
 
--- Color variables.
-bgXmonad :: String
-bgXmonad = "#002b36"
+normalFG :: String
+normalFG = solarizedBase3
 
-bgDzen :: String
-bgDzen = "'#002b36'"
+normalBG :: String
+normalBG = solarizedBase03
+
+currentFG :: String
+currentFG = solarizedBase3
+
+currentBG :: String
+currentBG = solarizedOrange
+
+urgentBG :: String
+urgentBG = solarizedRed
 
 bgTrayer :: String
-bgTrayer = "0x002b36"
+bgTrayer = "0x" ++ tail solarizedBase03
 
 -- Stuff common to both dzen bars.
 myDzenStyle :: String
-myDzenStyle = myDzenFont ++ "-h '16' -y '0' -fg '#ffffff' -bg " ++ bgDzen
+myDzenStyle = myDzenFont ++ " -h '16' -y '0'"
+
+myFont :: String
+myFont = "-*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1"
 
 myDzenFont :: String
-myDzenFont = " -fn '-*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1' "
+myDzenFont = " -fn '" ++ myFont ++ "'"
 
 -- Pretty printing.
 myDzenPP :: PP
 myDzenPP  = dzenPP
-    { ppCurrent = dzenColor bgXmonad "#gray" . pad
-    , ppHidden  = dzenColor "gray" "" . pad . take 1
-    , ppUrgent  = dzenColor "#ff0000" "" . pad
+    { ppCurrent = dzenColor currentFG currentBG . pad
+    , ppHidden  = dzenColor currentFG normalBG . pad . take 1
+    , ppUrgent  = dzenColor currentFG urgentBG . pad
     , ppSep     = "|"
-    , ppTitle   = shorten 150 . dzenColor "white" "" . pad
+    , ppTitle   = shorten 150 . dzenColor normalFG normalBG . pad
     , ppLayout  = \x -> case x of
                       "Tall"        -> wrapBitmap "rob/tall.xbm"
                       "Mirror Tall" -> wrapBitmap "rob/mtall.xbm"
                       "Full"        -> wrapBitmap "rob/full.xbm"
     }
-    where wrapBitmap bitmap = "^p(8)^i(" ++ myBitmapsPath ++ bitmap ++ ")^p(8)"
+    where wrapBitmap bitmap = "^p(4)^i(" ++ myBitmapsPath ++ bitmap ++ ")^p(4)"
 
 ------------------------------------------------------------------------------------------
 ----------------------------------CUSTOM HOOKS--------------------------------------------
@@ -173,8 +204,8 @@ myManageHook = composeAll
     , title     =? "__HTOP"         --> doShift "-:perf"
 
     , className =? "Gimp"           --> doFloat
-
     , className =? "mpv"            --> doFullFloat
+    , className =? "Steam"          --> doFloat
 
     -- Chat windows go to workspace 3
     , className =? "Pidgin"         --> doShift "3:chat"
