@@ -11,13 +11,12 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
 -- For dealing with Java.
 import XMonad.Hooks.SetWMName
-import XMonad.Hooks.EwmhDesktops
 
 import XMonad.Layout.NoBorders
 import XMonad.Layout.LayoutHints
 
 import XMonad.Util.EZConfig(additionalKeys)
-import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.Run(spawnPipe, runProcessWithInput)
 
 import Graphics.X11.ExtraTypes.XF86
 import Graphics.X11.Xlib
@@ -54,6 +53,8 @@ solarizedBlue    = "#268bd2"
 solarizedCyan    = "#2aa198"
 solarizedGreen   = "#859900"
 
+font :: String
+font = "-*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1"
 
 home :: String
 home = "/home/amichaud/.xmonad"
@@ -74,7 +75,7 @@ myModMask = mod4Mask
 
 --Borders
 myFocusedBorderColor :: String
-myFocusedBorderColor = solarizedCyan
+myFocusedBorderColor = solarizedOrange
 
 myNormalBorderColor :: String
 myNormalBorderColor = solarizedBase1
@@ -95,15 +96,15 @@ audioKeys host
 
     -- Laptop doesn't have proper media keys because Lenovo are dumb.
     -- So, do it manually.
-    | host == "pascal" = [ ((shiftMask, xF86XK_AudioMute), spawn "mpc toggle")
+    | host == "pascal" = [  ((shiftMask, xF86XK_AudioMute),        spawn "mpc toggle")
                           , ((shiftMask, xF86XK_AudioRaiseVolume), spawn "mpc next")
                           , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")] ++ common
 
-    | host == "raven" =  [ ((0, xF86XK_AudioPlay), spawn "mpc toggle")
+    | host == "raven" =  [  ((0, xF86XK_AudioPlay), spawn "mpc toggle")
                           , ((0, xF86XK_AudioNext), spawn "mpc next")
                           , ((0, xF86XK_AudioPrev), spawn "mpc prev")] ++ common
 
-    | otherwise        = []
+    | otherwise        = common
         where common = [ ((0, xF86XK_AudioLowerVolume),         spawn "amixer set Master 2-")
                        , ((0, xF86XK_AudioRaiseVolume),         spawn "amixer set Master 2+")
                        , ((0, xF86XK_AudioMute),                spawn "amixer set Master toggle")]
@@ -112,33 +113,38 @@ audioKeys host
 -----------------------------STATUS BAR STUFF---------------------------------------------
 ------------------------------------------------------------------------------------------
 
+-- Variables governing dimensions.
+-- Status bar height
+statusHeight :: Int
+statusHeight = 16
+
+-- Trayer width
+trayerWidth :: Int
+trayerWidth = 50
+
 -- Left Dzen - xmonad info and window title.
-myDzenStatus :: String -> String
-myDzenStatus host
-    | host == "pascal" = status "700"
-    | host == "raven"  = status "960"
-    | otherwise        = status "960"
-        where status width = "dzen2 -x '0' -w '" ++ width ++ "' -ta 'l'" ++ myDzenStyle
+dzenLeft :: String -> String
+dzenLeft width = "dzen2 -x '0' -w '" ++ show half ++ "' -ta 'l'" ++ dzenStyle
+    where half = (read width::Int) `div` 2
 
 
 -- Right Dzen - Runs conky config.
-myDzenConky :: String -> String
-myDzenConky host
-    | host == "pascal" = status "700" "800"
-    | host == "raven"  = status "960" "860"
-    | otherwise        = status "960" "860"
-        where status start width = conkyCmd ++ " | dzen2 " ++ style start width
-              conkyCmd = "conky -c " ++ home ++ "/dzen/.conky_dzen"
-              style start width = "-x '" ++ start ++ "' -w '" ++
-                                  width ++ "' -ta 'r'" ++ myDzenStyle
+dzenRight :: String -> String -> String
+dzenRight config width = conkyCmd ++ " | dzen2 " ++ style
+    where conkyCmd = "conky --config=" ++ config ++ "/conky/dzen_config"
+          style = "-x '" ++ show half ++ "' -w '" ++ show (half - trayerWidth) ++ "' -ta 'r'" ++ dzenStyle
+          half = (read width :: Int) `div` 2
+
+-- Background status.
+conkyStatus :: String ->String
+conkyStatus config = "conky --config=" ++ config ++ "/conky/config"
 
 -- Trayer - system tray.
 myTrayer :: String
 myTrayer = "trayer --edge top --align right " ++
-           "--widthtype pixel --width 100 " ++
+           "--widthtype pixel --width " ++ show trayerWidth ++ " " ++
            "--expand true --SetDockType true --SetPartialStrut true " ++
-           "--transparent true --tint " ++ bgTrayer ++ " --expand true " ++
-           "--heighttype pixel --height 16 --padding 2"
+           "--transparent false --heighttype pixel --height " ++ show statusHeight ++ " --padding 2"
 
 -- Bitmaps used to represent current layout.
 myBitmapsPath :: String
@@ -163,14 +169,8 @@ bgTrayer :: String
 bgTrayer = "0x" ++ tail solarizedBase03
 
 -- Stuff common to both dzen bars.
-myDzenStyle :: String
-myDzenStyle = myDzenFont ++ " -h '16' -y '0'"
-
-myFont :: String
-myFont = "-*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1"
-
-myDzenFont :: String
-myDzenFont = " -fn '" ++ myFont ++ "'"
+dzenStyle :: String
+dzenStyle = " -fn " ++ font ++ " -h '" ++ show statusHeight ++ "' -y '0'"
 
 -- Pretty printing.
 myDzenPP :: PP
@@ -179,7 +179,7 @@ myDzenPP  = dzenPP
     , ppHidden  = dzenColor currentFG normalBG . pad . take 1
     , ppUrgent  = dzenColor currentFG urgentBG . pad
     , ppSep     = "|"
-    , ppTitle   = shorten 150 . dzenColor normalFG normalBG . pad
+    , ppTitle   = shorten 500 . dzenColor normalFG normalBG . pad
     , ppLayout  = \x -> case x of
                       "Tall"        -> wrapBitmap "rob/tall.xbm"
                       "Mirror Tall" -> wrapBitmap "rob/mtall.xbm"
@@ -190,8 +190,6 @@ myDzenPP  = dzenPP
 ------------------------------------------------------------------------------------------
 ----------------------------------CUSTOM HOOKS--------------------------------------------
 ------------------------------------------------------------------------------------------
-
-ewmhConfig = ewmh defaultConfig
 
 -- Custom manage hook.
 myManageHook :: ManageHook
@@ -209,7 +207,7 @@ myManageHook = composeAll
 
     -- Chat windows go to workspace 3
     , className =? "Pidgin"         --> doShift "3:chat"
-    , title     =? "SKype"          --> doShift "3:chat"
+    , title     =? "Skype"          --> doShift "3:chat"
     ]
 
 -- Custom log hook.
@@ -233,18 +231,31 @@ main = do
 
     -- Get useful environment variables.
     editor <- getEnv "EDITOR"
+    config_home <- getEnv "XDG_CONFIG_HOME"
+
+    -- Resolution info
+    xrandr <- runProcessWithInput "/usr/bin/xrandr" [] ""
+    screens <- runProcessWithInput "/bin/grep" ["Screen"] xrandr
+    screencount <- runProcessWithInput "/usr/bin/wc" ["-l"] screens
+    height <- runProcessWithInput "/bin/sed" ["s/^.*current [0-9]\\+\\ x\\ \\([0-9]\\+\\).*/\\1/"] screens
+    width <- runProcessWithInput "/bin/sed" ["s/^.*current \\([0-9]\\+\\).*/\\1/"] screens
+
+    -- Environment variables.
+    editor <- getEnv "EDITOR"
+    config_home <- getEnv "XDG_CONFIG_HOME"
 
     -- Status bar programs.
-    status <- spawnPipe $ myDzenStatus host
-    conky <- spawnPipe $ myDzenConky host
-    trayer <- spawnPipe myTrayer
+    dzenL  <- spawnPipe $ dzenLeft width
+    dzenR  <- spawn $ dzenRight config_home width
+    conky  <- spawn $ conkyStatus config_home
+    trayer <- spawn myTrayer
 
-    xmonad $ withUrgencyHook NoUrgencyHook ewmhConfig
+    xmonad $ withUrgencyHook NoUrgencyHook defaultConfig
 
         -- Hooks.
-        { manageHook = manageDocks <+> myManageHook <+> manageHook ewmhConfig
-        , layoutHook = avoidStruts $ smartBorders $ layoutHook ewmhConfig
-        , logHook = myLogHook status
+        { manageHook = manageDocks <+> myManageHook <+> manageHook defaultConfig
+        , layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
+        , logHook = myLogHook dzenL
 
         -- Handles Java
         , startupHook = setWMName "LG3D"

@@ -34,6 +34,10 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'bronson/vim-trailing-whitespace'
 " go
 Plugin 'fatih/vim-go'
+" json
+Bundle 'elzr/vim-json'
+" Conky syntax highlighting.
+Plugin 'mancill/conky-syntax.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -60,6 +64,7 @@ endif
 syntax enable
 set background=dark
 colorscheme solarized
+hi Normal ctermbg=none
 
 """ Show trailing whitespace.
 set nolist

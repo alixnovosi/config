@@ -13,7 +13,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
         unset f
 fi
 
-source $HOME/.profile
+source /home/amichaud/.profile
 
 # cursor
 xsetroot -cursor_name left_ptr
@@ -21,17 +21,10 @@ unclutter &
 
 # Resources and screensaver
 xrdb -merge $HOME/.Xresources       # update x resources dib
-xscreensaver -no-splash &
 $HOME/bin/setWallpaper &
 
-
 # PROGRAMS
-pidgin --config=$XDG_CONFIG_HOME/pidgin &
-
-# Power monitoring
-if [ "$HOSTNAME" = pascal ]; then
-    xfce4-power-manager &
-fi
+#pidgin --config=$XDG_CONFIG_HOME/pidgin &
 
 # keychain
 keychain $HOME/.ssh/id_rsa
