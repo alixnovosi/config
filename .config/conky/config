@@ -1,0 +1,116 @@
+use_xft yes
+xftfont Inconsolata:Size=8
+
+update_interval 1
+total_run_times 0
+double_buffer yes
+
+own_window no
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+# Solarized colors.
+#657b83 #base00
+# 586e75 #base01
+color1 073642 #base02
+color2 002b36 #base03
+color3 839496 #base0
+color4 93a1a1 #base1
+# eee8d5 #base2
+# fdf6e3 #base3
+#b58900 #yellow
+color5 cb4b16 #orange
+color6 dc322f #red
+# d33682 #magenta
+color7 6c71c4 #violet
+color8 268bd2 #blue
+color9 2aa198 #cyan
+# 859900 #green
+
+draw_outline no
+default_color 839496 # base0
+
+format_human_readable yes
+
+draw_shades no
+
+alignment top_right
+gap_x 30
+gap_y 30
+
+minimum_size 300
+maximum_width 300
+
+net_avg_samples 2
+
+# Lua nonsense
+lua_load ~/.config/conky/draw-bg.lua
+
+TEXT
+${lua conky_draw_bg 10 1265 30 330 900 0x002b36 0.6}
+${color5}system ${hr 2}$color
+Host: ${alignr}${nodename}
+Kernel:  ${alignr}${kernel}
+
+CPU: ${cpu cpu1}% ${alignr}${cpubar cpu1 8,50}
+${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 2}\
+     ${cpu cpu2}% ${alignr}${cpubar cpu2 8,50}
+${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 3}\
+     ${cpu cpu3}% ${alignr}${cpubar cpu3 8,50}
+${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 4}\
+     ${cpu cpu4}% ${alignr}${cpubar cpu4 8,50}
+RAM: $memperc% ${alignr}${membar 8,50}
+SWAP: $swapperc% ${alignr}${swapbar 8,50}
+
+Bat 0: ${alignr}${battery_short} ${battery_time} ${battery_bar 8,70}
+${if_match ${exec acpi | wc -l} > 1}\
+Bat 1: ${alignr}${battery_short BAT1} ${battery_time BAT1} ${battery_bar 8,70 BAT1}
+${endif}\
+Uptime: ${alignr}${uptime}
+
+${color6}date ${hr 1}$color
+${execpi 60 cal}
+${alignc}${time %H:%M}${font}
+${alignc}${time %a %d %B}
+
+${color7}disk ${hr 2}$color
+Root: \
+${voffset 4}${fs_used /}/${fs_size /} ${alignr}${fs_bar 8,60 /}
+${if_mounted /var}\
+Var: \
+${voffset 4}${fs_used /var}/${fs_size /var} ${alignr}${fs_bar 8,60 /var}
+${endif}\
+${if_mounted /usr}\
+Usr: \
+${voffset 4}${fs_used /usr}/${fs_size /usr} ${alignr}${fs_bar 8,60 /usr}
+${endif}\
+${if_mounted /home}\
+Home: \
+${voffset 4}${fs_used /home}/${fs_size /home} ${alignr}${fs_bar 8,60 /home}
+${endif}\
+
+${color8}network ${hr 2}$color
+${if_existing /proc/net/route wlan0}\
+Up: ${upspeed wlan0} /s ${alignr}${upspeedgraph wlan0 8,60 F57900 FCAF3E}
+Down: ${downspeed wlan0} /s ${alignr}${downspeedgraph wlan0 8,60 F57900 FCAF3E}
+Upload: ${alignr}${totalup wlan0}
+Download: ${alignr}${totaldown wlan0}
+Signal: ${wireless_link_qual wlan0}% ${alignr}${wireless_link_bar 8,100 wlan0}
+Local Ip: ${alignr}${addr wlan0}\
+${else}\
+${if_existing /proc/net/route eth0}
+Up: ${upspeed eth0} /s ${alignr}${upspeedgraph eth0 8,60 F57900 FCAF3E}
+Down: ${downspeed eth0} /s ${alignr}${downspeedgraph eth0 8,60 F57900 FCAF3E}
+Upload: ${alignr}${totalup eth0}
+Download: ${alignr}${totaldown eth0}
+Local Ip: ${alignr}${addr eth0}
+${else}\
+Network Unavailable
+${endif}\
+${color9}mpd ${hr 2}$color
+Status: $alignr$mpd_status
+Song: $alignr$mpd_artist
+$alignr$mpd_title
+Elapsed:
+$mpd_elapsed/$mpd_length $alignr${mpd_bar 8,120}

@@ -66,9 +66,10 @@ myTerminal = "xfce4-terminal --hide-menubar"
 terminalCommand :: String -> String
 terminalCommand cmd = myTerminal ++ " -x " ++ cmd
 
-namedCmd :: String -> String
-namedCmd cmd = myTerminal ++ " --title=" ++ name ++ " -x " ++ cmd ++ " "
+namedCmd :: String -> String -> String
+namedCmd cmd args = myTerminal ++ " --title=" ++ name ++ " -x " ++ command
     where name = "__" ++ map toUpper cmd
+          command = cmd ++ " " ++ args
 
 -- ModMask = windowsKey
 myModMask = mod4Mask
@@ -234,11 +235,11 @@ main = do
     config_home <- getEnv "XDG_CONFIG_HOME"
 
     -- Resolution info
-    xrandr <- runProcessWithInput "/usr/bin/xrandr" [] ""
-    screens <- runProcessWithInput "/bin/grep" ["Screen"] xrandr
-    screencount <- runProcessWithInput "/usr/bin/wc" ["-l"] screens
-    height <- runProcessWithInput "/bin/sed" ["s/^.*current [0-9]\\+\\ x\\ \\([0-9]\\+\\).*/\\1/"] screens
-    width <- runProcessWithInput "/bin/sed" ["s/^.*current \\([0-9]\\+\\).*/\\1/"] screens
+    xrandr <- runProcessWithInput "xrandr" [] ""
+    screens <- runProcessWithInput "grep" ["Screen"] xrandr
+    screencount <- runProcessWithInput "wc" ["-l"] screens
+    height <- runProcessWithInput "sed" ["s/^.*current.*\\([0-9]\\+\\).*/\\1/"] screens
+    width <- runProcessWithInput "sed" ["s/^.*current \\([0-9]\\+\\).*/\\1/"] screens
 
     -- Environment variables.
     editor <- getEnv "EDITOR"
@@ -246,9 +247,9 @@ main = do
 
     -- Status bar programs.
     dzenL  <- spawnPipe $ dzenLeft width
-    dzenR  <- spawn $ dzenRight config_home width
-    conky  <- spawn $ conkyStatus config_home
-    trayer <- spawn myTrayer
+    dzenRPID  <- spawnPID $ dzenRight config_home width
+    conkyPID  <- spawnPID $ conkyStatus config_home
+    trayerPID <- spawnPID myTrayer
 
     xmonad $ withUrgencyHook NoUrgencyHook defaultConfig
 
@@ -276,7 +277,6 @@ main = do
         } `additionalKeys`
 
         (
-
         [ ((mod4Mask .|. shiftMask, xK_l),  spawn "xscreensaver-command -lock")
 
         -- Backlight.
@@ -288,15 +288,18 @@ main = do
         , ((controlMask, xK_Print),         spawn "sleep 0.2; scrot -s")
 
         -- Modified to kill taskbar programs.
-        , ((myModMask, xK_q),               spawn $ "killall dzen2 conky trayer;" ++
-                                                        "xmonad --recompile;" ++
-                                                        "xmonad --restart")
+        , ((myModMask, xK_q),               spawn $ "killall dzen;" ++
+                                                    "killall conky;" ++
+                                                    "killall trayer;" ++
+                                                    "xmonad --recompile;" ++
+                                                    "xmonad --restart")
 
         -- Alsamixer, ncmpcpp, quick spawn bindings.
-        , ((myModMask, xK_a),               spawn $ namedCmd "alsamixer")
+        , ((myModMask, xK_a),               spawn $ namedCmd "alsamixer" "")
         -- Find a better way to do this.
-        , ((myModMask, xK_o),               spawn $ (namedCmd "ncmpcpp") ++
-                                                    "-c ~/.config/ncmpcpp/config")
+        , ((myModMask, xK_o),               spawn $ namedCmd "ncmpcpp" ("-c " ++
+                                                                          config_home ++
+                                                                          "/ncmpcpp/config"))
 
         -- various utility scripts
         , ((myModMask .|. shiftMask, xK_s), spawn "~/bin/setWallpaper")] ++

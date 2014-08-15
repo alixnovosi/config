@@ -6,18 +6,26 @@ alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config"
 alias mpdscribble="mpdscribble --conf ${XDG_CONFIG_HOME}/mpdscribble/config"
 alias vim="vim -u ${XDG_CONFIG_HOME}/vim/.vimrc"
 alias view="view -u ${XDG_CONFIG_HOME}/vim/.vimrc"
-alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/config"
+alias tmux="TERM=xterm-256color tmux -f ${XDG_CONFIG_HOME}/tmux/config"
 alias svn="svn --config-dir ${XDG_CONFIG_HOME}/subversion"
 alias cabal="cabal --config-dir ${XDG_CONFIG_HOME}/cabal"
-alias pidgin="pidgin --config= ${XDG_CONFIG_HOME}/pidgin"
+alias pidgin="pidgin --config=${XDG_CONFIG_HOME}/pidgin"
 alias gimp="gimp -g ${XDG_CONFIG_HOME}/gimp/config"
+alias feh="feh --no-fehbg"
+alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config --home=${XDG_CONFIG_HOME}/irssi"
 
 # Color grep and ls.  Works on mac and linux.
 alias grep="grep --color=auto"
 
 # Useful aliases.
 alias ll="ls -al"
-alias la='ls -A'
-alias l='ls -CF'
+alias la="ls -A"
+alias l="ls -CF"
+alias df="df -h"
+alias du="du -c -h"
+
+# Safety features.
+alias cp="cp -i"
+alias mv="mv -i"
 
 

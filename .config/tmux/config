@@ -21,34 +21,36 @@ set -g status-interval 5
 # Solarized colors.
 
 # Force 256 colors.
-set -g terminal-overrides "xterm:colors=256"
+set -g terminal-overrides "screen-256color"
 
 # Default statusbar colors.
-set -g status-fg yellow
-set -g status-bg black
+set -g status-fg $SOLARIZED_BASE3
+set -g status-bg $SOLARIZED_BASE03
+set -g status-attr default
 
 # Default window title colors
-setw -g window-status-fg brightblue
-setw -g window-status-bg default
+setw -g window-status-fg $SOLARIZED_BASE3
+setw -g window-status-bg $SOLARIZED_BASE03
+setw -g window-status-attr dim
 
 # Active window title colors.
-setw -g window-status-current-fg yellow
-setw -g window-status-current-bg default
-setw -g window-status-current-attr dim
+setw -g window-status-current-fg $SOLARIZED_BASE03
+setw -g window-status-current-bg $SOLARIZED_ORANGE
+setw -g window-status-current-attr bright
 
 # Pane border
-set -g pane-border-fg black
+set -g pane-border-fg $SOLARIZED_BASE3
 set -g pane-border-bg default
-set -g pane-active-border-fg yellow
+set -g pane-active-border-fg $SOLARIZED_ORANGE
 set -g pane-active-border-bg default
 
 # Command line/ message text
-set -g message-fg yellow
-set -g message-bg black
+set -g message-fg $SOLARIZED_ORANGE
+set -g message-bg $SOLARIZED_BASE03
 
 # Pane number display
-setw -g display-panes-active-colour yellow
-setw -g display-panes-colour brightblue
+setw -g display-panes-active-colour $SOLARIZED_ORANGE
+setw -g display-panes-colour $SOLARIZED_BASE3
 
 # Clock
 setw -g clock-mode-colour yellow
@@ -58,7 +60,7 @@ setw -g clock-mode-colour yellow
 ##########################################################################################
 
 # reload config without killing server
-bind R source-file ~/.config/tmux/config \; display-message "  Config reloaded..".
+bind r source-file ~/.config/tmux/config \; display-message "  Config reloaded..".
 
 # more intuitive keybindings for splitting
 # Vertical

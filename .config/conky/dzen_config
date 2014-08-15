@@ -1,0 +1,47 @@
+override_utf8_locale yes
+background no
+out_to_console yes
+out_to_x no
+update_interval 1
+total_run_times 0
+mpd_host localhost
+mpd_port 6600
+use_spacer yes
+alignment mm
+pad_percents 3
+double_buffer
+
+TEXT
+${if_mpd_playing}\
+^fg(white)${scroll 150 ${mpd_title} | ${mpd_artist} | ${mpd_album}} \
+^fg(darkgray)${mpd_elapsed} / ${mpd_length}\
+${else}${mpd_status}\
+${endif}  \
+\
+^fg(darkgray)c: \
+${if_match ${cpu cpu0} > 75}\
+^fg(\#FF8888)${cpu cpu0}\
+${endif}\
+${if_match ${cpu cpu0} <= 75}\
+${if_match ${cpu cpu0} > 25 }\
+^fg(\#FFFF88)${cpu cpu0}\
+${endif}\
+${endif}\
+${if_match ${cpu cpu0} <= 25}\
+^fg(\#88FF88)${cpu cpu0}\
+${endif}\
+\
+^fg(darkgray)m: \
+${if_match ${memperc} > 75}\
+^fg(\#FF8888)${memperc}\
+${endif}\
+${if_match ${memperc} <= 75}\
+${if_match ${memperc} > 25 }\
+^fg(\#FFFF88)${memperc}\
+${endif}\
+${endif}\
+${if_match ${memperc} <= 25}\
+^fg(\#88FF88)${memperc}\
+${endif}\
+\
+^fg(white)${time %a %b %d %H:%M} 
