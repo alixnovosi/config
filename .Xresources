@@ -25,20 +25,6 @@
 #define S_base1         #93a1a1
 #define S_base2         #eee8d5
 #define S_base3         #fdf6e3
-!
-!
-! Light
-!
-! #define S_base03        #fdf6e3
-! #define S_base02        #eee8d5
-! #define S_base01        #93a1a1
-! #define S_base00        #839496
-! #define S_base0         #657b83
-! #define S_base1         #586e75
-! #define S_base2         #073642
-! #define S_base3         #002b36
-!
-!
 ! To only apply colors to your terminal, for example, prefix
 ! the color assignment statement with its name. Example:
 !
@@ -71,6 +57,7 @@
 ! xscreensaver ---------------------------------------------------------------
 
 *.font: -*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1
+*.boldFont: -*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1
 
 ! font settings
 !xscreensaver.Dialog.headingFont:        -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
@@ -82,12 +69,12 @@
 !xscreensaver.passwd.passwdFont:         -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
 
 ! general dialog box (affects main hostname, username, password text)
-xscreensaver.Dialog.foreground:         #ffffff
-xscreensaver.Dialog.background:         #111111
-xscreensaver.Dialog.topShadowColor:     #111111
-xscreensaver.Dialog.bottomShadowColor:  #111111
-xscreensaver.Dialog.Button.foreground:  #666666
-xscreensaver.Dialog.Button.background:  #ffffff
+!xscreensaver.Dialog.foreground:         #ffffff
+!xscreensaver.Dialog.background:         #111111
+!xscreensaver.Dialog.topShadowColor:     #111111
+!xscreensaver.Dialog.bottomShadowColor:  #111111
+!xscreensaver.Dialog.Button.foreground:  #666666
+!xscreensaver.Dialog.Button.background:  #ffffff
 
 ! username/password input box and date text colour
 xscreensaver.Dialog.text.foreground:    #666666
