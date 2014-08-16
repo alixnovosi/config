@@ -5,6 +5,7 @@
   the change is that if you set width and/or height to 0
   then it assumes the width and/or height of the conky window
 
+  modified again by amichaud 2014
 so:
 
 Above and After TEXT - requires a composite manager or it blinks.
@@ -20,20 +21,14 @@ OR Both above TEXT (No composite manager required - no blinking!)
  TEXT
 
 Note
-${lua conky_draw_bg 20 0 0 0 0 0x000000 0.4}
-  See below:        1  2 3 4 5 6        7 
+${lua conky_draw_bg 20 0x000000 0.4}
+  See below:        1  2        3
 
-${lua conky_draw_bg corner_radius x_position y_position width height color alpha}
-
-Set 2,3,4 & 5 to '0' to cover the whole window, will change if you change those settings.
+${lua conky_draw_bg corner_radius color alpha}
 
 1 = 20             corner_radius
-2 = 0             x_position
-3 = 0             y_position
-3 = 0             width
-5 = 0             height
-6 = 0x000000      color  - make the background any colour you want.
-7 = 0.4           alpha
+2 = 0x000000      color  - make the background any colour you want.
+3 = 0.4           alpha
 
 ]]
 
@@ -42,16 +37,16 @@ local    cs, cr = nil
 function rgb_to_r_g_b(colour,alpha)
 return ((colour / 0x10000) % 0x100) / 255., ((colour / 0x100) % 0x100) / 255., (colour % 0x100) / 255., alpha
 end
-function conky_draw_bg(r,x,y,w,h,color,alpha)
+function conky_draw_bg(r,color,alpha)
 if conky_window == nil then return end
 if cs == nil then cairo_surface_destroy(cs) end
 if cr == nil then cairo_destroy(cr) end
 local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
 local cr = cairo_create(cs)
-w=w
-h=h
-if w=="0" then w=tonumber(conky_window.width) end
-if h=="0" then h=tonumber(conky_window.height) end
+local w=tonumber(conky_window.text_width + conky_window.border_inner_margin)
+local h=tonumber(conky_window.text_height + conky_window.border_inner_margin)
+local x=tonumber(conky_window.text_start_x - (conky_window.border_inner_margin / 2))
+local y=tonumber(conky_window.text_start_y - (conky_window.border_inner_margin / 2))
 cairo_set_source_rgba (cr,rgb_to_r_g_b(color,alpha))
 --top left mid circle
 local xtl=x+r

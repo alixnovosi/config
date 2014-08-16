@@ -1,3 +1,6 @@
+minimum_size 300 700
+maximum_width 300
+border_inner_margin 20
 use_xft yes
 xftfont Inconsolata:Size=4
 

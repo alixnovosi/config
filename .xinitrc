@@ -18,13 +18,14 @@ source /home/amichaud/.profile
 # cursor
 xsetroot -cursor_name left_ptr
 unclutter &
+xscreensaver -no-splash &
 
 # Resources and screensaver
 xrdb -merge $HOME/.Xresources       # update x resources dib
 $HOME/bin/setWallpaper &
 
 # PROGRAMS
-#pidgin --config=$XDG_CONFIG_HOME/pidgin &
+pidgin --config=/home/amichaud/.config/pidgin &
 
 # keychain
 keychain $HOME/.ssh/id_rsa

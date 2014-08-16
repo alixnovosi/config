@@ -1,0 +1,7 @@
+[user]
+	name = Andrew Michaud
+	email = amichaud@quantcast.com
+[reviewboard]
+	url = http://reviews.corp.qc/
+[core]
+	editor = vim -u ${XDG_CONFIG_HOME}/vim/.vimrc

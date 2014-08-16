@@ -25,6 +25,7 @@ import Data.Char
 import Data.List
 
 import System.IO
+import System.FilePath.Posix
 import System.Posix.Unistd -- to get hostname
 import System.Environment(getEnv)
 
@@ -124,21 +125,19 @@ trayerWidth :: Int
 trayerWidth = 50
 
 -- Left Dzen - xmonad info and window title.
-dzenLeft :: String -> String
-dzenLeft width = "dzen2 -x '0' -w '" ++ show half ++ "' -ta 'l'" ++ dzenStyle
-    where half = (read width::Int) `div` 2
+dzenLeft :: Int -> String
+dzenLeft width = "dzen2 -x '0' -w '" ++ show width ++ "' -ta 'l'" ++ dzenStyle
 
 
 -- Right Dzen - Runs conky config.
-dzenRight :: String -> String -> String
-dzenRight config width = conkyCmd ++ " | dzen2 " ++ style
+dzenRight :: Int -> Int -> String -> String
+dzenRight start width config = conkyCmd ++ " | dzen2 " ++ style
     where conkyCmd = "conky --config=" ++ config ++ "/conky/dzen_config"
-          style = "-x '" ++ show half ++ "' -w '" ++ show (half - trayerWidth) ++ "' -ta 'r'" ++ dzenStyle
-          half = (read width :: Int) `div` 2
+          style = "-x '" ++ show start ++ "' -w '" ++ show width ++ "' -ta 'r'" ++ dzenStyle
 
 -- Background status.
-conkyStatus :: String ->String
-conkyStatus config = "conky --config=" ++ config ++ "/conky/config"
+conkyStatus :: Int -> Int -> String -> String
+conkyStatus x y config = "conky -x " ++ show x ++ " -y " ++ show y ++ " --config=" ++ config ++ "/conky/sysdepconfig"
 
 -- Trayer - system tray.
 myTrayer :: String
@@ -236,19 +235,52 @@ main = do
 
     -- Resolution info
     xrandr <- runProcessWithInput "xrandr" [] ""
-    screens <- runProcessWithInput "grep" ["Screen"] xrandr
-    screencount <- runProcessWithInput "wc" ["-l"] screens
-    height <- runProcessWithInput "sed" ["s/^.*current.*\\([0-9]\\+\\).*/\\1/"] screens
-    width <- runProcessWithInput "sed" ["s/^.*current \\([0-9]\\+\\).*/\\1/"] screens
+    screen <- runProcessWithInput "grep" ["Screen"] xrandr
+    screencount <- runProcessWithInput "wc" ["-l"] screen
+
+    screen0 <- runProcessWithInput "grep" ["Screen 0"] xrandr
+    height0 <- runProcessWithInput "sed" ["s/^.*current\\ [0-9]\\+ x \\([0-9]\\+\\).*/\\1/"] screen0
+    width0 <- runProcessWithInput "sed" ["s/^.*current \\([0-9]\\+\\).*/\\1/"] screen0
+
+    screen1 <- runProcessWithInput "grep" ["Screen 1"] xrandr
+    height1 <- runProcessWithInput "sed" ["s/^.*current\\ [0-9]\\+ x \\([0-9]\\+\\).*/\\1/"] screen1
+    width1 <- runProcessWithInput "sed" ["s/^.*current \\([0-9]\\+\\).*/\\1/"] screen1
+
+    let statuswidth  = 300
+    let statusheight = 700
+    let margin       = 20
+
+    -- Write resolution info to a conky config file, then append standard conky config file
+    -- to that file.  This will let us configure conky based on the current system's resolution.
+    -- It's a bit sketchy, but I haven't yet found a better way to do this.
+    _ <- writeFile (config_home ++ "/conky/sysdepconfig") ("minimum_size " ++
+        show statuswidth ++ " " ++ show statusheight ++ "\n" ++ "maximum_width " ++
+        show statuswidth ++ "\n" ++ "border_inner_margin " ++ show margin ++ "\n")
+    conkyfile <- readFile $ config_home ++ "/conky/config"
+    _ <- appendFile (config_home ++ "/conky/sysdepconfig") (conkyfile)
+
+    -- TODO make magic numbers disappear.
+    let x = ((read width0::Int) - statuswidth) - (margin `div` 2)
+    let y = ((read height0::Int) - statusheight) `div` 2
 
     -- Environment variables.
     editor <- getEnv "EDITOR"
     config_home <- getEnv "XDG_CONFIG_HOME"
 
     -- Status bar programs.
-    dzenL  <- spawnPipe $ dzenLeft width
-    dzenRPID  <- spawnPID $ dzenRight config_home width
-    conkyPID  <- spawnPID $ conkyStatus config_home
+    -- Configure statusbars based on how many monitors we have.
+    -- Up to two, at least.
+    let leftw = if (read screencount::Int) == 1
+                    then (read width0::Int) `div` 2
+                    else (read width0::Int)
+    dzenL  <- spawnPipe $ dzenLeft leftw
+
+    let rightx = leftw
+    let rightw = if (read screencount::Int) == 1
+                    then ((read width0::Int) `div` 2) - trayerWidth
+                    else (read width1::Int)
+    dzenRPID  <- spawnPID $ dzenRight rightx rightw config_home
+    conkyPID  <- spawnPID $ conkyStatus x y config_home
     trayerPID <- spawnPID myTrayer
 
     xmonad $ withUrgencyHook NoUrgencyHook defaultConfig
