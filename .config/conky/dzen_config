@@ -3,20 +3,17 @@ background no
 out_to_console yes
 out_to_x no
 update_interval 1
-total_run_times 0
 mpd_host localhost
 mpd_port 6600
 use_spacer yes
-alignment mm
+alignment middle_middle
 pad_percents 3
-double_buffer
+double_buffer yes
 
 TEXT
 ${if_mpd_playing}\
-^fg(white)${scroll 150 ${mpd_title} | ${mpd_artist} | ${mpd_album}} \
-^fg(darkgray)${mpd_elapsed} / ${mpd_length}\
-${else}${mpd_status}\
-${endif}  \
+${mpd_title} ^fg(white)on ^fg(darkgray)${mpd_album} ^fg(white)by ^fg(darkgray)${mpd_artist} \
+${endif} \
 \
 ^fg(darkgray)c: \
 ${if_match ${cpu cpu0} > 75}\
@@ -44,4 +41,4 @@ ${if_match ${memperc} <= 25}\
 ^fg(\#88FF88)${memperc}\
 ${endif}\
 \
-^fg(white)${time %a %b %d %H:%M} 
+^fg(white)${time %a %b %d %H:%M} \

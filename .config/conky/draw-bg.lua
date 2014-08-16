@@ -8,12 +8,6 @@
   modified again by amichaud 2014
 so:
 
-Above and After TEXT - requires a composite manager or it blinks.
-
- lua_load ~/path/to/draw_bg.lua
- TEXT
- ${lua conky_draw_bg 10 0 0 0 0 0x000000 0.4}
-
 OR Both above TEXT (No composite manager required - no blinking!)
 
  lua_load ~/path/to/draw_bg.lua
