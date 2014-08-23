@@ -108,7 +108,6 @@ set backupdir=$XDG_CACHE_HOME/vim/backup,.,/tmp
 """ Also viminfo.
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 
-" stolen from cstanfill, here because I'm '''cool'''
 "remap jk to escape for 3xtr4 l33t h4xx|ng
 inoremap jk <Esc>
 
@@ -157,7 +156,7 @@ let g:EclimIvyClasspathUpdate = 0
 "lets C-s and C-q be capture by vim instead of the terminal
 silent !stty -ixon > /dev/null 2>/dev/null
 
-" Also stolen from cstanfill.
+" stolen
 nmap <C-s>v :TagbarToggle<CR>
 nmap <C-s>n :NERDTreeToggle<CR>
 nmap <C-s>s :set number!<CR>
