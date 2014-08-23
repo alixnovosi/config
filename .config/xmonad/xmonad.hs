@@ -36,6 +36,8 @@ import qualified XMonad.StackSet as W
 -----------------------------VARIABLES AND STUFF------------------------------------------
 ------------------------------------------------------------------------------------------
 
+-- Colors, fonts, and dimensions.
+
 -- Color variables.
 solarizedBase03  = "#002b36"
 solarizedBase02  = "#073642"
@@ -54,8 +56,31 @@ solarizedBlue    = "#268bd2"
 solarizedCyan    = "#2aa198"
 solarizedGreen   = "#859900"
 
-font :: String
-font = "-*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1"
+fontName :: String
+fontName = "Dejavu"
+
+font :: Int -> String
+font size = "-*-" ++ fontName ++ "-medium-r-normal-*-" ++ show size ++ "-140-75-75-p-74-iso10646-1"
+
+-- Status bar height
+statusHeight :: Int
+statusHeight = 16
+
+-- Trayer width
+trayerWidth :: Int
+trayerWidth = 70
+
+--Borders
+myFocusedBorderColor :: String
+myFocusedBorderColor = solarizedOrange
+
+myNormalBorderColor :: String
+myNormalBorderColor = solarizedBase1
+
+myBorderWidth :: Dimension
+myBorderWidth = 2
+
+-- Commands and config homes.
 
 home :: String
 home = "/home/amichaud/.xmonad"
@@ -74,16 +99,6 @@ namedCmd cmd args = myTerminal ++ " --title=" ++ name ++ " -x " ++ command
 
 -- ModMask = windowsKey
 myModMask = mod4Mask
-
---Borders
-myFocusedBorderColor :: String
-myFocusedBorderColor = solarizedOrange
-
-myNormalBorderColor :: String
-myNormalBorderColor = solarizedBase1
-
-myBorderWidth :: Dimension
-myBorderWidth = 2
 
 -- Workspace titles
 myWorkspaces :: [String]
@@ -115,15 +130,6 @@ audioKeys host
 -----------------------------STATUS BAR STUFF---------------------------------------------
 ------------------------------------------------------------------------------------------
 
--- Variables governing dimensions.
--- Status bar height
-statusHeight :: Int
-statusHeight = 16
-
--- Trayer width
-trayerWidth :: Int
-trayerWidth = 50
-
 -- Left Dzen - xmonad info and window title.
 dzenLeft :: Int -> String
 dzenLeft width = "dzen2 -x '0' -w '" ++ show width ++ "' -ta 'l'" ++ dzenStyle
@@ -136,15 +142,15 @@ dzenRight start width config = conkyCmd ++ " | dzen2 " ++ style
           style = "-x '" ++ show start ++ "' -w '" ++ show width ++ "' -ta 'r'" ++ dzenStyle
 
 -- Background status.
-conkyStatus :: Int -> Int -> String -> String
-conkyStatus x y config = "conky -x " ++ show x ++ " -y " ++ show y ++ " --config=" ++ config ++ "/conky/sysdepconfig"
+conkyStatus :: String -> String
+conkyStatus config = "conky --config=" ++ config ++ "/conky/config"
 
 -- Trayer - system tray.
 myTrayer :: String
 myTrayer = "trayer --edge top --align right " ++
            "--widthtype pixel --width " ++ show trayerWidth ++ " " ++
            "--expand true --SetDockType true --SetPartialStrut true " ++
-           "--transparent false --heighttype pixel --height " ++ show statusHeight ++ " --padding 2"
+           "--heighttype pixel --height " ++ show statusHeight ++ " --padding 2"
 
 -- Bitmaps used to represent current layout.
 myBitmapsPath :: String
@@ -157,7 +163,7 @@ normalBG :: String
 normalBG = solarizedBase03
 
 currentFG :: String
-currentFG = solarizedBase3
+currentFG = normalFG
 
 currentBG :: String
 currentBG = solarizedOrange
@@ -166,11 +172,27 @@ urgentBG :: String
 urgentBG = solarizedRed
 
 bgTrayer :: String
-bgTrayer = "0x" ++ tail solarizedBase03
+bgTrayer = "0x" ++ tail normalBG
+
+normalBGDmenu :: String
+normalBGDmenu = "'" ++ normalBG ++ "'"
+
+normalFGDmenu :: String
+normalFGDmenu = "'" ++ normalFG ++ "'"
+
+selectedFGDmenu :: String
+selectedFGDmenu = "'" ++ normalFG ++ "'"
+
+selectedBGDmenu :: String
+selectedBGDmenu = "'" ++ currentBG ++ "'"
+
+dmenuStyle :: String
+dmenuStyle = " -fn " ++ font 6 ++ " -nb " ++ normalBGDmenu ++ " -nf " ++ normalFGDmenu ++
+             " -sf " ++ selectedFGDmenu ++ " -sb " ++ selectedBGDmenu
 
 -- Stuff common to both dzen bars.
 dzenStyle :: String
-dzenStyle = " -fn " ++ font ++ " -h '" ++ show statusHeight ++ "' -y '0'"
+dzenStyle = " -fn " ++ font 12 ++ " -h '" ++ show statusHeight ++ "' -y '0'"
 
 -- Pretty printing.
 myDzenPP :: PP
@@ -178,8 +200,8 @@ myDzenPP  = dzenPP
     { ppCurrent = dzenColor currentFG currentBG . pad
     , ppHidden  = dzenColor currentFG normalBG . pad . take 1
     , ppUrgent  = dzenColor currentFG urgentBG . pad
-    , ppSep     = "|"
-    , ppTitle   = shorten 500 . dzenColor normalFG normalBG . pad
+    , ppSep     = " "
+    , ppTitle   = dzenColor normalFG normalBG . pad
     , ppLayout  = \x -> case x of
                       "Tall"        -> wrapBitmap "rob/tall.xbm"
                       "Mirror Tall" -> wrapBitmap "rob/mtall.xbm"
@@ -234,34 +256,17 @@ main = do
     config_home <- getEnv "XDG_CONFIG_HOME"
 
     -- Resolution info
-    xrandr <- runProcessWithInput "xrandr" [] ""
-    screen <- runProcessWithInput "grep" ["Screen"] xrandr
-    screencount <- runProcessWithInput "wc" ["-l"] screen
+    xrandr <- runProcessWithInput      "xrandr" []                                            ""
+    screen <- runProcessWithInput      "grep"   ["Screen"]                                    xrandr
+    screencount <- runProcessWithInput "wc"     ["-l"]                                        screen
 
-    screen0 <- runProcessWithInput "grep" ["Screen 0"] xrandr
-    height0 <- runProcessWithInput "sed" ["s/^.*current\\ [0-9]\\+ x \\([0-9]\\+\\).*/\\1/"] screen0
-    width0 <- runProcessWithInput "sed" ["s/^.*current \\([0-9]\\+\\).*/\\1/"] screen0
+    screen0 <- runProcessWithInput "grep" ["Screen 0"]                                        xrandr
+    height0 <- runProcessWithInput "sed"  ["s/^.*current\\ [0-9]\\+ x \\([0-9]\\+\\).*/\\1/"] screen0
+    width0  <- runProcessWithInput "sed"  ["s/^.*current \\([0-9]\\+\\).*/\\1/"]              screen0
 
-    screen1 <- runProcessWithInput "grep" ["Screen 1"] xrandr
-    height1 <- runProcessWithInput "sed" ["s/^.*current\\ [0-9]\\+ x \\([0-9]\\+\\).*/\\1/"] screen1
-    width1 <- runProcessWithInput "sed" ["s/^.*current \\([0-9]\\+\\).*/\\1/"] screen1
-
-    let statuswidth  = 300
-    let statusheight = 700
-    let margin       = 20
-
-    -- Write resolution info to a conky config file, then append standard conky config file
-    -- to that file.  This will let us configure conky based on the current system's resolution.
-    -- It's a bit sketchy, but I haven't yet found a better way to do this.
-    _ <- writeFile (config_home ++ "/conky/sysdepconfig") ("minimum_size " ++
-        show statuswidth ++ " " ++ show statusheight ++ "\n" ++ "maximum_width " ++
-        show statuswidth ++ "\n" ++ "border_inner_margin " ++ show margin ++ "\n")
-    conkyfile <- readFile $ config_home ++ "/conky/config"
-    _ <- appendFile (config_home ++ "/conky/sysdepconfig") (conkyfile)
-
-    -- TODO make magic numbers disappear.
-    let x = ((read width0::Int) - statuswidth) - (margin `div` 2)
-    let y = ((read height0::Int) - statusheight) `div` 2
+    screen1 <- runProcessWithInput "grep" ["Screen 1"]                                        xrandr
+    height1 <- runProcessWithInput "sed"  ["s/^.*current\\ [0-9]\\+ x \\([0-9]\\+\\).*/\\1/"] screen1
+    width1  <- runProcessWithInput "sed"  ["s/^.*current \\([0-9]\\+\\).*/\\1/"]              screen1
 
     -- Environment variables.
     editor <- getEnv "EDITOR"
@@ -271,16 +276,17 @@ main = do
     -- Configure statusbars based on how many monitors we have.
     -- Up to two, at least.
     let leftw = if (read screencount::Int) == 1
-                    then (read width0::Int) `div` 2
+                    then (read width0::Int) `div` 3
                     else (read width0::Int)
     dzenL  <- spawnPipe $ dzenLeft leftw
 
     let rightx = leftw
     let rightw = if (read screencount::Int) == 1
-                    then ((read width0::Int) `div` 2) - trayerWidth
-                    else (read width1::Int)
+                    then (((read width0::Int) `div` 3)  * 2) - trayerWidth + 1
+                    else (read width1::Int) - trayerWidth
+
     dzenRPID  <- spawnPID $ dzenRight rightx rightw config_home
-    conkyPID  <- spawnPID $ conkyStatus x y config_home
+    conkyPID  <- spawnPID $ conkyStatus config_home
     trayerPID <- spawnPID myTrayer
 
     xmonad $ withUrgencyHook NoUrgencyHook defaultConfig
@@ -309,41 +315,48 @@ main = do
         } `additionalKeys`
 
         (
-        [ ((mod4Mask .|. shiftMask, xK_l),  spawn "xscreensaver-command -lock")
+        -- Screen Lock.
+        [ ((myModMask .|. shiftMask, xK_l                    ), spawn "xscreensaver-command -lock")
 
         -- Backlight.
-        , ((0, xF86XK_MonBrightnessDown),   spawn "xbacklight -dec 7")
-        , ((0, xF86XK_MonBrightnessUp),     spawn "xbacklight -inc 7")
+        , ((0,                       xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
+        , ((0,                       xF86XK_MonBrightnessUp  ), spawn "xbacklight -inc 7")
 
         -- Screenshots.
-        , ((0, xK_Print),                   spawn "scrot")
-        , ((controlMask, xK_Print),         spawn "sleep 0.2; scrot -s")
+        , ((0,                       xK_Print                ), spawn "scrot")
+        , ((controlMask,             xK_Print                ), spawn "sleep 0.2; scrot -s")
 
-        -- Modified to kill taskbar programs.
-        , ((myModMask, xK_q),               spawn $ "killall dzen;" ++
-                                                    "killall conky;" ++
-                                                    "killall trayer;" ++
-                                                    "xmonad --recompile;" ++
-                                                    "xmonad --restart")
+        -- Recompile/restart XMonad. Modified to kill taskbar programs.
+        , ((myModMask,               xK_q                    ), spawn $ "killall dzen;" ++
+                                                                       "killall conky;" ++
+                                                                       "killall trayer;" ++
+                                                                       "xmonad --recompile;" ++
+                                                                       "xmonad --restart")
+        -- Run DMenu.
+        , ((myModMask,               xK_p                    ), spawn $ "dmenu_run " ++ dmenuStyle)
 
         -- Alsamixer, ncmpcpp, quick spawn bindings.
-        , ((myModMask, xK_a),               spawn $ namedCmd "alsamixer" "")
-        -- Find a better way to do this.
-        , ((myModMask, xK_o),               spawn $ namedCmd "ncmpcpp" ("-c " ++
-                                                                          config_home ++
-                                                                          "/ncmpcpp/config"))
+        , ((myModMask,               xK_a                    ), spawn $ namedCmd "alsamixer" "")
+
+        -- NOTE- Find a cleaner way to do this.
+        , ((myModMask,               xK_o                    ), spawn $ namedCmd "ncmpcpp" ("-c " ++
+                                                                                  config_home ++
+                                                                                  "/ncmpcpp/config"))
 
         -- various utility scripts
-        , ((myModMask .|. shiftMask, xK_s), spawn "~/bin/setWallpaper")] ++
+        , ((myModMask .|. shiftMask, xK_s                    ), spawn "~/bin/setWallpaper")
+
+        -- Clip password with dzen and a nifty script.
+        , ((myModMask .|. shiftMask, xK_p                    ), spawn $ "~/bin/passmenu " ++ dmenuStyle)] ++
 
         -- Audio keys.
         audioKeys host ++
 
         -- Keys for extra workspaces
-        [( (myModMask .|. shiftMask, k), windows $ W.shift i) |
-         (i, k) <- zip myWorkspaces myKeys] ++
+        [((myModMask .|. shiftMask,  k                       ), windows $ W.shift i) |
+            (i, k) <- zip myWorkspaces myKeys] ++
 
-        [( (myModMask, k),          windows $ W.greedyView i) |
-         (i, k) <- zip myWorkspaces myKeys]
+        [( (myModMask,               k                       ), windows $ W.greedyView i) |
+            (i, k) <- zip myWorkspaces myKeys]
         )
 
