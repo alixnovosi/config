@@ -1,4 +1,7 @@
 
-setlocal spell spelllang=en_us
-setlocal textwidth=80
+set spell spelllang=en_us
+set textwidth=80
+
+set noswapfile
+set nobackup
 

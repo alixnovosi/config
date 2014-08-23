@@ -1,5 +1,7 @@
 " Set up vundle
 set nocompatible
+
+set runtimepath+=$XDG_CONFIG_HOME/vim/vim
 filetype off
 
 let g:vundle_lazy_load=0
@@ -19,11 +21,18 @@ call vundle#rc(bundles_dir)
 Bundle 'gmarik/Vundle.vim'
 
 """ Vundle bundles.
+" Better haskell in vim
+Bundle 'dag/vim2hs'
 Bundle 'majutsushi/tagbar'
 Bundle 'scrooloose/nerdtree'
+" Syntax checking.
+Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
+" Sensical date increment/decrement
+Bundle 'tpope/vim-speeddating'
 Bundle 'vim-scripts/a.vim'
+" Make buffers easy and fun.
 Bundle 'fholgado/minibufexpl.vim'
 " auto-completion magic
 Bundle 'Valloric/YouCompleteMe'
@@ -37,12 +46,13 @@ Plugin 'fatih/vim-go'
 " json
 Bundle 'elzr/vim-json'
 " Conky syntax highlighting.
-Plugin 'mancill/conky-syntax.vim'
+Plugin 'smancill/conky-syntax.vim'
+" Organization lists.
+Bundle 'jceb/vim-orgmode'
 
 call vundle#end()
+set rtp+=$XDG_CONFIG_HOME/vim/vim
 filetype plugin indent on
-
-let g:indentLine_char='│'
 
 """ Nice backspacing.
 set backspace=indent,eol,start
@@ -65,10 +75,6 @@ syntax enable
 set background=dark
 colorscheme solarized
 hi Normal ctermbg=none
-
-""" Show trailing whitespace.
-set nolist
-"set listchars=tab:\|\ ,trail:·,extends:#,nbsp:.
 
 """ These cause the bottom of the screen to contain more useful information
 set laststatus=2 ruler showcmd
@@ -102,7 +108,7 @@ set backupdir=$XDG_CACHE_HOME/vim/backup,.,/tmp
 """ Also viminfo.
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 
-
+" stolen from cstanfill, here because I'm '''cool'''
 "remap jk to escape for 3xtr4 l33t h4xx|ng
 inoremap jk <Esc>
 
@@ -117,7 +123,7 @@ nmap <C-k> <C-y>
 "load plugins
 set runtimepath+=$XDG_CONFIG_HOME/vim/vim/plugin
 
-""" STATUSLINE CONFIGURATION
+" Config status line.
 " filename
 set statusline =%#identifier#
 set statusline+=[%t]
@@ -143,10 +149,20 @@ set statusline+=\ %P
 
 hi StatusLine ctermfg=4
 
-"let g:miniBufExplForceSyntaxEnable = 1
+" stolen
+let g:miniBufExplForceSyntaxEnable = 1
+let g:EclimCompletionMethod = 'omnifunc'
+let g:EclimIvyClasspathUpdate = 0
 
 "lets C-s and C-q be capture by vim instead of the terminal
 silent !stty -ixon > /dev/null 2>/dev/null
+
+" Also stolen from cstanfill.
+nmap <C-s>v :TagbarToggle<CR>
+nmap <C-s>n :NERDTreeToggle<CR>
+nmap <C-s>s :set number!<CR>
+nmap <C-s>h :set hlsearch!<CR>
+nmap <C-s>k :bd<CR>
 
 """ Search settings.
 set incsearch
