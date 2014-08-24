@@ -14,6 +14,7 @@ import XMonad.Hooks.SetWMName
 
 import XMonad.Layout.NoBorders
 import XMonad.Layout.LayoutHints
+import XMonad.Layout.Spacing -- spacing between windows
 
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Run(spawnPipe, runProcessWithInput)
@@ -33,10 +34,73 @@ import System.Environment(getEnv)
 import qualified XMonad.StackSet as W
 
 ------------------------------------------------------------------------------------------
------------------------------VARIABLES AND STUFF------------------------------------------
+--------------------------------- MAIN ---------------------------------------------------
 ------------------------------------------------------------------------------------------
 
--- Colors, fonts, and dimensions.
+main :: IO ()
+main = do
+
+    -- Get hostname for system-dependent stuff.
+    host <- fmap nodeName getSystemID
+
+    -- Get useful environment variables.
+    editor <- getEnv "EDITOR"
+    config_home <- getEnv "XDG_CONFIG_HOME"
+
+    -- Resolution info
+    xrandr <- runProcessWithInput      "xrandr" []                                            ""
+    let dims = screeninfo xrandr
+
+    -- Status bar programs.
+    -- Configure statusbars based on how many monitors we have.
+    -- Up to two, at least.
+    let leftw
+            | null dims        = 300
+            | length dims == 1 = head (head dims) `div` 3
+            | otherwise        = head $ head dims
+
+    dzenL  <- spawnPipe $ dzenLeft leftw
+
+    let rightx = leftw
+    let rightw
+            | null dims        = 300
+            | length dims == 1 = ((head (head dims) `div` 3)  * 2) - trayerWidth + 1
+            | otherwise        = head (dims !! 1) - trayerWidth
+
+    dzenRPID  <- spawnPID $ dzenRight rightx rightw config_home
+    conkyPID  <- spawnPID $ conkyStatus config_home
+    trayerPID <- spawnPID myTrayer
+
+    xmonad $ withUrgencyHook uHook $ defaultConfig
+
+        -- Hooks.
+        { manageHook = mHook <+> manageHook defaultConfig
+        , layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
+        , logHook = lHook dzenL
+
+        -- Handles Java
+        , startupHook = setWMName "LG3D"
+
+        -- Stuff.
+        , modMask = myModMask
+        , workspaces = myWorkspaces
+        , terminal = myTerminal
+
+        -- Mice are for squares.
+        , focusFollowsMouse = False
+
+        -- Border jazz
+        , focusedBorderColor = myFocusedBorderColor
+        , normalBorderColor  = myNormalBorderColor
+        , borderWidth        = myBorderWidth
+
+        } `additionalKeys` keybinds config_home host
+
+---------------------------------------------
+--------------- VARIABLES AND STUFF
+---------------------------------------------
+
+-- Colors and stylings.
 
 -- Color variables.
 solarizedBase03  = "#002b36"
@@ -62,69 +126,55 @@ fontName = "Dejavu"
 font :: Int -> String
 font size = "-*-" ++ fontName ++ "-medium-r-normal-*-" ++ show size ++ "-140-75-75-p-74-iso10646-1"
 
--- Status bar height
-statusHeight :: Int
-statusHeight = 16
+-- Variables
 
--- Trayer width
-trayerWidth :: Int
-trayerWidth = 70
+keybinds config_home host =
+    [
+    -- Screen lock
+      ((myModMask .|. shiftMask, xK_l                    ), spawn "xscreensaver-command -lock")
 
---Borders
-myFocusedBorderColor :: String
-myFocusedBorderColor = solarizedOrange
+    -- Backlight.
+    , ((0,                       xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
+    , ((0,                       xF86XK_MonBrightnessUp  ), spawn "xbacklight -inc 7")
 
-myNormalBorderColor :: String
-myNormalBorderColor = solarizedBase1
+    -- Screenshots.
+    , ((0,                       xK_Print                ), spawn screenshot)
+    , ((controlMask,             xK_Print                ), spawn screenshotSelect)
+    , ((shiftMask,               xK_Print                ), spawn screenshotDelay)
 
-myBorderWidth :: Dimension
-myBorderWidth = 2
+    -- Recompile/restart XMonad. Modified to kill taskbar programs.
+    , ((myModMask,               xK_q                    ), spawn $ "killall dzen;" ++
+                                                                   "killall conky;" ++
+                                                                   "killall trayer;" ++
+                                                                   "xmonad --recompile;" ++
+                                                                   "xmonad --restart")
+    -- Run DMenu.
+    , ((myModMask,               xK_p                    ), spawn $ "dmenu_run " ++ dmenuStyle)
 
--- Commands and config homes.
+    -- Alsamixer, ncmpcpp, quick spawn bindings.
+    , ((myModMask,               xK_a                    ), spawn $ namedCmd "alsamixer" "")
 
-home :: String
-home = "/home/amichaud/.xmonad"
+    -- NOTE- Find a cleaner way to do this.
+    , ((myModMask,               xK_o                    ), spawn $ namedCmd "ncmpcpp" ("-c " ++
+                                                                              config_home ++
+                                                                              "/ncmpcpp/config"))
 
--- Use XFCE4 terminal without menubar
-myTerminal :: String
-myTerminal = "xfce4-terminal --hide-menubar"
+    -- various utility scripts
+    , ((myModMask .|. shiftMask, xK_s                    ), spawn "~/bin/setWallpaper")
 
-terminalCommand :: String -> String
-terminalCommand cmd = myTerminal ++ " -x " ++ cmd
+    -- Clip password with dzen and a nifty script.
+    , ((myModMask .|. shiftMask, xK_p                    ), spawn $ "~/bin/passmenu " ++ dmenuStyle)] ++
 
-namedCmd :: String -> String -> String
-namedCmd cmd args = myTerminal ++ " --title=" ++ name ++ " -x " ++ command
-    where name = "__" ++ map toUpper cmd
-          command = cmd ++ " " ++ args
+    -- Audio keys.
+    audioKeys host ++
 
--- ModMask = windowsKey
-myModMask = mod4Mask
+    -- Keys for extra workspaces
+    [((myModMask .|. shiftMask,  k                       ), windows $ W.shift i) |
+        (i, k) <- zip myWorkspaces wsKeys] ++
 
--- Workspace titles
-myWorkspaces :: [String]
-myWorkspaces = ["` dev",  "1 term", "2 web",  "3 chat", "4 ssh",
-                "5 game", "6 vid",  "7 work", "8 work", "9 work",
-                "0 etc",  "- perf", "= music"]
-
--- Workspace keys.
-myKeys = [xK_grave] ++ [xK_1 .. xK_9] ++ [xK_0, xK_minus, xK_equal]
-
-audioKeys host
-
-    -- Laptop doesn't have proper media keys because Lenovo are dumb.
-    -- So, do it manually.
-    | host == "pascal" = [  ((shiftMask, xF86XK_AudioMute),        spawn "mpc toggle")
-                          , ((shiftMask, xF86XK_AudioRaiseVolume), spawn "mpc next")
-                          , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")] ++ common
-
-    | host == "raven" =  [  ((0, xF86XK_AudioPlay), spawn "mpc toggle")
-                          , ((0, xF86XK_AudioNext), spawn "mpc next")
-                          , ((0, xF86XK_AudioPrev), spawn "mpc prev")] ++ common
-
-    | otherwise        = common
-        where common = [ ((0, xF86XK_AudioLowerVolume),         spawn "amixer set Master 2-")
-                       , ((0, xF86XK_AudioRaiseVolume),         spawn "amixer set Master 2+")
-                       , ((0, xF86XK_AudioMute),                spawn "amixer set Master toggle")]
+    [( (myModMask,               k                       ), windows $ W.greedyView i) |
+        (i, k) <- zip myWorkspaces wsKeys]
+        where wsKeys = [xK_grave] ++ [xK_1 .. xK_9] ++ [xK_0, xK_minus, xK_equal]
 
 ------------------------------------------------------------------------------------------
 -----------------------------STATUS BAR STUFF---------------------------------------------
@@ -209,13 +259,103 @@ myDzenPP  = dzenPP
     }
     where wrapBitmap bitmap = "^p(4)^i(" ++ myBitmapsPath ++ bitmap ++ ")^p(4)"
 
+
+-- Status bar stuff.
+
+-- Status bar height
+statusHeight :: Int
+statusHeight = 16
+
+-- Trayer width
+trayerWidth :: Int
+trayerWidth = 70
+
+--Borders
+myFocusedBorderColor :: String
+myFocusedBorderColor = solarizedOrange
+
+myNormalBorderColor :: String
+myNormalBorderColor = solarizedBase1
+
+myBorderWidth :: Dimension
+myBorderWidth = 2
+
+-- Commands and config homes.
+
+home :: String
+home = "/home/amichaud/.xmonad"
+
+-- Use XFCE4 terminal without menubar
+myTerminal :: String
+myTerminal = "xfce4-terminal --hide-menubar"
+
+terminalCommand :: String -> String
+terminalCommand cmd = myTerminal ++ " -x " ++ cmd
+
+namedCmd :: String -> String -> String
+namedCmd cmd args = myTerminal ++ " --title=" ++ name ++ " -x " ++ command
+    where name = "__" ++ map toUpper cmd
+          command = cmd ++ " " ++ args
+
+-- ModMask = windowsKey
+myModMask = mod4Mask
+
+-- Workspace titles
+myWorkspaces :: [String]
+myWorkspaces = ["` dev",  "1 term", "2 web",  "3 chat", "4 ssh",
+                "5 game", "6 vid",  "7 work", "8 work", "9 work",
+                "0 etc",  "- perf", "= music"]
+
+audioKeys host
+
+    -- Laptop doesn't have proper media keys because Lenovo are dumb.
+    -- So, do it manually.
+    | host == "pascal" = [  ((shiftMask, xF86XK_AudioMute),        spawn "mpc toggle")
+                          , ((shiftMask, xF86XK_AudioRaiseVolume), spawn "mpc next")
+                          , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")] ++ common
+
+    | host == "raven" =  [  ((0, xF86XK_AudioPlay), spawn "mpc toggle")
+                          , ((0, xF86XK_AudioNext), spawn "mpc next")
+                          , ((0, xF86XK_AudioPrev), spawn "mpc prev")] ++ common
+
+    | otherwise        = common
+        where common = [ ((0, xF86XK_AudioLowerVolume),         spawn "amixer set Master 2-")
+                       , ((0, xF86XK_AudioRaiseVolume),         spawn "amixer set Master 2+")
+                       , ((0, xF86XK_AudioMute),                spawn "amixer set Master toggle")]
+-- Screenshot commands
+screenshot :: String
+screenshot = "scrot '%d-%m-%Y-%s_$wx$h.png' -e 'mv $f ~/pictures/screenshots/'"
+
+screenshotSelect :: String
+screenshotSelect = "scrot -s '%d-%m-%Y-%s_$wx$h.png' -e 'mv $f ~/pictures/screenshots/'"
+
+screenshotDelay :: String
+screenshotDelay = "scrot -s --delay 5  '%d-%m-%Y-%s_$wx$h.png' -e 'mv $f ~/pictures/screenshots/'"
+
+----------------------------------------------------------------
+-------------------------------------UTILITY FUNCTIONS----------
+----------------------------------------------------------------
+-- Grab resolution given xrandr string.
+screeninfo :: String -> [[Int]]
+screeninfo input = intResPairs
+    where separated    = map words (lines input)
+          screenLines  = filter (\x -> head x == "Screen") separated
+          afterCurrent = map (dropWhile (/= "current")) screenLines
+          atResolution = map (dropWhile (== "current") . takeWhile (/= "maximum")) afterCurrent
+          resPairs     = map (filter (/= "x")) atResolution
+          intResPairs  = map (map read) resPairs
+
 ------------------------------------------------------------------------------------------
 ----------------------------------CUSTOM HOOKS--------------------------------------------
 ------------------------------------------------------------------------------------------
 
+-- Custom urgency hook.
+uHook = dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1"] }
+
 -- Custom manage hook.
-myManageHook :: ManageHook
-myManageHook = composeAll
+-- Manage docks, custom layout nonsense.
+mHook :: ManageHook
+mHook = manageDocks <+> composeAll
     [ className =? "Xfce4-notifyd"  --> doIgnore
 
     , title     =? "__NCMPCPP"      --> doCenterFloat
@@ -234,129 +374,10 @@ myManageHook = composeAll
 
 -- Custom log hook.
 -- Forward window information to dzen bar, formatted.
-myLogHook :: Handle -> X ()
-myLogHook h = dynamicLogWithPP myDzenPP { ppOutput = hPutStrLn h }
+lHook :: Handle -> X ()
+lHook h = dynamicLogWithPP myDzenPP { ppOutput = hPutStrLn h }
 
 ------------------------------------------------------------------------------------------
 ----------------------------- END CUSTOM HOOKS -------------------------------------------
 ------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
---------------------------------- MAIN ---------------------------------------------------
-------------------------------------------------------------------------------------------
-
-main :: IO ()
-main = do
-
-    -- Get hostname for system-dependent stuff.
-    host <- fmap nodeName getSystemID
-
-    -- Get useful environment variables.
-    editor <- getEnv "EDITOR"
-    config_home <- getEnv "XDG_CONFIG_HOME"
-
-    -- Resolution info
-    xrandr <- runProcessWithInput      "xrandr" []                                            ""
-    screen <- runProcessWithInput      "grep"   ["Screen"]                                    xrandr
-    screencount <- runProcessWithInput "wc"     ["-l"]                                        screen
-
-    screen0 <- runProcessWithInput "grep" ["Screen 0"]                                        xrandr
-    height0 <- runProcessWithInput "sed"  ["s/^.*current\\ [0-9]\\+ x \\([0-9]\\+\\).*/\\1/"] screen0
-    width0  <- runProcessWithInput "sed"  ["s/^.*current \\([0-9]\\+\\).*/\\1/"]              screen0
-
-    screen1 <- runProcessWithInput "grep" ["Screen 1"]                                        xrandr
-    height1 <- runProcessWithInput "sed"  ["s/^.*current\\ [0-9]\\+ x \\([0-9]\\+\\).*/\\1/"] screen1
-    width1  <- runProcessWithInput "sed"  ["s/^.*current \\([0-9]\\+\\).*/\\1/"]              screen1
-
-    -- Environment variables.
-    editor <- getEnv "EDITOR"
-    config_home <- getEnv "XDG_CONFIG_HOME"
-
-    -- Status bar programs.
-    -- Configure statusbars based on how many monitors we have.
-    -- Up to two, at least.
-    let leftw = if (read screencount::Int) == 1
-                    then (read width0::Int) `div` 3
-                    else (read width0::Int)
-    dzenL  <- spawnPipe $ dzenLeft leftw
-
-    let rightx = leftw
-    let rightw = if (read screencount::Int) == 1
-                    then (((read width0::Int) `div` 3)  * 2) - trayerWidth + 1
-                    else (read width1::Int) - trayerWidth
-
-    dzenRPID  <- spawnPID $ dzenRight rightx rightw config_home
-    conkyPID  <- spawnPID $ conkyStatus config_home
-    trayerPID <- spawnPID myTrayer
-
-    xmonad $ withUrgencyHook NoUrgencyHook defaultConfig
-
-        -- Hooks.
-        { manageHook = manageDocks <+> myManageHook <+> manageHook defaultConfig
-        , layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
-        , logHook = myLogHook dzenL
-
-        -- Handles Java
-        , startupHook = setWMName "LG3D"
-
-        -- Stuff.
-        , modMask = myModMask
-        , workspaces = myWorkspaces
-        , terminal = myTerminal
-
-        -- Mice are for squares.
-        , focusFollowsMouse = False
-
-        -- Border jazz
-        , focusedBorderColor = myFocusedBorderColor
-        , normalBorderColor  = myNormalBorderColor
-        , borderWidth        = myBorderWidth
-
-        } `additionalKeys`
-
-        (
-        -- Screen Lock.
-        [ ((myModMask .|. shiftMask, xK_l                    ), spawn "xscreensaver-command -lock")
-
-        -- Backlight.
-        , ((0,                       xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
-        , ((0,                       xF86XK_MonBrightnessUp  ), spawn "xbacklight -inc 7")
-
-        -- Screenshots.
-        , ((0,                       xK_Print                ), spawn "scrot")
-        , ((controlMask,             xK_Print                ), spawn "sleep 0.2; scrot -s")
-
-        -- Recompile/restart XMonad. Modified to kill taskbar programs.
-        , ((myModMask,               xK_q                    ), spawn $ "killall dzen;" ++
-                                                                       "killall conky;" ++
-                                                                       "killall trayer;" ++
-                                                                       "xmonad --recompile;" ++
-                                                                       "xmonad --restart")
-        -- Run DMenu.
-        , ((myModMask,               xK_p                    ), spawn $ "dmenu_run " ++ dmenuStyle)
-
-        -- Alsamixer, ncmpcpp, quick spawn bindings.
-        , ((myModMask,               xK_a                    ), spawn $ namedCmd "alsamixer" "")
-
-        -- NOTE- Find a cleaner way to do this.
-        , ((myModMask,               xK_o                    ), spawn $ namedCmd "ncmpcpp" ("-c " ++
-                                                                                  config_home ++
-                                                                                  "/ncmpcpp/config"))
-
-        -- various utility scripts
-        , ((myModMask .|. shiftMask, xK_s                    ), spawn "~/bin/setWallpaper")
-
-        -- Clip password with dzen and a nifty script.
-        , ((myModMask .|. shiftMask, xK_p                    ), spawn $ "~/bin/passmenu " ++ dmenuStyle)] ++
-
-        -- Audio keys.
-        audioKeys host ++
-
-        -- Keys for extra workspaces
-        [((myModMask .|. shiftMask,  k                       ), windows $ W.shift i) |
-            (i, k) <- zip myWorkspaces myKeys] ++
-
-        [( (myModMask,               k                       ), windows $ W.greedyView i) |
-            (i, k) <- zip myWorkspaces myKeys]
-        )
 
