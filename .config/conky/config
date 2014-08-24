@@ -58,14 +58,14 @@ ${color eee3d5}Kernel:  $color${alignr}${kernel}
 
 # Print info for up to two batteries.
 ${if_match ${exec acpi | wc -l} >= 1}\
-${color eee3d5}Bat 0: $color${alignr}${battery_short} ${battery_time} ${battery_bar 8,70}
+    ${color eee3d5}Bat 0: $color${alignr}${battery_short} ${battery_time} ${battery_bar 8,70}
 ${endif}\
 \
 ${if_match ${exec acpi | wc -l} > 1}\
-${color eee3d5}Bat 1: $color${alignr}${battery_short BAT1} ${battery_time BAT1} ${battery_bar 8,70 BAT1}
+    ${color eee3d5}Bat 1: $color${alignr}${battery_short BAT1} ${battery_time BAT1} ${battery_bar 8,70 BAT1}
 ${endif}\
 \
-${color eee3d5}Uptime: $color${alignr}${uptime}
+${color eee3d5}Uptime: $color${alignr}${uptime_short}
 
 ##########################################################################################
 ############################   PERFORMANCE     ###########################################
@@ -101,31 +101,30 @@ ${color eee3d5}${font :size=20}$alignc${time %H:%M}$font
 #################################      DISK      #########################################
 ##########################################################################################
 ${font :Bold}${color 859900}disk ${hr 2}$font$color
-${color eee3d5}/:     $color${fs_used /} / ${fs_size /} ${alignr}${fs_bar 8,60 /}
+    ${color eee3d5}/:     $color${fs_used /} / ${fs_size /} ${alignr}${fs_bar 8,60 /}
 \
 ${if_mounted /var}\
-${color eee3d5}/var:  $color${fs_used /var} / ${fs_size /var} ${alignr}${fs_bar 8,60 /var}
+    ${color eee3d5}/var:  $color${fs_used /var} / ${fs_size /var} ${alignr}${fs_bar 8,60 /var}
 ${endif}\
 \
 ${if_mounted /usr}\
-${color eee3d5}/usr:  $color${fs_used /usr} / ${fs_size /usr} ${alignr}${fs_bar 8,60 /usr}
+    ${color eee3d5}/usr:  $color${fs_used /usr} / ${fs_size /usr} ${alignr}${fs_bar 8,60 /usr}
 ${endif}\
 \
 ${if_mounted /home}\
-${color eee3d5}/home: $color${fs_used /home} / ${fs_size /home} ${alignr}${fs_bar 8,60 /home}
+    ${color eee3d5}/home: $color${fs_used /home} / ${fs_size /home} ${alignr}${fs_bar 8,60 /home}
 ${endif}\
 
 ##########################################################################################
 ##################################      MPD      #########################################
 ##########################################################################################
 ${if_mpd_playing}\
-\
 ${font :Bold}${color 268bd2}mpd ${hr 2}$font$color
-${color eee3d5}$alignc$mpd_status$color
-$alignc$mpd_title
-$alignc${color eee3d5}on $color$mpd_album
-$alignc${color eee3d5}by $color$mpd_artist
-$mpd_elapsed/$mpd_length $alignr${mpd_bar 8,80}
+    ${color eee3d5}$alignc$mpd_status$color
+    $alignc$mpd_title
+    $alignc${color eee3d5}on $color$mpd_album
+    $alignc${color eee3d5}by $color$mpd_artist
+    $mpd_elapsed/$mpd_length $alignr${mpd_bar 8,80}
 ${endif}\
 
 ##########################################################################################
@@ -133,23 +132,20 @@ ${endif}\
 ##########################################################################################
 ${font :Bold}${color 6c71c4}network ${hr 2}$font$color
 ${if_existing /proc/net/route wlan0}\
-\
-${color eee3d5}Up:   $color${upspeed wlan0}/s ${alignr}${upspeedgraph wlan0 8,60}
-${color eee3d5}Down: $color${downspeed wlan0}/s ${alignr}${downspeedgraph wlan0 8,60}
-${color eee3d5}Upload: $color${alignr}${totalup wlan0}
-${color eee3d5}Download: $color${alignr}${totaldown wlan0}
-${color eee3d5}Signal: $color${wireless_link_qual wlan0}% ${alignr}${wireless_link_bar 8,60 wlan0}
-${color eee3d5}Local Ip: $color${alignr}${addr wlan0}\
+    ${color eee3d5}Up:   $color${upspeed wlan0}/s ${alignr}${upspeedgraph wlan0 8,60}
+    ${color eee3d5}Down: $color${downspeed wlan0}/s ${alignr}${downspeedgraph wlan0 8,60}
+    ${color eee3d5}Upload: $color${alignr}${totalup wlan0}
+    ${color eee3d5}Download: $color${alignr}${totaldown wlan0}
+    ${color eee3d5}Signal: $color${wireless_link_qual wlan0}% ${alignr}${wireless_link_bar 8,60 wlan0}
+    ${color eee3d5}Local Ip: $color${alignr}${addr wlan0}\
 ${else}\
-\
-${if_existing /proc/net/route eth0}
-${color eee3d5}Up:   $color${upspeed eth0}/s ${alignr}${upspeedgraph eth0 8,60}
-${color eee3d5}Down: $color${downspeed eth0}/s ${alignr}${downspeedgraph eth0}
-${color eee3d5}Upload: $color${alignr}${totalup eth0}
-${color eee3d5}Download: $color${alignr}${totaldown eth0}
-${color eee3d5}Local Ip: $color${alignr}${addr eth0}\
+${if_existing /proc/net/route eth0}\
+    ${color eee3d5}Up:   $color${upspeed eth0}/s ${alignr}${upspeedgraph eth0 8,60}
+    ${color eee3d5}Down: $color${downspeed eth0}/s ${alignr}${downspeedgraph eth0}
+    ${color eee3d5}Upload: $color${alignr}${totalup eth0}
+    ${color eee3d5}Download: $color${alignr}${totaldown eth0}
+    ${color eee3d5}Local Ip: $color${alignr}${addr eth0}\
 ${else}\
-\
-Network Unavailable\
-${endif}\
-\
+    No network connection.
+${endif}
+${endif}
