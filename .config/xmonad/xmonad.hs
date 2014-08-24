@@ -13,7 +13,6 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.SetWMName
 
 import XMonad.Layout.NoBorders
-import XMonad.Layout.LayoutHints
 import XMonad.Layout.Spacing -- spacing between windows
 
 import XMonad.Util.EZConfig(additionalKeys)
@@ -48,12 +47,14 @@ main = do
     config_home <- getEnv "XDG_CONFIG_HOME"
 
     -- Resolution info
-    xrandr <- runProcessWithInput      "xrandr" []                                            ""
+    xrandr <- runProcessWithInput "xrandr" []                                            ""
     let dims = screeninfo xrandr
 
     -- Status bar programs.
     -- Configure statusbars based on how many monitors we have.
     -- Up to two, at least.
+
+    -- Left bar - xmonad info.
     let leftw
             | null dims        = 300
             | length dims == 1 = head (head dims) `div` 3
@@ -61,6 +62,7 @@ main = do
 
     dzenL  <- spawnPipe $ dzenLeft leftw
 
+    -- Right bar - MPD and other useful status info.
     let rightx = leftw
     let rightw
             | null dims        = 300
@@ -68,13 +70,17 @@ main = do
             | otherwise        = head (dims !! 1) - trayerWidth
 
     dzenRPID  <- spawnPID $ dzenRight rightx rightw config_home
-    conkyPID  <- spawnPID $ conkyStatus config_home
+
+    -- System tray.
     trayerPID <- spawnPID myTrayer
+
+    -- Conky background status info.
+    conkyPID  <- spawnPID $ conkyStatus config_home
 
     xmonad $ withUrgencyHook uHook $ defaultConfig
 
         -- Hooks.
-        { manageHook = mHook <+> manageHook defaultConfig
+        { manageHook = mHook
         , layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
         , logHook = lHook dzenL
 
@@ -120,10 +126,31 @@ solarizedBlue    = "#268bd2"
 solarizedCyan    = "#2aa198"
 solarizedGreen   = "#859900"
 
-fontName :: String
-fontName = "Dejavu"
+-- XMonad colors
+normalFG = solarizedBase3
+normalBG = solarizedBase03
+currentFG = normalFG
+currentBG = solarizedOrange
+urgentBG = solarizedRed
 
-font :: Int -> String
+-- Trayer colors
+bgTrayer = "0x" ++ tail normalBG
+
+-- dmenu colors
+normalBGDmenu = "'" ++ normalBG ++ "'"
+normalFGDmenu = "'" ++ normalFG ++ "'"
+selectedFGDmenu = "'" ++ normalFG ++ "'"
+selectedBGDmenu = "'" ++ currentBG ++ "'"
+
+--Borders
+myFocusedBorderColor :: String
+myFocusedBorderColor = solarizedOrange
+
+myNormalBorderColor :: String
+myNormalBorderColor = solarizedBase1
+
+-- Fonts
+fontName = "Dejavu"
 font size = "-*-" ++ fontName ++ "-medium-r-normal-*-" ++ show size ++ "-140-75-75-p-74-iso10646-1"
 
 -- Variables
@@ -144,10 +171,8 @@ keybinds config_home host =
 
     -- Recompile/restart XMonad. Modified to kill taskbar programs.
     , ((myModMask,               xK_q                    ), spawn $ "killall dzen;" ++
-                                                                   "killall conky;" ++
-                                                                   "killall trayer;" ++
-                                                                   "xmonad --recompile;" ++
-                                                                   "xmonad --restart")
+                                                                   "killall conky;killall trayer;" ++
+                                                                   "xmonad --recompile;xmonad --restart")
     -- Run DMenu.
     , ((myModMask,               xK_p                    ), spawn $ "dmenu_run " ++ dmenuStyle)
 
@@ -163,7 +188,9 @@ keybinds config_home host =
     , ((myModMask .|. shiftMask, xK_s                    ), spawn "~/bin/setWallpaper")
 
     -- Clip password with dzen and a nifty script.
-    , ((myModMask .|. shiftMask, xK_p                    ), spawn $ "~/bin/passmenu " ++ dmenuStyle)] ++
+    , ((myModMask .|. shiftMask, xK_p                    ), spawn $ "~/bin/passmenu " ++ dmenuStyle)
+
+    ] ++
 
     -- Audio keys.
     audioKeys host ++
@@ -196,52 +223,19 @@ conkyStatus :: String -> String
 conkyStatus config = "conky --config=" ++ config ++ "/conky/config"
 
 -- Trayer - system tray.
-myTrayer :: String
 myTrayer = "trayer --edge top --align right " ++
            "--widthtype pixel --width " ++ show trayerWidth ++ " " ++
            "--expand true --SetDockType true --SetPartialStrut true " ++
            "--heighttype pixel --height " ++ show statusHeight ++ " --padding 2"
 
 -- Bitmaps used to represent current layout.
-myBitmapsPath :: String
 myBitmapsPath = home ++ "/dzen/bitmaps/"
 
-normalFG :: String
-normalFG = solarizedBase3
-
-normalBG :: String
-normalBG = solarizedBase03
-
-currentFG :: String
-currentFG = normalFG
-
-currentBG :: String
-currentBG = solarizedOrange
-
-urgentBG :: String
-urgentBG = solarizedRed
-
-bgTrayer :: String
-bgTrayer = "0x" ++ tail normalBG
-
-normalBGDmenu :: String
-normalBGDmenu = "'" ++ normalBG ++ "'"
-
-normalFGDmenu :: String
-normalFGDmenu = "'" ++ normalFG ++ "'"
-
-selectedFGDmenu :: String
-selectedFGDmenu = "'" ++ normalFG ++ "'"
-
-selectedBGDmenu :: String
-selectedBGDmenu = "'" ++ currentBG ++ "'"
-
-dmenuStyle :: String
+-- dmenu style
 dmenuStyle = " -fn " ++ font 6 ++ " -nb " ++ normalBGDmenu ++ " -nf " ++ normalFGDmenu ++
              " -sf " ++ selectedFGDmenu ++ " -sb " ++ selectedBGDmenu
 
--- Stuff common to both dzen bars.
-dzenStyle :: String
+-- Dzen style
 dzenStyle = " -fn " ++ font 12 ++ " -h '" ++ show statusHeight ++ "' -y '0'"
 
 -- Pretty printing.
@@ -269,13 +263,6 @@ statusHeight = 16
 -- Trayer width
 trayerWidth :: Int
 trayerWidth = 70
-
---Borders
-myFocusedBorderColor :: String
-myFocusedBorderColor = solarizedOrange
-
-myNormalBorderColor :: String
-myNormalBorderColor = solarizedBase1
 
 myBorderWidth :: Dimension
 myBorderWidth = 2
@@ -323,13 +310,8 @@ audioKeys host
                        , ((0, xF86XK_AudioRaiseVolume),         spawn "amixer set Master 2+")
                        , ((0, xF86XK_AudioMute),                spawn "amixer set Master toggle")]
 -- Screenshot commands
-screenshot :: String
 screenshot = "scrot '%d-%m-%Y-%s_$wx$h.png' -e 'mv $f ~/pictures/screenshots/'"
-
-screenshotSelect :: String
 screenshotSelect = "scrot -s '%d-%m-%Y-%s_$wx$h.png' -e 'mv $f ~/pictures/screenshots/'"
-
-screenshotDelay :: String
 screenshotDelay = "scrot -s --delay 5  '%d-%m-%Y-%s_$wx$h.png' -e 'mv $f ~/pictures/screenshots/'"
 
 ----------------------------------------------------------------
@@ -370,7 +352,7 @@ mHook = manageDocks <+> composeAll
     -- Chat windows go to workspace 3
     , className =? "Pidgin"         --> doShift "3:chat"
     , title     =? "Skype"          --> doShift "3:chat"
-    ]
+    ] <+> manageHook defaultConfig
 
 -- Custom log hook.
 -- Forward window information to dzen bar, formatted.
