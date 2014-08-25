@@ -25,76 +25,105 @@
 #define S_base1         #93a1a1
 #define S_base2         #eee8d5
 #define S_base3         #fdf6e3
-! To only apply colors to your terminal, for example, prefix
-! the color assignment statement with its name. Example:
+
+#define S_emph      S_base1
+#define S_primary   S_base0
+#define S_secondary S_base01
+#define S_bgrnd_hi  S_base02
+#define S_bgrnd     S_base03
 !
-! URxvt*background:            S_base03
-!
-*background:              S_base03
-*foreground:              S_base0
-*fading:                  40
-*fadeColor:               S_base03
-*cursorColor:             S_base1
-*pointerColorBackground:  S_base01
-*pointerColorForeground:  S_base1
-!
+! black dark/light
 *color0:                  S_base02
-*color1:                  S_red
-*color2:                  S_green
-*color3:                  S_yellow
-*color4:                  S_blue
-*color5:                  S_magenta
-*color6:                  S_cyan
-*color7:                  S_base2
 *color8:                  S_base03
+! red dark/light
+*color1:                  S_red
 *color9:                  S_orange
+! green dark/light
+*color2:                  S_green
 *color10:                 S_base01
+! yellow dark/light
+*color3:                  S_yellow
 *color11:                 S_base00
+! blue dark/light
+*color4:                  S_blue
 *color12:                 S_base0
+! magenta dark/light
+*color5:                  S_magenta
 *color13:                 S_violet
+! cyan dark/light
+*color6:                  S_cyan
 *color14:                 S_base1
+! white dark/light
+*color7:                  S_base2
 *color15:                 S_base3
-! xscreensaver ---------------------------------------------------------------
 
-*.font: -*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1
-*.boldFont: -*-Inconsolata-medium-r-normal-*-14-140-75-75-p-74-iso10646-1
+! General settings !
+! !!!!!!!!!!!!!!!! !
 
-! font settings
-!xscreensaver.Dialog.headingFont:        -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
-!xscreensaver.Dialog.bodyFont:           -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
-!xscreensaver.Dialog.labelFont:          -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
-!xscreensaver.Dialog.unameFont:          -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
-!xscreensaver.Dialog.buttonFont:         -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
-!xscreensaver.Dialog.dateFont:           -*-dina-medium-r-*-*-12-*-*-*-*-*-*-*
-!xscreensaver.passwd.passwdFont:         -*-dina-bold-r-*-*-12-*-*-*-*-*-*-*
+! Fonts
+#define FONT_REGULAR xft:Dejavu Mono:style=Regular:pixelsize=12
+#define FONT_BOLD xft:Dejavu Mono:style=Bold:pixelsize=12
+#define FONT_ITALIC xft:Dejavu Mono:style=Italic:pixelsize=12
+! Xft ----------------------------------------------------------------------------------
+Xft.dpi:       96
+Xft.antialias: true
+Xft.rgba:      rgb
+Xft.hinting:   true
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
 
-! general dialog box (affects main hostname, username, password text)
-!xscreensaver.Dialog.foreground:         #ffffff
-!xscreensaver.Dialog.background:         #111111
-!xscreensaver.Dialog.topShadowColor:     #111111
-!xscreensaver.Dialog.bottomShadowColor:  #111111
-!xscreensaver.Dialog.Button.foreground:  #666666
-!xscreensaver.Dialog.Button.background:  #ffffff
+*foreground:              S_primary
+*background:              S_bgrnd
+*Foreground:              S_primary
+*Background:              S_bgrnd
+*cursorColor:             S_emph
+*pointerColorForeground:  S_emph
+*pointerColorBackground:  S_secondary
+*fading:                  40
+*fadeColor:               S_bgrnd
 
-! username/password input box and date text colour
-xscreensaver.Dialog.text.foreground:    #666666
-xscreensaver.Dialog.text.background:    #ffffff
-xscreensaver.Dialog.internalBorderWidth:0
-xscreensaver.Dialog.borderWidth:        0
-xscreensaver.Dialog.shadowThickness:    0
+! General settings.
 
-! timeout bar (background is actually determined by Dialog.text.background)
-xscreensaver.passwd.thermometer.foreground:  #1111aa
-xscreensaver.passwd.thermometer.background:  #000000
-xscreensaver.passwd.thermometer.width:       8
+! Fonts
+*.font:           FONT_REGULAR
+*.imFont:         FONT_REGULAR
+*.boldFont:       FONT_BOLD
+*.italicFont:     FONT_ITALIC
 
-! datestamp format--see the strftime(3) manual page for details
-xscreensaver.dateFormat:    %I:%M%P %a %b %d, %Y
-
+! This and the font cleverness from Zoresvit on StackExchange
+! Xscreensaver
+! ============
+xscreensaver.captureStderr: false
+!font settings
+xscreensaver.Dialog.headingFont: FONT_REGULAR
+xscreensaver.Dialog.bodyFont:    FONT_REGULAR
+xscreensaver.Dialog.labelFont:   FONT_REGULAR
+xscreensaver.Dialog.unameFont:   FONT_REGULAR
+xscreensaver.Dialog.buttonFont:  FONT_REGULAR
+xscreensaver.Dialog.dateFont:    FONT_REGULAR
+xscreensaver.passwd.passwdFont:  FONT_REGULAR
+!general dialog box (affects main hostname, username, password text)
+xscreensaver.Dialog.foreground: S_primary
+xscreensaver.Dialog.background: S_bgrnd
+xscreensaver.Dialog.topShadowColor: S_bgrnd
+xscreensaver.Dialog.bottomShadowColor: S_bgrnd
+xscreensaver.Dialog.Button.foreground: S_primary
+xscreensaver.Dialog.Button.background: S_bgrnd_hi
+!username/password input box and date text colour
+xscreensaver.Dialog.text.foreground: S_primary
+xscreensaver.Dialog.text.background: S_bgrnd_hi
+xscreensaver.Dialog.internalBorderWidth: 24
+xscreensaver.Dialog.borderWidth: 0
+xscreensaver.Dialog.shadowThickness: 1
+xscreensaver*logo.width: 1
+xscreensaver*logo.height: 1
+!timeout bar (background is actually determined by Dialog.text.background)
+xscreensaver.passwd.thermometer.foreground: S_red
+xscreensaver.passwd.thermometer.background: S_blue
+xscreensaver.passwd.thermometer.width: 4
 
 ! xterm
-xterm*faceName:           Terminus:style=Regular:size=10
-!xterm*font:               -*-dina-medium-r-*-*-16-*-*-*-*-*-*-*
+xterm*faceName:           FONT_REGULAR
 xterm*dynamicColors:      true
 xterm*utf8:               2
 xterm*eightBitInput:      true
@@ -108,13 +137,6 @@ xterm*multiScroll:        true
 xterm*toolBar:            false
 xterm*termName:           xterm-256color
 xterm*locale:             true
-
-! Xft ----------------------------------------------------------------------------------
-Xft.dpi:       96
-Xft.antialias: true
-Xft.rgba:      rgb
-Xft.hinting:   true
-Xft.hintstyle: hintslight
 
 ! xclock --------------------------------------------------------------------------------
 
@@ -166,4 +188,4 @@ xcalc.ti.button37.background: #555595
 xcalc.ti.button38.background: #555595
 xcalc.ti.button39.background: #555595
 XCalc*Cursor:                 hand2
-XCalc*ShapeStyle:             rectangle
+XCalc*ShapeStyle:             circle
