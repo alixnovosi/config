@@ -15,13 +15,14 @@ fi
 
 source $HOME/.profile
 
+xrdb -merge $HOME/.Xresources       # update x resources dib
+
 # cursor
 xsetroot -cursor_name left_ptr
 unclutter &
 xscreensaver -no-splash &
 
 # Resources and screensaver
-xrdb -merge $HOME/.Xresources       # update x resources dib
 $HOME/bin/setWallpaper &
 
 # PROGRAMS
@@ -37,7 +38,7 @@ export SSH_ASKPASS=ssh-askpass
 [ ! -s $XDG_CONFIG_HOME/mpd/pid ] && mpd
 
 # mpdscribble start if not already started
-mpdscribble --conf $XDG_CONFIG_HOME/mpdscribble/config &
+mpdscribble --conf $XDG_CONFIG_HOME/mpdscribble/config --log $XDG_CACHE_HOME/mpdscribble/mpdscribble.log &
 
 # launch xmonad
 exec ck-launch-session dbus-launch xmonad
