@@ -9,6 +9,8 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
+-- Standards compliance
+import XMonad.Hooks.EwmhDesktops
 -- For dealing with Java.
 import XMonad.Hooks.SetWMName
 
@@ -77,15 +79,15 @@ main = do
     -- Conky background status info.
     conkyPID  <- spawnPID $ conkyStatus config_home
 
-    xmonad $ withUrgencyHook uHook $ defaultConfig
+    xmonad $ withUrgencyHook uHook $ ewmh defaultConfig
 
         -- Hooks.
         { manageHook = mHook
-        , layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
-        , logHook = lHook dzenL
+        , layoutHook = avoidStruts $ smartBorders $ layoutHook $ ewmh defaultConfig
+        , logHook = ewmhDesktopsLogHook <+> lHook dzenL
 
         -- Handles Java
-        , startupHook = setWMName "LG3D"
+        , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
 
         -- Stuff.
         , modMask = myModMask
@@ -109,6 +111,7 @@ main = do
 -- Colors and stylings.
 
 -- Color variables.
+-- :: String
 solarizedBase03  = "#002b36"
 solarizedBase02  = "#073642"
 solarizedBase01  = "#586e75"
@@ -127,6 +130,7 @@ solarizedCyan    = "#2aa198"
 solarizedGreen   = "#859900"
 
 -- XMonad colors
+-- :: String
 normalFG = solarizedBase3
 normalBG = solarizedBase03
 currentFG = normalFG
@@ -137,6 +141,7 @@ urgentBG = solarizedRed
 bgTrayer = "0x" ++ tail normalBG
 
 -- dmenu colors
+-- :: String
 normalBGDmenu = "'" ++ normalBG ++ "'"
 normalFGDmenu = "'" ++ normalFG ++ "'"
 selectedFGDmenu = "'" ++ normalFG ++ "'"
@@ -347,12 +352,12 @@ mHook = manageDocks <+> composeAll
 
     , className =? "Gimp"           --> doFloat
     , className =? "mpv"            --> doFullFloat
-    , className =? "Steam"          --> doFloat
 
     -- Chat windows go to workspace 3
     , className =? "Pidgin"         --> doShift "3:chat"
+    , title     =? "Buddy List"     --> doShift "3:chat"
     , title     =? "Skype"          --> doShift "3:chat"
-    ] <+> manageHook defaultConfig
+    ] <+> manageHook (ewmh defaultConfig)
 
 -- Custom log hook.
 -- Forward window information to dzen bar, formatted.

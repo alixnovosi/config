@@ -18,8 +18,7 @@ double_buffer yes
 
 # UTF-8 fonts.
 use_xft yes
-xftfont Arial
-override_utf8_locale yes
+xftfont Dejavu:size=10
 
 # Solarized colors.
 # Conky is stupid and doesn't allow more descriptively-named variables, unfortunately.
@@ -53,8 +52,8 @@ TEXT
 ################################      SYSTEM      ########################################
 ##########################################################################################
 ${font :Bold}${color dc322f}system ${hr 2}$font$color
-${color eee3d5}Host: $color${alignr}${nodename}
-${color eee3d5}Kernel:  $color${alignr}${kernel}
+    ${color eee3d5}Host: $color${alignr}${nodename}
+    ${color eee3d5}Kernel:  $color${alignr}${kernel}
 
 # Print info for up to two batteries.
 ${if_match ${exec acpi | wc -l} >= 1}\
@@ -65,29 +64,31 @@ ${if_match ${exec acpi | wc -l} > 1}\
     ${color eee3d5}Bat 1: $color${alignr}${battery_short BAT1} ${battery_time BAT1} ${battery_bar 8,70 BAT1}
 ${endif}\
 \
-${color eee3d5}Uptime: $color${alignr}${uptime_short}
+    ${color eee3d5}Uptime: $color${alignr}${uptime_short}
+
+${execpi 240 fortune -as | fold -s -w45}
 
 ##########################################################################################
 ############################   PERFORMANCE     ###########################################
 ##########################################################################################
 ${font :Bold}${color cb4b16}performance ${hr 2}$font$color
 # Print info for up to 4 cpus.
-${color eee3d5}CPU: $color$alignc${cpu cpu1}% ${alignr}${cpubar cpu1 8,50}
+    ${color eee3d5}CPU: $color$alignr${cpu cpu1}% ${cpubar cpu1 8,50}1\
 \
 ${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 2}\
-     $alignc${cpu cpu2}% ${alignr}${cpubar cpu2 8,50}
+     $alignr${cpu cpu2}% ${cpubar cpu2 8,50}2
 ${endif}\
 \
 ${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 3}\
-     $alignc${cpu cpu3}% ${alignr}${cpubar cpu3 8,50}
+     $alignr${cpu cpu3}% ${cpubar cpu3 8,50}3\
 ${endif}\
 \
 ${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 4}\
-     $alignc${cpu cpu4}% ${alignr}${cpubar cpu4 8,50}
+     $alignr${cpu cpu4}% ${cpubar cpu4 8,50}4
 ${endif}\
 \
-${color eee3d5}RAM:     $color$memperc% ${alignr}${membar 8,50}
-${color eee3d5}SWAP:  $color$swapperc% ${alignr}${swapbar 8,50}
+    ${color eee3d5}RAM:     $color${alignr}$memperc% ${alignr}${membar 8,50}
+    ${color eee3d5}SWAP:  $color${alignr}$swapperc% ${alignr}${swapbar 8,50}
 
 ##########################################################################################
 #################################      DATE      #########################################
