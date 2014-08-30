@@ -84,7 +84,7 @@ main = do
         -- Hooks.
         { manageHook = mHook
         , layoutHook = avoidStruts $ smartBorders $ layoutHook $ ewmh defaultConfig
-        , logHook = ewmhDesktopsLogHook <+> lHook dzenL
+        , logHook = ewmhDesktopsLogHook <+> lHook config_home dzenL
 
         -- Handles Java
         , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
@@ -228,13 +228,14 @@ conkyStatus :: String -> String
 conkyStatus config = "conky --config=" ++ config ++ "/conky/config"
 
 -- Trayer - system tray.
-myTrayer = "trayer --edge top --align right " ++
+myTrayer = "trayer --edge top --align right --transparent false " ++
            "--widthtype pixel --width " ++ show trayerWidth ++ " " ++
            "--expand true --SetDockType true --SetPartialStrut true " ++
            "--heighttype pixel --height " ++ show statusHeight ++ " --padding 2"
 
 -- Bitmaps used to represent current layout.
-myBitmapsPath = home ++ "/dzen/bitmaps/"
+myBitmapsPath :: String -> String
+myBitmapsPath config_home = config_home ++ "/dzen/bitmaps/"
 
 -- dmenu style
 dmenuStyle = " -fn " ++ font 6 ++ " -nb " ++ normalBGDmenu ++ " -nf " ++ normalFGDmenu ++
@@ -244,9 +245,10 @@ dmenuStyle = " -fn " ++ font 6 ++ " -nb " ++ normalBGDmenu ++ " -nf " ++ normalF
 dzenStyle = " -fn " ++ font 12 ++ " -h '" ++ show statusHeight ++ "' -y '0'"
 
 -- Pretty printing.
-myDzenPP :: PP
-myDzenPP  = dzenPP
-    { ppCurrent = dzenColor currentFG currentBG . pad
+myDzenPP :: String -> Handle -> PP
+myDzenPP config_home h = dzenPP
+    { ppOutput  = hPutStrLn h
+    , ppCurrent = dzenColor currentFG currentBG . pad
     , ppHidden  = dzenColor currentFG normalBG . pad . take 1
     , ppUrgent  = dzenColor currentFG urgentBG . pad
     , ppSep     = " "
@@ -256,7 +258,7 @@ myDzenPP  = dzenPP
                       "Mirror Tall" -> wrapBitmap "rob/mtall.xbm"
                       "Full"        -> wrapBitmap "rob/full.xbm"
     }
-    where wrapBitmap bitmap = "^p(4)^i(" ++ myBitmapsPath ++ bitmap ++ ")^p(4)"
+    where wrapBitmap bitmap = "^p(4)^i(" ++ myBitmapsPath config_home ++ bitmap ++ ")^p(4)"
 
 
 -- Status bar stuff.
@@ -273,9 +275,6 @@ myBorderWidth :: Dimension
 myBorderWidth = 2
 
 -- Commands and config homes.
-
-home :: String
-home = "/home/amichaud/.xmonad"
 
 -- Use XFCE4 terminal without menubar
 myTerminal :: String
@@ -352,17 +351,17 @@ mHook = manageDocks <+> composeAll
 
     , className =? "Gimp"           --> doFloat
     , className =? "mpv"            --> doFullFloat
+    , className =? "Steam"          --> doFloat
 
     -- Chat windows go to workspace 3
     , className =? "Pidgin"         --> doShift "3:chat"
-    , title     =? "Buddy List"     --> doShift "3:chat"
     , title     =? "Skype"          --> doShift "3:chat"
-    ] <+> manageHook (ewmh defaultConfig)
+    ] <+> manageHook defaultConfig
 
 -- Custom log hook.
 -- Forward window information to dzen bar, formatted.
-lHook :: Handle -> X ()
-lHook h = dynamicLogWithPP myDzenPP { ppOutput = hPutStrLn h }
+lHook :: String -> Handle -> X ()
+lHook config_home h = dynamicLogWithPP (myDzenPP config_home h)
 
 ------------------------------------------------------------------------------------------
 ----------------------------- END CUSTOM HOOKS -------------------------------------------
