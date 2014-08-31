@@ -122,9 +122,9 @@ ${endif}\
 ${if_mpd_playing}\
 ${font :Bold}${color 268bd2}mpd ${hr 2}$font$color
     ${color eee3d5}$alignc$mpd_status$color
-    $alignc$mpd_title
-    $alignc${color eee3d5}on $color$mpd_album
-    $alignc${color eee3d5}by $color$mpd_artist
+    $alignc${color eee3d5}$mpd_title$color
+    ${alignc}on ${color eee3d5}$mpd_album$color
+    ${alignc}by ${color eee3d5}$mpd_artist$color
     $mpd_elapsed/$mpd_length $alignr${mpd_bar 8,80}
 ${endif}\
 

@@ -1,4 +1,3 @@
-override_utf8_locale yes
 background no
 out_to_console yes
 out_to_x no
@@ -12,33 +11,33 @@ double_buffer yes
 
 TEXT
 ${if_mpd_playing}\
-${mpd_title} ^fg(white)on ^fg(darkgray)${mpd_album} ^fg(white)by ^fg(darkgray)${mpd_artist} \
+^fg(\#fdf6e3)${mpd_title} ^fg(\#93a1a1)on ^fg(\#fdf6e3)${mpd_album} ^fg(\#93a1a1)by ^fg(\#fdf6e3)${mpd_artist} \
 ${endif} \
 \
-^fg(darkgray)c: \
+^fg(\#fdf6e3)c: \
 ${if_match ${cpu cpu0} > 75}\
-^fg(\#FF8888)${cpu cpu0}\
+^fg(\#DC322F)${cpu cpu0}\
 ${endif}\
 ${if_match ${cpu cpu0} <= 75}\
 ${if_match ${cpu cpu0} > 25 }\
-^fg(\#FFFF88)${cpu cpu0}\
+^fg(\#CB4B16)${cpu cpu0}\
 ${endif}\
 ${endif}\
 ${if_match ${cpu cpu0} <= 25}\
-^fg(\#88FF88)${cpu cpu0}\
+^fg(\#2aa198)${cpu cpu0}\
 ${endif}\
 \
-^fg(darkgray)m: \
+^fg(\#fdf6e3)m: \
 ${if_match ${memperc} > 75}\
-^fg(\#FF8888)${memperc}\
+^fg(\#DC322F)${memperc}\
 ${endif}\
 ${if_match ${memperc} <= 75}\
 ${if_match ${memperc} > 25 }\
-^fg(\#FFFF88)${memperc}\
+^fg(\#CB4B16)${memperc}\
 ${endif}\
 ${endif}\
 ${if_match ${memperc} <= 25}\
-^fg(\#88FF88)${memperc}\
+^fg(\#2aa198)${memperc}\
 ${endif}\
 \
-^fg(white)${time %a %b %d %H:%M} \
+^fg(\#fdf6e3)${time %a %b %d %H:%M} \
