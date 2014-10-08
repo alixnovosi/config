@@ -21,7 +21,7 @@ import Graphics.X11.ExtraTypes.XF86
 import Graphics.X11.Xlib
 
 -- For xrandr info processing.
-import Data.Char
+import qualified Data.Char as C
 import Data.List
 
 import System.IO
@@ -185,8 +185,8 @@ keybinds configHome host =
     , ((shiftMask,               xK_Print),                 spawn $ scrot "delay")
 
     -- Recompile/restart XMonad. Modified to kill taskbar programs.
-    , ((mMask,                   xK_q),                     spawn $ "killall dzen conky trayer;" ++
-                                                                    "xmonad --recompile;" ++
+    , ((mMask,                   xK_q),                     spawn $ "xmonad --recompile;" ++
+                                                                    "killall dzen conky trayer;" ++
                                                                     "xmonad --restart")
     -- Run DMenu.
     , ((mMask,                   xK_p),                     spawn $ "dmenu_run " ++ dmenuStyle)
@@ -271,7 +271,7 @@ trayWidth    = 70
 term              = "xfce4-terminal --hide-menubar"
 termCmd cmd       = term ++ " -x " ++ cmd
 namedCmd cmd args = term ++ " --title=" ++ name ++ " -x " ++ cmd ++ " " ++ args
-    where name = "__" ++ map toUpper cmd
+    where name = "__" ++ map C.toUpper cmd
 
 -- Use Windows key as mod key, it's convenient.
 mMask = mod4Mask
@@ -311,15 +311,13 @@ scrot = \x -> case x of
 --------------------------------------------------------------------------------------------------------------
 -------------------------------------UTILITY--FUNCTIONS-------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------
--- Grab resolution and screen info given xrandr string.
+-- Grab resolution and positioning for each active monitor given xrandr string.
 screeninfo :: String -> [[Int]]
-screeninfo input = intResPairs
-    where separated    = map words (lines input)
-          screenLines  = filter (\x -> head x == "Screen") separated
-          afterCurrent = map (dropWhile (/= "current")) screenLines
-          atResolution = map (dropWhile (== "current") . takeWhile (/= "maximum")) afterCurrent
-          resPairs     = map (filter (/= "x")) atResolution
-          intResPairs  = map (map read) resPairs
+screeninfo input = infoints
+    where reslines   = filter (\x -> head (tail x ) == "connected" ) $ map words (lines input)
+          resstrings = map (map (\x -> if C.isNumber x then x else ' ') . (!!2)) reslines
+          info       = map words resstrings
+          infoints   = map (map read) info :: [[Int]]
 
 --------------------------------------------------------------------------------------------------------------
 ----------------------------------CUSTOM HOOKS--------------------------------------------
