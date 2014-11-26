@@ -15,7 +15,8 @@ fi
 
 source $HOME/.profile
 
-xrdb -merge $HOME/.Xresources       # update x resources dib
+ # update x resources dib
+[[ -f $XDG_CONFIG_HOME/xresources/.Xresources ]] && xrdb -merge $XDG_CONFIG_HOME/xresources/.Xresources
 
 # cursor
 xsetroot -cursor_name left_ptr
@@ -25,14 +26,15 @@ xscreensaver -no-splash &
 # Resources and screensaver
 $HOME/bin/setWallpaper &
 
+xfce4-power-manager &
+
+
+
 # PROGRAMS
 pidgin --config=$XDG_CONFIG_HOME/pidgin &
 
-# keychain
-keychain $HOME/.ssh/id_rsa
-[ -f $HOME/.keychain/$HOSTNAME-sh ] && . $HOME/.keychain/$HOSTNAME-sh 2>/dev/null
-[ -f $HOME/.keychain/$HOSTNAME-sh-gpg ] && . $HOME/.keychain/$HOSTNAME-sh-gpg 2>/dev/null
-export SSH_ASKPASS=ssh-askpass
+# fix screens
+$HOME/bin/fixscreens &
 
 # MPD daemon start (if no other user instance exists)
 [ ! -s $XDG_CONFIG_HOME/mpd/pid ] && mpd
@@ -40,5 +42,7 @@ export SSH_ASKPASS=ssh-askpass
 # mpdscribble start if not already started
 [ ! $(pgrep -x mpdscribble) ] && mpdscribble --conf $XDG_CONFIG_HOME/mpdscribble/config --log $XDG_CACHE_HOME/mpdscribble/mpdscribble.log &
 
+export SSH_ASKPASS=ssh-askpass
+
 # launch xmonad
-exec ck-launch-session dbus-launch xmonad
+exec /usr/bin/ssh-agent ck-launch-session dbus-launch xmonad

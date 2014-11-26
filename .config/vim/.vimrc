@@ -14,6 +14,8 @@ if has("unix")
     else
         let bundles_dir = expand('$XDG_CONFIG_HOME/vim/vim/linux_bundles')
     endif
+else
+    """ Windows-only stuff, currently nothing.
 endif
 
 call vundle#rc(bundles_dir)
@@ -22,15 +24,15 @@ Bundle 'gmarik/Vundle.vim'
 
 """ Vundle bundles.
 " Better haskell in vim
-Bundle 'dag/vim2hs'
+"Bundle 'dag/vim2hs'
 Bundle 'majutsushi/tagbar'
-Bundle 'scrooloose/nerdtree'
+"Bundle 'scrooloose/nerdtree'
 " Syntax checking.
-Bundle 'scrooloose/syntastic'
+"Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 " Sensical date increment/decrement
-Bundle 'tpope/vim-speeddating'
+"Bundle 'tpope/vim-speeddating'
 Bundle 'vim-scripts/a.vim'
 " Make buffers easy and fun.
 Bundle 'fholgado/minibufexpl.vim'
@@ -44,11 +46,15 @@ Bundle 'bronson/vim-trailing-whitespace'
 " go
 Plugin 'fatih/vim-go'
 " json
-Bundle 'elzr/vim-json'
+"Bundle 'elzr/vim-json'
 " Conky syntax highlighting.
-Plugin 'smancill/conky-syntax.vim'
+"Plugin 'smancill/conky-syntax.vim'
 " Organization lists.
-Bundle 'jceb/vim-orgmode'
+"Bundle 'jceb/vim-orgmode'
+" scala
+Bundle 'derekwyatt/vim-scala'
+" Lint vim
+"Bundle 'dbakker/vim-lint'
 
 call vundle#end()
 set rtp+=$XDG_CONFIG_HOME/vim/vim
@@ -68,6 +74,8 @@ if has("unix")
     else
         let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/linux-vim-go")
     endif
+else
+    """ Windows-only stuff, currently nothing.
 endif
 
 """ Colorscheme
@@ -100,6 +108,9 @@ set foldmethod=indent "fold based on indentation"
 set foldnestmax=10 "deepest fold is 10 levels."
 set foldlevel=1
 
+autocmd FileType tex noremap <F5> <Esc>:!pdflatex %<Cr><Cr>
+autocmd FileType tex noremap <F6> <Esc>:!silent !evince %<.pdf >/dev/null 2>&1 &<Cr><Cr>
+
 """ Store cache files elsewhere.
 """ Store backup files
 set backup
@@ -108,6 +119,7 @@ set backupdir=$XDG_CACHE_HOME/vim/backup,.,/tmp
 """ Also viminfo.
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 
+" stolen from cstanfill, here because I'm '''cool'''
 "remap jk to escape for 3xtr4 l33t h4xx|ng
 inoremap jk <Esc>
 
@@ -156,7 +168,7 @@ let g:EclimIvyClasspathUpdate = 0
 "lets C-s and C-q be capture by vim instead of the terminal
 silent !stty -ixon > /dev/null 2>/dev/null
 
-" stolen
+" Also stolen from cstanfill.
 nmap <C-s>v :TagbarToggle<CR>
 nmap <C-s>n :NERDTreeToggle<CR>
 nmap <C-s>s :set number!<CR>
@@ -181,9 +193,3 @@ autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
 
 """ Autowrap text to 80 chars for certain filetypes
 autocmd BufRead,BufNewFile *.md setlocal textwidth=80
-
-""""""""""""""""""""""""""""""""
-""" PER-ENVIRONMENT NONSENSE """
-""""""""""""""""""""""""""""""""
-autocmd BufNewFile,BufRead ~/courses/cs134/dai_gurren/* set noexpandtab shiftwidth=8 tabstop=8
-

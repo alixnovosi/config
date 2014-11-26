@@ -1,0 +1,142 @@
+! General settings !
+! !!!!!!!!!!!!!!!! !
+
+#include "colors"
+
+! Fonts
+#define FONT_REGULAR xft:Dejavu Mono:style=Regular:pixelsize=12
+#define FONT_BOLD xft:Dejavu Mono:style=Bold:pixelsize=12
+#define FONT_ITALIC xft:Dejavu Mono:style=Italic:pixelsize=12
+! Xft ----------------------------------------------------------------------------------
+Xft.dpi:       96
+Xft.antialias: true
+Xft.rgba:      rgb
+Xft.hinting:   true
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+
+*foreground:              S_primary
+*background:              S_bgrnd
+*Foreground:              S_primary
+*Background:              S_bgrnd
+*cursorColor:             S_emph
+*pointerColorForeground:  S_emph
+*pointerColorBackground:  S_secondary
+*fading:                  40
+*fadeColor:               S_bgrnd
+
+! General settings.
+
+! Fonts
+*.font:           FONT_REGULAR
+*.imFont:         FONT_REGULAR
+*.boldFont:       FONT_BOLD
+*.italicFont:     FONT_ITALIC
+
+! This and the font cleverness from Zoresvit on StackExchange
+! Xscreensaver
+! ============
+xscreensaver.captureStderr: false
+!font settings
+xscreensaver.Dialog.headingFont: FONT_REGULAR
+xscreensaver.Dialog.bodyFont:    FONT_REGULAR
+xscreensaver.Dialog.labelFont:   FONT_REGULAR
+xscreensaver.Dialog.unameFont:   FONT_REGULAR
+xscreensaver.Dialog.buttonFont:  FONT_REGULAR
+xscreensaver.Dialog.dateFont:    FONT_REGULAR
+xscreensaver.passwd.passwdFont:  FONT_REGULAR
+!general dialog box (affects main hostname, username, password text)
+xscreensaver.Dialog.foreground: S_primary
+xscreensaver.Dialog.background: S_bgrnd
+xscreensaver.Dialog.topShadowColor: S_bgrnd
+xscreensaver.Dialog.bottomShadowColor: S_bgrnd
+xscreensaver.Dialog.Button.foreground: S_primary
+xscreensaver.Dialog.Button.background: S_bgrnd_hi
+!username/password input box and date text colour
+xscreensaver.Dialog.text.foreground: S_primary
+xscreensaver.Dialog.text.background: S_bgrnd_hi
+xscreensaver.Dialog.internalBorderWidth: 24
+xscreensaver.Dialog.borderWidth: 0
+xscreensaver.Dialog.shadowThickness: 1
+xscreensaver*logo.width: 1
+xscreensaver*logo.height: 1
+!timeout bar (background is actually determined by Dialog.text.background)
+xscreensaver.passwd.thermometer.foreground: S_red
+xscreensaver.passwd.thermometer.background: S_blue
+xscreensaver.passwd.thermometer.width: 4
+
+! xterm
+xterm*faceName:           FONT_REGULAR
+xterm*dynamicColors:      true
+xterm*utf8:               2
+xterm*eightBitInput:      true
+xterm*saveLines:          10000
+xterm*scrollKey:          true
+xterm*scrollTtyOutput:    false
+xterm*scrollBar:          false
+xterm*rightScrollBar:     false
+xterm*jumpScroll:         true
+xterm*multiScroll:        true
+xterm*toolBar:            false
+xterm*termName:           xterm-256color
+xterm*locale:             true
+
+! xclock --------------------------------------------------------------------------------
+
+xclock*update:            1
+xclock*analog:            true
+
+!xcalc-----------------------------------------------------------------------
+
+xcalc*geometry:                        200x275
+xcalc.ti.bevel.background:             #111111
+xcalc.ti.bevel.screen.background:      #000000
+xcalc.ti.bevel.screen.DEG.background:  #000000
+xcalc.ti.bevel.screen.DEG.foreground:  LightSeaGreen
+xcalc.ti.bevel.screen.GRAD.background: #000000
+xcalc.ti.bevel.screen.GRAD.foreground: LightSeaGreen
+xcalc.ti.bevel.screen.RAD.background:  #000000
+xcalc.ti.bevel.screen.RAD.foreground:  LightSeaGreen
+xcalc.ti.bevel.screen.INV.background:  #000000
+xcalc.ti.bevel.screen.INV.foreground:  Red
+xcalc.ti.bevel.screen.LCD.background:  #000000
+xcalc.ti.bevel.screen.LCD.foreground:  LightSeaGreen
+xcalc.ti.bevel.screen.LCD.shadowWidth: 0
+xcalc.ti.bevel.screen.M.background:    #000000
+xcalc.ti.bevel.screen.M.foreground:    LightSeaGreen
+xcalc.ti.bevel.screen.P.background:    #000000
+xcalc.ti.bevel.screen.P.foreground:    Yellow
+xcalc.ti.Command.foreground:  White
+xcalc.ti.Command.background:  #777777
+xcalc.ti.button5.background:  Orange3
+xcalc.ti.button19.background: #611161
+xcalc.ti.button18.background: #611161
+xcalc.ti.button20.background: #611111
+!uncomment to change label on division button
+!xcalc.ti.button20.label:      /
+xcalc.ti.button25.background: #722222
+xcalc.ti.button30.background: #833333
+xcalc.ti.button35.background: #944444
+xcalc.ti.button40.background: #a55555
+xcalc.ti.button22.background: #222262
+xcalc.ti.button23.background: #222262
+xcalc.ti.button24.background: #222272
+xcalc.ti.button27.background: #333373
+xcalc.ti.button28.background: #333373
+xcalc.ti.button29.background: #333373
+xcalc.ti.button32.background: #444484
+xcalc.ti.button33.background: #444484
+xcalc.ti.button34.background: #444484
+xcalc.ti.button37.background: #555595
+xcalc.ti.button38.background: #555595
+xcalc.ti.button39.background: #555595
+XCalc*Cursor:                 hand2
+XCalc*ShapeStyle:             circle
+
+!!Dmenu
+dmenu.foreground: S_base3
+dmenu.background:    S_base03
+dmenu.selforeground: S_base3
+dmenu.selbackground: S_orange
+
+dmenu.font: FONT_REGULAR:11

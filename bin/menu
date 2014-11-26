@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Choose something with dmenu.  Takes prefix and regex.
+choose () {
+
+    # I guess we can check errors.
+    if [ -z "$1" ]; then
+        echo "[menu] [ERROR] No parameters given to choose!"
+        exit 1
+    elif [ -z "$2" ]; then
+        echo "[menu] [ERROR] Only one parameter given to choose!"
+        exit 1
+    fi
+
+    # Choose (wisely).
+    local files=`find $1 -regex "$2"`
+
+    choice=$(printf '%s\n' "${files[@]}" | sed "s|$1/||" | dmenu -o 0.9)
+    [[ -n $choice ]] || exit
+    echo "[menu] Selected $choice"
+}
+
+# Passwords with pass password manager the standard UNIX password manager.
+if [[ "$1" == "pass" ]]; then
+    echo "[menu] Mode pass"
+
+    choose ${PASSWORD_STORE_DIR-~/.password-store} ".*\.\(gpg\)"
+    # TODO find a cleaner way to do thisc.
+    realchoice=`echo $choice | sed s'|.gpg||'`
+
+    # Copy pass to clipboard.
+    pass show -c "$realchoice" 2>/dev/null
+
+# Videos with mpv.
+elif [[ "$1" == "vid" ]]; then
+    echo "[menu] Mode video"
+
+    choose $HOME/videos ".*\.\(mkv\|mp4\|avi\|vob\)"
+
+    # Play movie.
+    mpv "$prefix/$choice" &
+
+# Music with mpd.
+elif [[ "$1" == "music" ]]; then
+    echo "[menu] Mode music"
+
+    prefix=~/.config/mpd/playlists
+    choose $prefix ".*\.\(m3u\)"
+    # TODO find a cleaner way to do thisc.
+    realchoice=`echo $choice | sed s'|.m3u||'`
+
+    # Clear mpd playlist and play this playlist instead.
+    mpc clear &&  mpc load $realchoice &&  mpc play
+
+else
+    echo "[menu] Unsupported selection!"
+fi

@@ -64,18 +64,18 @@ main = do
     let rightx = leftw
     let rightw
             | null dims        = 300
-            | length dims == 1 = (head (head dims) `div` 2) + 1
+            | length dims == 1 = (head (head dims) `div` 2)
             | otherwise        = head (dims !! 1)
-    dzenRPID  <- spawnPID $ dzenRight rightx rightw configHome
+    dzenRPID  <- spawnPID $ conky "status" configHome
 
     -- System tray.
     trayPID <- spawnPID tray
 
     -- Conky background status info.
-    conkyPID  <- spawnPID $ conkyStatus configHome
+    conkyPID  <- spawnPID $ conky "config" configHome
 
     -- Config xmonad.
-    xmonad $ withUrgencyHook uHook $ defaultConfig
+    xmonad $ defaultConfig
 
         -- Hooks.
         { manageHook = mHook
@@ -148,19 +148,8 @@ dzenCurr = dzenColor normFG currBG
 dzenNorm = dzenColor normFG normBG
 dzenUrg  = dzenColor normFG urgBG
 
--- dmenu colors
+-- dzen styles.
 -- _ :: String
-normBGDmenu = dmenuWrap normBG
-normFGDmenu = dmenuWrap normFG
-selFGDmenu  = dmenuWrap normFG
-selBGDmenu  = dmenuWrap currBG
-dmenuWrap :: String -> String
-dmenuWrap str = "'" ++ str ++ "'"
-
--- dmenu/dzen styles.
--- _ :: String
-dmenuStyle = fn 6 ++ " -nb " ++ normBGDmenu ++ " -nf " ++ normFGDmenu ++ " -sf " ++
-             selFGDmenu ++ " -sb " ++ selBGDmenu
 dzenStyle  = fn 12 ++ " -h '" ++ show statusHeight ++ "' -y '0'"
 
 -- Trayer colors
@@ -189,7 +178,7 @@ keybinds configHome host =
                                                                     "killall dzen conky trayer;" ++
                                                                     "xmonad --restart")
     -- Run DMenu.
-    , ((mMask,                   xK_p),                     spawn $ "dmenu_run " ++ dmenuStyle)
+    , ((mMask,                   xK_p),                     spawn $ "dmenu_run")
 
     -- Quick program spawns.
     , ((mMask,                   xK_a),                     spawn $ namedCmd "alsamixer" "")
@@ -201,8 +190,14 @@ keybinds configHome host =
     -- Various useful scripts.
     , ((mMask .|. shiftMask,     xK_s),                     spawn "~/bin/setWallpaper")
     , ((mMask,                   xK_n),                     spawn "~/bin/toggleOneko")
+
     -- Clip password with dzen and a nifty script.
-    , ((mMask .|. shiftMask,     xK_p),                     spawn $ "~/bin/passmenu " ++ dmenuStyle)
+    , ((mMask .|. shiftMask,     xK_p),                     spawn $ "~/bin/menu pass")
+    -- Browse videos nicely.
+    , ((mMask,                   xK_v),                     spawn $ "~/bin/menu vid")
+    -- Browse playlists nicely.
+    , ((mMask .|. shiftMask,     xK_o),                     spawn $ "~/bin/menu music")
+
     ] ++
 
     -- Audio keys.
@@ -225,15 +220,9 @@ dzenLeft :: Int -> Int -> String
 dzenLeft start width = "dzen2 -x "++ "'" ++ show start ++ "'" ++ " -w '" ++ show width ++
                        "' -ta 'l'" ++ dzenStyle
 
--- Right Dzen - Runs conky config.
-dzenRight :: Int -> Int -> String -> String
-dzenRight start width config = conkyCmd ++ " | dzen2 " ++ style
-    where conkyCmd = "conky --config=" ++ config ++ "/conky/dzen_config"
-          style    = "-x '" ++ show start ++ "' -w '" ++ show width ++ "' -ta 'r'" ++ dzenStyle
-
--- Background status.
-conkyStatus :: String -> String
-conkyStatus config = "conky --config=" ++ config ++ "/conky/config"
+-- Conky status.
+conky :: String -> String -> String
+conky file config = "conky --config=" ++ config ++ "/conky/" ++ file
 
 -- Trayer - system tray.
 -- TODO swap in stalonetray
@@ -245,7 +234,7 @@ tray = "trayer --edge top --align left --transparent false " ++
 
 -- Bitmaps used to represent current layout.
 bmpPath :: String -> String
-bmpPath configHome = configHome ++ "/dzen/bitmaps/"
+bmpPath configHome = configHome ++ "/xmonad/dzen/bitmaps/"
 
 -- Pretty printing.
 myDzenPP :: String -> Handle -> PP
@@ -255,7 +244,7 @@ myDzenPP configHome h = dzenPP
     , ppHidden  = dzenNorm . pad . take 1
     , ppUrgent  = dzenUrg  . pad
     , ppSep     = " "
-    , ppTitle   = dzenColor normFG normBG . pad
+    , ppTitle   = dzenColor normFG normBG . pad . shorten 70
     , ppLayout  = \x -> case x of
                       "Tall"        -> wrapBitmap "rob/tall.xbm"
                       "Mirror Tall" -> wrapBitmap "rob/mtall.xbm"
@@ -268,9 +257,9 @@ statusHeight = 16
 trayWidth    = 70
 
 -- Terminal commands
-term              = "xfce4-terminal --hide-menubar"
-termCmd cmd       = term ++ " -x " ++ cmd
-namedCmd cmd args = term ++ " --title=" ++ name ++ " -x " ++ cmd ++ " " ++ args
+term              = "uxterm"
+termCmd cmd       = term ++ " -e " ++ cmd
+namedCmd cmd args = term ++ " -title " ++ name ++ " -e " ++ cmd ++ " " ++ args
     where name = "__" ++ map C.toUpper cmd
 
 -- Use Windows key as mod key, it's convenient.
@@ -278,8 +267,8 @@ mMask = mod4Mask
 
 -- Workspace titles
 spaces :: [String]
-spaces = ["` term", "1 term", "2 web",  "3 chat", "4 ssh", "5 play", "6 play",  "7 work",
-          "8 work", "9 work", "0 etc.", "- perf", "= \956sic"]
+spaces = ["` sys", "1 sys", "2 web",  "3 chat", "4 ssh", "5 play", "6 play",
+          "7 work", "8 work", "9 work", "0 etc",  "- \956sic", "= perf"]
 
 -- Audio control keys.
 -- Assuming computer has the proper audio keys if it's not my laptop.

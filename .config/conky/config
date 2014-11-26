@@ -1,7 +1,7 @@
-##########################################################################################
-### CONKY CONFIG FOR DESKTOP BY ANDREW MICHAUD (2014)                                   ##
-##########################################################################################
-own_window no
+################################################################################
+#########       Config for desktop display with varied info           ##########
+################################################################################
+own_window yes
 own_window_type override
 own_window_transparent yes
 own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
@@ -12,141 +12,130 @@ minimum_size 300
 maximum_width 300
 alignment middle_right
 
-update_interval 1
-double_buffer yes
-#pad_percent 2
+update_interval 0.5
 
 # UTF-8 fonts.
 use_xft yes
 xftfont Dejavu:size=10
 
-# Solarized colors.
-# Conky is stupid and doesn't allow more descriptively-named variables, unfortunately.
-#657b83 #base00
-#586e75 #base01
-#073642 #base02
-#002b36 #base03
-#839496 #base0
-#93a1a1 #base1
-#eee8d5 #base2
-#fdf6e3 #base3
-#dc322f #red
-#cb4b16 #orange
-#b58900 #yellow
-#859900 #green
-#268bd2 #blue
-#2aa198 #cyan
-#6c71c4 #violet
-#d33682 #magenta
-
 default_color 839496 # base0
+double_buffer yes
 
 format_human_readable yes
 
-# Lua nonsense
-lua_load ~/.config/conky/draw-bg.lua
-lua_draw_hook_pre draw_bg 20 0x002b36 0.60
-
 TEXT
-##########################################################################################
-################################      SYSTEM      ########################################
-##########################################################################################
-${font :Bold}${color dc322f}system ${hr 2}$font$color
+######################################################################
+##############           background image               ##############
+######################################################################
+\
+${image $HOME/.config/conky/solarized_base03.png -p 0,-100-s 410x2000}\
+\
+################################
+#######      date      #########
+################################
+\
+${color eee3d5}${font :size=20}\
+${alignc}${time %A}
+${alignc}${time %d %b %y}
+${font :size=25}\
+${alignc}${time %H:%M:%S}
+\
+#############################################################################################
+##################################      system      #########################################
+#############################################################################################
+\
+${font :Bold}${color dc322f}\
+system ${hr 2}$font
     ${color eee3d5}Host: $color${alignr}${nodename}
     ${color eee3d5}Kernel:  $color${alignr}${kernel}
 
 # Print info for up to two batteries.
 ${if_match ${exec acpi | wc -l} >= 1}\
-    ${color eee3d5}Bat 0: $color${alignr}${battery_short} ${battery_time} ${battery_bar 8,70}
+    ${color eee3d5}\
+    Bat 0: $color${alignr}${battery_short} ${battery_time} \
+    ${color eee3d5}${battery_bar 8,70}
 ${endif}\
 \
 ${if_match ${exec acpi | wc -l} > 1}\
-    ${color eee3d5}Bat 1: $color${alignr}${battery_short BAT1} ${battery_time BAT1} ${battery_bar 8,70 BAT1}
+    ${color eee3d5}\
+    Bat 1: $color${alignr}${battery_short BAT1} ${battery_time BAT1} \
+    ${color eee3d5}${battery_bar 8,70 BAT1}
 ${endif}\
 \
     ${color eee3d5}Uptime: $color${alignr}${uptime_short}
 
-${execpi 240 fortune -as | fold -s -w45}
+${execpi 240 fortune -s | fold -s -w42}\
 
-##########################################################################################
-############################   PERFORMANCE     ###########################################
-##########################################################################################
-${font :Bold}${color cb4b16}performance ${hr 2}$font$color
+####################################################################
+###################        performance       #######################
+####################################################################
+\
+${font :Bold}${color cb4b16}performance ${hr 2}$font\
+${color eee3d5}
 # Print info for up to 4 cpus.
-    ${color eee3d5}CPU: $color$alignr${cpu cpu1}% ${cpubar cpu1 8,50}1\
+    CPU: $color$alignr${cpu cpu1}% \
+    ${color eee3d5}${cpubar cpu1 8,50}1\
 \
 ${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 2}\
-     $alignr${cpu cpu2}% ${cpubar cpu2 8,50}2
+    $alignr${color}${cpu cpu2}% \
+    ${color eee3d5}${cpubar cpu2 8,50}2
 ${endif}\
 \
 ${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 3}\
-     $alignr${cpu cpu3}% ${cpubar cpu3 8,50}3\
+    $alignr${color}${cpu cpu3}% \
+    ${color eee3d5}${cpubar cpu3 8,50}3\
 ${endif}\
 \
 ${if_match ${exec cat /proc/cpuinfo | grep "core id" | wc -l} >= 4}\
-     $alignr${cpu cpu4}% ${cpubar cpu4 8,50}4
+    $alignr${color}${cpu cpu4}% \
+    ${color eee3d5}${cpubar cpu4 8,50}4
 ${endif}\
 \
-    ${color eee3d5}RAM:     $color${alignr}$memperc% ${alignr}${membar 8,50}
-    ${color eee3d5}SWAP:  $color${alignr}$swapperc% ${alignr}${swapbar 8,50}
-
-##########################################################################################
-#################################      DATE      #########################################
-##########################################################################################
-${font :Bold}${color b58900}date ${hr 2}$font$color
-${color eee3d5}${font :size=15}${alignc}${time %A}
-${color eee3d5}${font :size=15}${alignc}${time %d %b %y}
-${color eee3d5}${font :size=20}$alignc${time %H:%M}$font
+    ${color eee3d5}RAM:     \
+    $color${alignr}$memperc% \
+    ${alignr}${color eee3d5}${membar 8,50}
 \
-##########################################################################################
-#################################      DISK      #########################################
-##########################################################################################
-${font :Bold}${color 859900}disk ${hr 2}$font$color
-    ${color eee3d5}/:     $color${fs_used /} / ${fs_size /} ${alignr}${fs_bar 8,60 /}
+    ${color eee3d5}SWAP:  \
+    $color${alignr}$swapperc% \
+    ${alignr}${color eee3d5}${swapbar 8,50}
+
+################################################
+#########             disk           ###########
+################################################
+\
+${font :Bold}${color 859900}disk ${hr 2}$font
+    ${color eee3d5}/:     \
+    $color${fs_used /} / ${fs_size /} \
+    ${alignr}${color eee3d5}${fs_bar 8,60 /}
 \
 ${if_mounted /var}\
-    ${color eee3d5}/var:  $color${fs_used /var} / ${fs_size /var} ${alignr}${fs_bar 8,60 /var}
+    ${color eee3d5}/var:  \
+    $color${fs_used /var} / ${fs_size /var} \
+    ${alignr}${color eee3d5}${fs_bar 8,60 /var}
 ${endif}\
 \
 ${if_mounted /usr}\
-    ${color eee3d5}/usr:  $color${fs_used /usr} / ${fs_size /usr} ${alignr}${fs_bar 8,60 /usr}
+    ${color eee3d5}/usr:  \
+    $color${fs_used /usr} / ${fs_size /usr} \
+    ${alignr}${color eee3d5}${fs_bar 8,60 /usr}
 ${endif}\
 \
 ${if_mounted /home}\
-    ${color eee3d5}/home: $color${fs_used /home} / ${fs_size /home} ${alignr}${fs_bar 8,60 /home}
+    ${color eee3d5}/home: \
+    $color${fs_used /home} / ${fs_size /home} \
+    ${alignr}${color eee3d5}${fs_bar 8,60 /home}
 ${endif}\
 
-##########################################################################################
-##################################      MPD      #########################################
-##########################################################################################
+#########################################################################################
+#################################      MPD      #########################################
+#########################################################################################
 ${if_mpd_playing}\
 ${font :Bold}${color 268bd2}mpd ${hr 2}$font$color
     ${color eee3d5}$alignc$mpd_status$color
-    $alignc${color eee3d5}$mpd_title$color
-    ${alignc}on ${color eee3d5}$mpd_album$color
-    ${alignc}by ${color eee3d5}$mpd_artist$color
+    ${alignc}${scroll 50 3${color eee3d5}$mpd_title}
+    ${alignc}${color}on
+    ${alignc}${scroll 50 3${color eee3d5}$mpd_album}
+    ${alignc}${color}by
+    ${alignc}${scroll 50 3${color eee3d5}$mpd_artist}
     $mpd_elapsed/$mpd_length $alignr${mpd_bar 8,80}
 ${endif}\
-
-##########################################################################################
-################################      NETWORK      #######################################
-##########################################################################################
-${font :Bold}${color 6c71c4}network ${hr 2}$font$color
-${if_existing /proc/net/route wlan0}\
-    ${color eee3d5}Up:   $color${upspeed wlan0}/s ${alignr}${upspeedgraph wlan0 8,60}
-    ${color eee3d5}Down: $color${downspeed wlan0}/s ${alignr}${downspeedgraph wlan0 8,60}
-    ${color eee3d5}Upload: $color${alignr}${totalup wlan0}
-    ${color eee3d5}Download: $color${alignr}${totaldown wlan0}
-    ${color eee3d5}Signal: $color${wireless_link_qual wlan0}% ${alignr}${wireless_link_bar 8,60 wlan0}
-    ${color eee3d5}Local Ip: $color${alignr}${addr wlan0}\
-${else}\
-${if_existing /proc/net/route eth0}\
-    ${color eee3d5}Up:   $color${upspeed eth0}/s ${alignr}${upspeedgraph eth0 8,60}
-    ${color eee3d5}Down: $color${downspeed eth0}/s ${alignr}${downspeedgraph eth0}
-    ${color eee3d5}Upload: $color${alignr}${totalup eth0}
-    ${color eee3d5}Download: $color${alignr}${totaldown eth0}
-    ${color eee3d5}Local Ip: $color${alignr}${addr eth0}\
-${else}\
-    No network connection.
-${endif}
-${endif}

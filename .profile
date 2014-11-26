@@ -8,24 +8,34 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# XDG base spec.  OS-independent, theoretically.
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_DIRS=/usr/local/share/:/usr/share/
+# We don't want to output anything unless we're sure that this shell is
+# interactive; otherwise we could interfere with programs like scp. Therefore
+# we check for the "i" (interactive option) before running anything that might
+# produce output.
+case "$-" in
+	*i*)
 
-export EDITOR="/usr/bin/vim -u $XDG_CONFIG_HOME/vim/.vimrc"
-export PAGER="/bin/less"
-export VISUAL="$EDITOR"
+        # Only show fortune for the first time I log in.
+        if [[ "`who | grep amichaud | wc -l`" -le 1 ]]; then
 
-export HISTFILE="$XDG_CACHE_HOME/bash/history"
-export LESSHISTFILE="$XDG_CACHE_HOME/less/hist"
+            # Only show users if I'm not the only one logged in.
+            if [[ "`who | grep amichaud | wc -l`" -ne "`who | wc -l`" ]]; then
+		        # display who else is logged in
+		        users|tr ' ' '\n'|uniq|tr '\n' ' '|awk '{print $0} END {print ""}'
+            fi
 
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-	source "$HOME/.bashrc"
-    fi
+		    # fortune of the day - short message to brighten up your login
+		    which fortune &> /dev/null && fortune -s
+        fi
+		;;
+esac
+
+mkdir -p $HOME/src/go/src
+mkdir -p $HOME/src/go/bin
+
+export GOPATH=$HOME/src/go
+export PATH=$PATH:$GOPATH/bin
+
+if [ -f "$HOME/.bashrc" ]; then
+    . "$HOME/.bashrc"
 fi
-

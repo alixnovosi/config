@@ -1,108 +1,70 @@
 #!/bin/bash
 
-# Test for an interactive shell.  There is no need to set anything
-# past this point for scp and rcp, and it's important to refrain from
-# outputting anything in those cases.
-if [[ $- != *i* ]] ; then
-    # Shell is non-interactive.  Be done now!
-    return
+# Set up aliases and stuff.
+if [ -z ${XDG_CONFIG_HOME+x} ]; then
+    XDG_CONFIG_HOME="$HOME/.config"
+    . $XDG_CONFIG_HOME/shell/env
 fi
 
-# Set path.
-mkdir -p "${HOME}/bin"
-PATH=${HOME}/bin:/usr/local/bin:/usr/local/sbin:$PATH
-
-# Gopath.
-mkdir -p "${HOME}/src/go"
-GOPATH="${HOME}/src/go"
-export GOPATH
-PATH=$PATH:${GOPATH}/bin
+. $XDG_CONFIG_HOME/shell/aliases
+. $XDG_CONFIG_HOME/shell/host
+. $XDG_CONFIG_HOME/shell/func
+. $XDG_CONFIG_HOME/shell/env
 
 ################################################################################
 #########################    OS DETECTION       ################################
 ################################################################################
 if [ "$(uname -s)" == "Darwin" ]; then
-
-    # We're on a mac.
-    alias ls="ls -FG"
-
-    # woo colors
-    PS1="\[\033[01;32m\]\u\[\033[00m\]@\[\033[0;36m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
-
-
+    . $XDG_CONFIG_HOME/shell/osx
 elif [ "$(uname -s)" == "Linux" ]; then
-
-    # We're on linux.
-    # enable color support of ls and also add handy aliases
-    if [ -x /usr/bin/dircolors ]; then
-        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-        alias ls='ls --color=auto'
-        alias dir='dir --color=auto'
-        alias vdir='vdir --color=auto'
-        alias fgrep='fgrep --color=auto'
-        alias egrep='egrep --color=auto'
-    fi
-
-    # This only needs to happen on linux.
-    if [[ -z "$CABAL_CONFIG" ]]; then
-        export CABAL_CONFIG=$XDG_CONFIG_HOME/cabal/config
-    fi
-
-    if [[ -z "$MPV_HOME" ]]; then
-        export MPV_HOME=$XDG_CONFIG_HOME/mpv
-    fi
-
-    # make less more friendly for non-text input files, see lesspipe(1)
-    [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-    # set variable identifying the chroot you work in (used in the prompt below)
-    if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-        debian_chroot=$(cat /etc/debian_chroot)
-    fi
-
-    # set a fancy prompt (non-color, unless we know we "want" color)
-    case "$TERM" in
-        xterm-color) color_prompt=yes;;
-    esac
-
-    # uncomment for a colored prompt, if the terminal has the capability; turned
-    # off by default to not distract the user: the focus in a terminal window
-    # should be on the output of commands, not on the prompt
-    force_color_prompt=yes
-
-    if [ -n "$force_color_prompt" ]; then
-        if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-        # We have color support; assume it's compliant with Ecma-48
-        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-        # a case would tend to support setf rather than setaf.)
-        color_prompt=yes
-        else
-        color_prompt=
-        fi
-    fi
-
-    if [ "$color_prompt" = yes ]; then
-        PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[0;36m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
-    else
-        PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-    fi
-    unset color_prompt force_color_prompt
-
-    # If this is an xterm set the title to user@host:dir
-    case "$TERM" in
-    xterm*|rxvt*)
-        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-        ;;
-    *)
-        ;;
-    esac
-
-    # Password-store completion
-    source /etc/bash_completion.d/password-store
+    . $XDG_CONFIG_HOME/shell/linux
 fi
 
+if [[ $(tput colors) -ge 256 ]]; then
+    BASE03=$(tput setaf 234)
+    BASE02=$(tput setaf 235)
+    BASE01=$(tput setaf 240)
+    BASE00=$(tput setaf 241)
+    BASE0=$(tput setaf 244)
+    BASE1=$(tput setaf 245)
+    BASE2=$(tput setaf 254)
+    BASE3=$(tput setaf 230)
+    YELLOW=$(tput setaf 136)
+    ORANGE=$(tput setaf 166)
+    RED=$(tput setaf 160)
+    MAGENTA=$(tput setaf 125)
+    VIOLET=$(tput setaf 61)
+    BLUE=$(tput setaf 33)
+    CYAN=$(tput setaf 37)
+    GREEN=$(tput setaf 64)
+else
+    BASE03=$(tput setaf 8)
+    BASE02=$(tput setaf 0)
+    BASE01=$(tput setaf 10)
+    BASE00=$(tput setaf 11)
+    BASE0=$(tput setaf 12)
+    BASE1=$(tput setaf 14)
+    BASE2=$(tput setaf 7)
+    BASE3=$(tput setaf 15)
+    YELLOW=$(tput setaf 3)
+    ORANGE=$(tput setaf 9)
+    RED=$(tput setaf 1)
+    MAGENTA=$(tput setaf 5)
+    VIOLET=$(tput setaf 13)
+    BLUE=$(tput setaf 4)
+    CYAN=$(tput setaf 6)
+    GREEN=$(tput setaf 2)
+fi
+
+PS1="\[$BOLD$BASE3\]\u\[$BASE0\]@\[$CYAN\]\h\[$BASE0\]:\[$VIOLET\]\W\[$BASE0\]\$ \[$RESET\]"
+
+# transparent xterm?
+[ -n "$XTERM_VERSION" ] && transset -a 45 > /dev/null
+
 # append to the history file, don't overwrite it
-shopt -s histappend
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s histappend checkwinsize
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -112,19 +74,9 @@ HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
 # System-specific stuff.
-for f in ${XDG_CONFIG_HOME}/bash/extra/*; do
-    if [ -f $f ]; then
-        . $f
-    fi
-done
-
-if [ -f ${XDG_CONFIG_HOME}/bash/bash_aliases ]; then
-    . ${XDG_CONFIG_HOME}/bash/bash_aliases ]
+if [ -f $XDG_CACHE_HOME/shell/host ]; then
+    . $XDG_CONFIG_HOME/shell/host
 fi
 
 # enable programmable completion features (you don't need to enable
