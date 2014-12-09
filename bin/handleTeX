@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Not enough arguments supplied!"
+    echo "Usage: handleTeX filename"
+    exit
+fi
+
+# .bib file, run bibtex
+if [ -a $1".bib" ]; then
+    pdflatex $1".tex"
+    latex $1".tex"
+    bibtex $1".bib"
+    latex $1".tex"
+    latex $1".tex"
+fi
+
+pdflatex $1".tex"
+

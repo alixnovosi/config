@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 -- Andrew Michaud's XMonad config.
 -- Built from bits and pieces of other configs by other people.
 
@@ -6,6 +7,11 @@ import XMonad
 import XMonad.Actions.SpawnOn
 
 import XMonad.Hooks.DynamicLog
+import qualified DBus as D
+import qualified DBus.Client as D
+import qualified Codec.Binary.UTF8.String as UTF8
+
+import System.Taffybar.XMonadLog ( dbusLog)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
@@ -27,7 +33,6 @@ import Data.List
 import System.IO
 import System.FilePath.Posix
 import System.Posix.Unistd -- to get hostname
-import System.Environment(getEnv)
 
 -- For extra workspace nonsense
 import qualified XMonad.StackSet as W
@@ -42,37 +47,15 @@ main = do
     -- Get hostname for system-dependent stuff.
     host <- fmap nodeName getSystemID
 
-    -- Get useful environment variables.
-    editor     <- getEnv "EDITOR"
-    configHome <- getEnv "XDG_CONFIG_HOME"
+    dbus <- D.connectSession
+    getWellKnownName dbus
 
     -- Resolution info
     xrandr   <- runProcessWithInput "xrandr" [] ""
     let dims =  screeninfo xrandr
 
-    -- Status bar programs.
-    -- Configure statusbars based on how many monitors we have. (up to two, at least)
-
-    -- Left bar - XMonad info.
-    let leftw
-            | null dims        = 300 --whatever
-            | length dims == 1 = head (head dims) `div` 2
-            | otherwise        = head $ head dims
-    dzenL  <- spawnPipe $ dzenLeft trayWidth (leftw - trayWidth)
-
-    -- Right bar - MPD and other useful status info.
-    let rightx = leftw
-    let rightw
-            | null dims        = 300
-            | length dims == 1 = (head (head dims) `div` 2)
-            | otherwise        = head (dims !! 1)
-    dzenRPID  <- spawnPID $ conky "status" configHome
-
-    -- System tray.
-    trayPID <- spawnPID tray
-
     -- Conky background status info.
-    conkyPID  <- spawnPID $ conky "config" configHome
+    conkyPID  <- spawnPID $ conky "config" "/home/amichaud/.config"
 
     -- Config xmonad.
     xmonad $ defaultConfig
@@ -80,7 +63,7 @@ main = do
         -- Hooks.
         { manageHook = mHook
         , layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
-        , logHook    = lHook configHome dzenL
+        , logHook    = dynamicLogWithPP (prettyPrinter dbus)
 
         -- Handles Java
         , startupHook = setWMName "LG3D"
@@ -98,7 +81,7 @@ main = do
         , normalBorderColor  = normBord
         , borderWidth        = bordWidth
 
-        } `additionalKeys` keybinds configHome host
+        } `additionalKeys` keybinds "/home/amichaud/.config" host
 
 ---------------------------------------------
 --------------- VARIABLES AND STUFF
@@ -141,62 +124,53 @@ normBord = base1
 bordWidth :: Dimension
 bordWidth = 2
 
--- Dzen colors.
--- _ :: ???
--- dzenColor takes fg then bg
-dzenCurr = dzenColor normFG currBG
-dzenNorm = dzenColor normFG normBG
-dzenUrg  = dzenColor normFG urgBG
-
--- dzen styles.
--- _ :: String
-dzenStyle  = fn 12 ++ " -h '" ++ show statusHeight ++ "' -y '0'"
-
--- Trayer colors
-bgTrayer :: String
-bgTrayer = "0x" ++ tail normBG
-
 -- More complicated variables.
 
 -- Keybinds, depending on host for audio keys.
 keybinds configHome host =
     [
     -- Screen lock
-      ((mMask .|. shiftMask,     xK_l),                     spawn "xscreensaver-command -lock")
+      ((mMask .|. shiftMask,   xK_l),                     spawn "xscreensaver-command -lock")
 
     -- Backlight.
-    , ((0,                       xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
-    , ((0,                       xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 7")
+    , ((0,                     xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
+    , ((0,                     xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 7")
 
     -- Screenshots.
-    , ((0,                       xK_Print),                 spawn $ scrot "")
-    , ((controlMask,             xK_Print),                 spawn $ scrot "select")
-    , ((shiftMask,               xK_Print),                 spawn $ scrot "delay")
+    , ((0,                     xK_Print),                 spawn $ scrot "")
+    , ((controlMask,           xK_Print),                 spawn $ scrot "select")
+    , ((shiftMask,             xK_Print),                 spawn $ scrot "delay")
 
     -- Recompile/restart XMonad. Modified to kill taskbar programs.
-    , ((mMask,                   xK_q),                     spawn $ "xmonad --recompile;" ++
-                                                                    "killall dzen conky trayer;" ++
+    , ((mMask,                 xK_q),                     spawn $ "xmonad --recompile;" ++
+                                                                    "killall conky;" ++
                                                                     "xmonad --restart")
     -- Run DMenu.
-    , ((mMask,                   xK_p),                     spawn $ "dmenu_run")
+    , ((mMask,                 xK_p),                     spawn $ "dmenu_run")
 
     -- Quick program spawns.
-    , ((mMask,                   xK_a),                     spawn $ namedCmd "alsamixer" "")
+    , ((mMask,                 xK_a),                     spawn $ namedCmd "alsamixer" "")
     -- TODO- Find a cleaner way to do this.
-    , ((mMask,                   xK_o),                     spawn $ namedCmd "ncmpcpp" ("-c " ++
+    , ((mMask,                 xK_o),                     spawn $ namedCmd "ncmpcpp" ("-c " ++
                                                                      configHome ++ "/ncmpcpp/config"))
-    , ((mMask,                   xK_b),                     spawn  "x-www-browser")
+    , ((mMask,                 xK_b),                     spawn  "x-www-browser")
+
+    , ((mMask .|. controlMask, xK_a),                     spawn $ term ++
+                                                                " --title=__SSHAGENT" ++
+                                                                " --command=\"bash -c '" ++
+                                                                "ssh-add; read -p \\\"Press any key...\\\"" ++
+                                                                "'\"")
 
     -- Various useful scripts.
-    , ((mMask .|. shiftMask,     xK_s),                     spawn "~/bin/setWallpaper")
-    , ((mMask,                   xK_n),                     spawn "~/bin/toggleOneko")
+    , ((mMask .|. shiftMask,   xK_s),                     spawn "~/bin/setWallpaper")
+    , ((mMask,                 xK_n),                     spawn "~/bin/toggleOneko")
 
     -- Clip password with dzen and a nifty script.
-    , ((mMask .|. shiftMask,     xK_p),                     spawn $ "~/bin/menu pass")
+    , ((mMask .|. shiftMask,   xK_p),                     spawn $ "~/bin/menu pass")
     -- Browse videos nicely.
-    , ((mMask,                   xK_v),                     spawn $ "~/bin/menu vid")
+    , ((mMask,                 xK_v),                     spawn $ "~/bin/menu vid")
     -- Browse playlists nicely.
-    , ((mMask .|. shiftMask,     xK_o),                     spawn $ "~/bin/menu music")
+    , ((mMask .|. shiftMask,   xK_o),                     spawn $ "~/bin/menu music")
 
     ] ++
 
@@ -215,51 +189,64 @@ keybinds configHome host =
 -----------------------------STATUS BAR STUFF----------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
--- Left Dzen - xmonad info and window title.
-dzenLeft :: Int -> Int -> String
-dzenLeft start width = "dzen2 -x "++ "'" ++ show start ++ "'" ++ " -w '" ++ show width ++
-                       "' -ta 'l'" ++ dzenStyle
-
--- Conky status.
-conky :: String -> String -> String
-conky file config = "conky --config=" ++ config ++ "/conky/" ++ file
-
--- Trayer - system tray.
--- TODO swap in stalonetray
-tray :: String
-tray = "trayer --edge top --align left --transparent false " ++
-       "--widthtype pixel --width " ++ show trayWidth ++ " " ++
-       "--expand true --SetDockType true --SetPartialStrut true " ++
-       "--heighttype pixel --height " ++ show statusHeight ++ " --padding 2"
-
--- Bitmaps used to represent current layout.
-bmpPath :: String -> String
-bmpPath configHome = configHome ++ "/xmonad/dzen/bitmaps/"
-
 -- Pretty printing.
 myDzenPP :: String -> Handle -> PP
 myDzenPP configHome h = dzenPP
     { ppOutput  = hPutStrLn h
-    , ppCurrent = dzenCurr . pad
-    , ppHidden  = dzenNorm . pad . take 1
-    , ppUrgent  = dzenUrg  . pad
+    , ppCurrent = pad
+    , ppHidden  = pad . take 1
+    , ppUrgent  = pad
     , ppSep     = " "
-    , ppTitle   = dzenColor normFG normBG . pad . shorten 70
-    , ppLayout  = \x -> case x of
-                      "Tall"        -> wrapBitmap "rob/tall.xbm"
-                      "Mirror Tall" -> wrapBitmap "rob/mtall.xbm"
-                      "Full"        -> wrapBitmap "rob/full.xbm"
+    , ppTitle   = pad . shorten 70
     }
-    where wrapBitmap bitmap = "^p(4)^i(" ++ bmpPath configHome ++ bitmap ++ ")^p(4)"
+
+prettyPrinter :: D.Client -> PP
+prettyPrinter dbus = defaultPP
+    { ppOutput   = dbusOutput dbus
+    , ppTitle    = pangoSanitize
+    , ppCurrent  = pangoColor "green" . wrap "[" "]" . pangoSanitize
+    , ppVisible  = pangoColor "yellow" . wrap "(" ")" . pangoSanitize
+    , ppHidden   = const ""
+    , ppUrgent   = pangoColor "red"
+    , ppLayout   = const ""
+    , ppSep      = " "
+    }
+getWellKnownName :: D.Client -> IO ()
+getWellKnownName dbus = do
+  D.requestName dbus (D.busName_ "org.xmonad.Log")
+                [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+  return ()
+
+dbusOutput :: D.Client -> String -> IO ()
+dbusOutput dbus str = do
+    let signal = (D.signal "/org/xmonad/Log" "org.xmonad.Log" "Update") {
+            D.signalBody = [D.toVariant ("<b>" ++ (UTF8.decodeString str) ++ "</b>")]
+        }
+    D.emit dbus signal
+
+pangoColor :: String -> String -> String
+pangoColor fg = wrap left right
+  where
+    left  = "<span foreground=\"" ++ fg ++ "\">"
+    right = "</span>"
+
+pangoSanitize :: String -> String
+pangoSanitize = foldr sanitize ""
+  where
+    sanitize '>'  xs = "&gt;" ++ xs
+    sanitize '<'  xs = "&lt;" ++ xs
+    sanitize '\"' xs = "&quot;" ++ xs
+    sanitize '&'  xs = "&amp;" ++ xs
+    sanitize x    xs = x:xs
+conky file config = "conky --config=" ++ config ++ "/conky/" ++ file
 
 -- Status bar dimensions.
 statusHeight = 16
-trayWidth    = 70
 
 -- Terminal commands
-term              = "uxterm"
-termCmd cmd       = term ++ " -e " ++ cmd
-namedCmd cmd args = term ++ " -title " ++ name ++ " -e " ++ cmd ++ " " ++ args
+term              = "xfce4-terminal --hide-menubar --show-borders"
+termCmd cmd       = term ++ " --command=" ++ cmd
+namedCmd cmd args = term ++ " --title=" ++ name ++ " --command='" ++ cmd ++ " " ++ args ++ "'"
     where name = "__" ++ map C.toUpper cmd
 
 -- Use Windows key as mod key, it's convenient.
@@ -284,9 +271,9 @@ audioKeys = \h -> case h of
                 , ((0, xF86XK_AudioNext), spawn "mpc next")
                 , ((0, xF86XK_AudioPrev), spawn "mpc prev")] ++ common
 
-    where common = [ ((0, xF86XK_AudioLowerVolume), spawn "amixer set Master 2-")
-                   , ((0, xF86XK_AudioRaiseVolume), spawn "amixer set Master 2+")
-                   , ((0, xF86XK_AudioMute),        spawn "amixer set Master toggle")]
+    where common = [ ((0, xF86XK_AudioLowerVolume), spawn "amixer -D pulse sset Master 2%-")
+                   , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -D pulse sset Master 2%+")
+                   , ((0, xF86XK_AudioMute),        spawn "amixer -D pulse sset Master toggle")]
 
 -- Screenshot commands
 scrot :: String -> String
@@ -325,6 +312,7 @@ mHook = manageDocks <+> composeAll
     , title     =? "__NCMPCPP"      --> doCenterFloat
     , title     =? "__ALSAMIXER"    --> doCenterFloat
     , title     =? "__XMONADHS"     --> doCenterFloat
+    , title     =? "__SSHAGENT"     --> doCenterFloat
     , title     =? "__HTOP"         --> doShift "-:perf"
 
     -- Handle gimp and mpv specially.

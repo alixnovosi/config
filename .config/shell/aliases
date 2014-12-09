@@ -10,7 +10,7 @@ alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config"
 alias mpdscribble="mpdscribble --conf ${XDG_CONFIG_HOME}/mpdscribble/config --log ${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log"
 alias vim="vim -u ${XDG_CONFIG_HOME}/vim/.vimrc"
 alias view="view -u ${XDG_CONFIG_HOME}/vim/.vimrc"
-alias tmux="TERM=xterm-256color tmux -f ${XDG_CONFIG_HOME}/tmux/config"
+alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/config"
 alias svn="svn --config-dir ${XDG_CONFIG_HOME}/subversion"
 alias cabal="cabal --config-dir ${XDG_CONFIG_HOME}/cabal"
 alias pidgin="pidgin --config=${XDG_CONFIG_HOME}/pidgin"
@@ -35,3 +35,7 @@ alias mv="mv -i"
 alias whence="which"
 alias starwars='telnet towel.blinkenlights.nl'
 alias git-yolo='git commit -am "`curl -s http://whatthecommit.com/index.txt`"'
+
+# maturity
+alias fuck='sudo `!!`'
+alias you=''

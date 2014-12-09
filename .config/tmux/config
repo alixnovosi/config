@@ -4,24 +4,12 @@
 #
 #----------------------------------------------------------------------------------------
 # Based on many.
-
-# What do these do?
-set -g status-utf8 on
-set -g utf8 on
-setw -g xterm-keys on
-
-# Status bar
-# What do these do?
-set -g status on
-set -g status-interval 5
-
 ##########################################################################################
 ######################################## COLORS ##########################################
 ##########################################################################################
 # Solarized colors.
 
-# Force 256 colors.
-set -g terminal-overrides "screen-256color"
+set-window-option -g xterm-keys on
 
 # Default statusbar colors.
 set -g status-fg $SOLARIZED_BASE3
@@ -65,11 +53,11 @@ bind r source-file ~/.config/tmux/config \; display-message "  Config reloaded..
 # more intuitive keybindings for splitting
 # Vertical
 unbind %
-bind v split-window -v -c '#{pane_current_path}'
+bind - split-window -v -c '#{pane_current_path}'
 
 # Horizontal
 unbind '"'
-bind h split-window -h -c '#{pane_current_path}'
+bind | split-window -h -c '#{pane_current_path}'
 
 # New window
 unbind c
@@ -85,6 +73,19 @@ bind Left select-pane -L
 bind Right select-pane -R
 bind Up select-pane -U
 bind Down select-pane -D
+
+# Move between panes with xmonad bindings.
+unbind o
+bind j select-pane -t :.+
+bind k select-pane -t :.-
+unbind {
+unbind }
+bind { swap-pane -t :.+
+bind } swap-pane -t :.-
+
+unbind l
+bind l resize-pane -R 3
+bind h resize-pane -L 3
 
 # scrollback buffer n lines
 set -g history-limit 5000

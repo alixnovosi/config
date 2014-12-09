@@ -5,18 +5,8 @@ set runtimepath+=$XDG_CONFIG_HOME/vim/vim
 filetype off
 
 let g:vundle_lazy_load=0
-
-if has("unix")
-    let s:uname = system("uname -s")
-    set rtp+=$XDG_CONFIG_HOME/vim/vim/common_bundles/Vundle.vim
-    if s:uname ==? "Darwin\n"
-        let bundles_dir = expand('$XDG_CONFIG_HOME/vim/vim/osx_bundles')
-    else
-        let bundles_dir = expand('$XDG_CONFIG_HOME/vim/vim/linux_bundles')
-    endif
-else
-    """ Windows-only stuff, currently nothing.
-endif
+set rtp+=$XDG_CONFIG_HOME/vim/vim/vundle/Vundle.vim
+let bundles_dir = expand('$XDG_CONFIG_HOME/vim/vim/vundle')
 
 call vundle#rc(bundles_dir)
 
@@ -24,9 +14,9 @@ Bundle 'gmarik/Vundle.vim'
 
 """ Vundle bundles.
 " Better haskell in vim
-"Bundle 'dag/vim2hs'
+Bundle 'dag/vim2hs'
 Bundle 'majutsushi/tagbar'
-"Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/nerdtree'
 " Syntax checking.
 "Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-fugitive'
@@ -46,9 +36,9 @@ Bundle 'bronson/vim-trailing-whitespace'
 " go
 Plugin 'fatih/vim-go'
 " json
-"Bundle 'elzr/vim-json'
+Bundle 'elzr/vim-json'
 " Conky syntax highlighting.
-"Plugin 'smancill/conky-syntax.vim'
+Plugin 'smancill/conky-syntax.vim'
 " Organization lists.
 "Bundle 'jceb/vim-orgmode'
 " scala
@@ -69,14 +59,24 @@ set t_Co=256
 if has("unix")
     let s:uname = system("uname -s")
     if s:uname ==? "Darwin\n"
-        """ Put vim-go stuff in a reasonable place.
-        let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/mac-vim-go")
+        """ OSX
     else
-        let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/linux-vim-go")
+        """ Linux/BSD
     endif
 else
     """ Windows-only stuff, currently nothing.
 endif
+
+" Tmux nonsense.
+if &term =~ '^screen'
+    " tmux will send xterm-style keys when its xterm-keys option is on
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
+
+let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim/vim-go")
 
 """ Colorscheme
 syntax enable
@@ -92,7 +92,7 @@ set mouse=a
 """ word wrapping.
 set ww=[,],<,>,h,l,b,s
 
-set textwidth=130
+set textwidth=110
 
 """ tabs
 set expandtab     "use spaces
