@@ -30,7 +30,7 @@ main = do
                                                       ]
                                   , graphLabel = Just "cpu"
                                   }
-  let clock = textClockNew Nothing "<span fgcolor='blue'>%a %b %_d %H:%M</span>" 1
+  let clock = textClockNew Nothing "<span fgcolor='#fdf6e3'>%a %b %_d %H:%M</span>" 1
       log = xmonadLogNew
       mem = pollingGraphNew memCfg 1 memCallback
       cpu = pollingGraphNew cpuCfg 0.5 cpuCallback

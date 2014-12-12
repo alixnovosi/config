@@ -1,45 +1,38 @@
 {-# LANGUAGE OverloadedStrings #-}
 -- Andrew Michaud's XMonad config.
 -- Built from bits and pieces of other configs by other people.
-
 import XMonad
 
-import XMonad.Actions.SpawnOn
-
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers (doCenterFloat, doFullFloat)
+import XMonad.Hooks.UrgencyHook
+import XMonad.Hooks.SetWMName -- For dealing with Java stuff.
+
+import XMonad.Layout.NoBorders (smartBorders)
+
+import XMonad.Util.EZConfig (additionalKeys)
+import XMonad.Util.Run (spawnPipe, runProcessWithInput)
+
+import qualified XMonad.StackSet as W -- for extra workspaces.
+
+-- DBus (which Taffybar uses)
 import qualified DBus as D
 import qualified DBus.Client as D
+
 import qualified Codec.Binary.UTF8.String as UTF8
 
-import System.Taffybar.XMonadLog ( dbusLog)
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.UrgencyHook
--- For dealing with Java.
-import XMonad.Hooks.SetWMName
-
-import XMonad.Layout.NoBorders
-
-import XMonad.Util.EZConfig(additionalKeys)
-import XMonad.Util.Run(spawnPipe, runProcessWithInput)
+import System.Taffybar.XMonadLog (dbusLog)
 
 import Graphics.X11.ExtraTypes.XF86
-import Graphics.X11.Xlib
 
--- For xrandr info processing.
-import qualified Data.Char as C
-import Data.List
+import qualified Data.Char as C (toUpper)
 
-import System.IO
-import System.FilePath.Posix
-import System.Posix.Unistd -- to get hostname
+import System.Posix.Unistd (nodeName, getSystemID)
 
--- For extra workspace nonsense
-import qualified XMonad.StackSet as W
-
---------------------------------------------------------------------------------------------------------------
------------------------------------------------- MAIN --------------------------------------------------------
---------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+-------------------------------- MAIN ---------------------------------------
+-----------------------------------------------------------------------------
 
 main :: IO ()
 main = do
@@ -50,12 +43,8 @@ main = do
     dbus <- D.connectSession
     getWellKnownName dbus
 
-    -- Resolution info
-    xrandr   <- runProcessWithInput "xrandr" [] ""
-    let dims =  screeninfo xrandr
-
     -- Conky background status info.
-    conkyPID  <- spawnPID $ conky "config" "/home/amichaud/.config"
+    conkyPID  <- spawnPID "conky --config=$HOME/.config/conky/config"
 
     -- Config xmonad.
     xmonad $ defaultConfig
@@ -69,7 +58,7 @@ main = do
         , startupHook = setWMName "LG3D"
 
         -- Stuff.
-        , modMask    = mMask
+        , modMask    = mod4Mask
         , workspaces = spaces
         , terminal   = term
 
@@ -79,13 +68,14 @@ main = do
         -- Border jazz
         , focusedBorderColor = focBord
         , normalBorderColor  = normBord
-        , borderWidth        = bordWidth
+        , borderWidth        = 2
 
-        } `additionalKeys` keybinds "/home/amichaud/.config" host
+        } `additionalKeys` keybinds host
 
----------------------------------------------
---------------- VARIABLES AND STUFF
----------------------------------------------
+
+---------------------------------------------------------------------
+----------------------------- COLORS --------------------------------
+---------------------------------------------------------------------
 
 -- Color variables.
 -- _ :: String
@@ -107,12 +97,6 @@ blue    = "#268bd2"
 cyan    = "#2aa198"
 green   = "#859900"
 
--- Font variables.
--- _ :: String
-fontName  = "Dejavu"
-font size = "-*-" ++ fontName ++ "-medium-r-normal-*-" ++ show size ++ "-140-75-75-p-74-iso10646-1"
-fn size   = " -fn " ++ font size
-
 -- XMonad colors and styling.
 -- _ :: String
 normFG   = base3
@@ -121,56 +105,55 @@ currBG   = orange
 urgBG    = red
 focBord  = orange
 normBord = base1
-bordWidth :: Dimension
-bordWidth = 2
 
--- More complicated variables.
+---------------------------------------------------------------------------------------------------------------
+-------------------------------------------------   KEYBINDS   ------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
 
 -- Keybinds, depending on host for audio keys.
-keybinds configHome host =
+keybinds host =
     [
     -- Screen lock
-      ((mMask .|. shiftMask,   xK_l),                     spawn "xscreensaver-command -lock")
+      ((mod4Mask .|. shiftMask,   xK_l),                     spawn "xscreensaver-command -lock")
 
     -- Backlight.
-    , ((0,                     xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
-    , ((0,                     xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 7")
+    , ((0,                        xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
+    , ((0,                        xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 7")
 
     -- Screenshots.
-    , ((0,                     xK_Print),                 spawn $ scrot "")
-    , ((controlMask,           xK_Print),                 spawn $ scrot "select")
-    , ((shiftMask,             xK_Print),                 spawn $ scrot "delay")
+    , ((0,                        xK_Print),                 spawn $ scrot "")
+    , ((controlMask,              xK_Print),                 spawn $ scrot "select")
+    , ((shiftMask,                xK_Print),                 spawn $ scrot "delay")
 
     -- Recompile/restart XMonad. Modified to kill taskbar programs.
-    , ((mMask,                 xK_q),                     spawn $ "xmonad --recompile;" ++
+    , ((mod4Mask,                 xK_q),                     spawn $ "xmonad --recompile;" ++
                                                                     "killall conky;" ++
                                                                     "xmonad --restart")
     -- Run DMenu.
-    , ((mMask,                 xK_p),                     spawn $ "dmenu_run")
+    , ((mod4Mask,                 xK_p),                     spawn "dmenu_run")
 
     -- Quick program spawns.
-    , ((mMask,                 xK_a),                     spawn $ namedCmd "alsamixer" "")
+    , ((mod4Mask,                 xK_a),                     spawn $ namedCmd "alsamixer" "")
     -- TODO- Find a cleaner way to do this.
-    , ((mMask,                 xK_o),                     spawn $ namedCmd "ncmpcpp" ("-c " ++
-                                                                     configHome ++ "/ncmpcpp/config"))
-    , ((mMask,                 xK_b),                     spawn  "x-www-browser")
+    , ((mod4Mask,                 xK_o),                     spawn $ namedCmd "ncmpcpp" "-c /home/amichaud/.config/ncmpcpp/config")
+    , ((mod4Mask,                 xK_b),                     spawn "x-www-browser")
 
-    , ((mMask .|. controlMask, xK_a),                     spawn $ term ++
+    , ((mod4Mask .|. controlMask, xK_a),                     spawn $ term ++
                                                                 " --title=__SSHAGENT" ++
                                                                 " --command=\"bash -c '" ++
                                                                 "ssh-add; read -p \\\"Press any key...\\\"" ++
                                                                 "'\"")
 
     -- Various useful scripts.
-    , ((mMask .|. shiftMask,   xK_s),                     spawn "~/bin/setWallpaper")
-    , ((mMask,                 xK_n),                     spawn "~/bin/toggleOneko")
+    , ((mod4Mask .|. shiftMask,   xK_s),                     spawn "~/bin/setWallpaper")
+    , ((mod4Mask,                 xK_n),                     spawn "~/bin/toggleOneko")
 
     -- Clip password with dzen and a nifty script.
-    , ((mMask .|. shiftMask,   xK_p),                     spawn $ "~/bin/menu pass")
+    , ((mod4Mask .|. shiftMask,   xK_p),                     spawn "~/bin/menu pass")
     -- Browse videos nicely.
-    , ((mMask,                 xK_v),                     spawn $ "~/bin/menu vid")
+    , ((mod4Mask,                 xK_v),                     spawn "~/bin/menu vid")
     -- Browse playlists nicely.
-    , ((mMask .|. shiftMask,   xK_o),                     spawn $ "~/bin/menu music")
+    , ((mod4Mask .|. shiftMask,   xK_o),                     spawn "~/bin/menu music")
 
     ] ++
 
@@ -178,56 +161,48 @@ keybinds configHome host =
     audioKeys host ++
 
     -- Keys for extra workspaces
-    [((mMask .|. shiftMask, k), windows $ W.shift i) |
+    [((mod4Mask .|. shiftMask, k), windows $ W.shift i) |
         (i, k) <- zip spaces wsKeys] ++
 
-    [( (mMask,              k), windows $ W.greedyView i) |
+    [( (mod4Mask,              k), windows $ W.greedyView i) |
         (i, k) <- zip spaces wsKeys]
         where wsKeys  = [xK_grave] ++ [xK_1 .. xK_9] ++ [xK_0, xK_minus, xK_equal]
 
--------------------------------------------------------------------------------------------------------------
------------------------------STATUS BAR STUFF----------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+------------------------------    STATUS BAR STUFF  -------------------------------
+-----------------------------------------------------------------------------------
 
--- Pretty printing.
-myDzenPP :: String -> Handle -> PP
-myDzenPP configHome h = dzenPP
-    { ppOutput  = hPutStrLn h
-    , ppCurrent = pad
-    , ppHidden  = pad . take 1
-    , ppUrgent  = pad
-    , ppSep     = " "
-    , ppTitle   = pad . shorten 70
-    }
-
+-- This section from alexkay on github, modified by me.
 prettyPrinter :: D.Client -> PP
 prettyPrinter dbus = defaultPP
     { ppOutput   = dbusOutput dbus
-    , ppTitle    = pangoSanitize
-    , ppCurrent  = pangoColor "green" . wrap "[" "]" . pangoSanitize
-    , ppVisible  = pangoColor "yellow" . wrap "(" ")" . pangoSanitize
-    , ppHidden   = const ""
-    , ppUrgent   = pangoColor "red"
+    , ppTitle    = pangoColor normFG normBG . pangoSanitize . shorten 70
+    , ppCurrent  = pangoColor normBG orange . wrap "[" "]" . pangoSanitize
+    , ppVisible  = pangoColor normBG cyan . wrap "(" ")" . pangoSanitize
+    , ppHidden   = pangoColor normFG normBG . take 1
+    , ppUrgent   = pangoColor normBG red
     , ppLayout   = const ""
     , ppSep      = " "
     }
+
 getWellKnownName :: D.Client -> IO ()
 getWellKnownName dbus = do
   D.requestName dbus (D.busName_ "org.xmonad.Log")
                 [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
   return ()
 
+-- Get DBus output.  Not my code.
 dbusOutput :: D.Client -> String -> IO ()
 dbusOutput dbus str = do
     let signal = (D.signal "/org/xmonad/Log" "org.xmonad.Log" "Update") {
-            D.signalBody = [D.toVariant ("<b>" ++ (UTF8.decodeString str) ++ "</b>")]
+            D.signalBody = [D.toVariant ("<b>" ++ UTF8.decodeString str ++ "</b>")]
         }
     D.emit dbus signal
 
-pangoColor :: String -> String -> String
-pangoColor fg = wrap left right
+pangoColor :: String -> String -> String -> String
+pangoColor fg bg = wrap left right
   where
-    left  = "<span foreground=\"" ++ fg ++ "\">"
+    left  = "<span foreground=\"" ++ fg ++ "\" background=\"" ++ bg ++ "\">"
     right = "</span>"
 
 pangoSanitize :: String -> String
@@ -238,19 +213,16 @@ pangoSanitize = foldr sanitize ""
     sanitize '\"' xs = "&quot;" ++ xs
     sanitize '&'  xs = "&amp;" ++ xs
     sanitize x    xs = x:xs
-conky file config = "conky --config=" ++ config ++ "/conky/" ++ file
 
--- Status bar dimensions.
-statusHeight = 16
+----------------------------------------------------------------------------------------------
+----------------------------------------    OTHER    -----------------------------------------
+----------------------------------------------------------------------------------------------
 
 -- Terminal commands
 term              = "xfce4-terminal --hide-menubar --show-borders"
 termCmd cmd       = term ++ " --command=" ++ cmd
 namedCmd cmd args = term ++ " --title=" ++ name ++ " --command='" ++ cmd ++ " " ++ args ++ "'"
     where name = "__" ++ map C.toUpper cmd
-
--- Use Windows key as mod key, it's convenient.
-mMask = mod4Mask
 
 -- Workspace titles
 spaces :: [String]
@@ -284,20 +256,9 @@ scrot = \x -> case x of
     where format      = "'%d-%m-%Y-%s_$wx$h.png' "
           destination = "-e 'mv $f ~/pictures/screenshots/' "
 
---------------------------------------------------------------------------------------------------------------
--------------------------------------UTILITY--FUNCTIONS-------------------------------------------------------
---------------------------------------------------------------------------------------------------------------
--- Grab resolution and positioning for each active monitor given xrandr string.
-screeninfo :: String -> [[Int]]
-screeninfo input = infoints
-    where reslines   = filter (\x -> head (tail x ) == "connected" ) $ map words (lines input)
-          resstrings = map (map (\x -> if C.isNumber x then x else ' ') . (!!2)) reslines
-          info       = map words resstrings
-          infoints   = map (map read) info :: [[Int]]
-
---------------------------------------------------------------------------------------------------------------
-----------------------------------CUSTOM HOOKS--------------------------------------------
---------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------   CUSTOM HOOKS   ------------------------
+-------------------------------------------------------------------
 
 -- Custom urgency hook.
 uHook = dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1"] }
@@ -323,12 +284,3 @@ mHook = manageDocks <+> composeAll
     , className =? "Pidgin"         --> doShift "3:chat"
     , title     =? "Skype"          --> doShift "3:chat"
     ] <+> manageHook defaultConfig
-
--- Custom log hook.
--- Forward window information to dzen bar, formatted.
-lHook :: String -> Handle -> X ()
-lHook config_home h = dynamicLogWithPP (myDzenPP config_home h)
-
-------------------------------------------------------------------------------------------
------------------------------ END CUSTOM HOOKS -------------------------------------------
-------------------------------------------------------------------------------------------

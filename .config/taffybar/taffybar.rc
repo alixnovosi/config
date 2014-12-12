@@ -76,3 +76,5 @@ style "default"
 }
 
 class "GtkWidget" style "default"
+
+gtk-font-name="DejaVu Sans Mono 10"

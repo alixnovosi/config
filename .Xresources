@@ -34,17 +34,12 @@ Xft.lcdfilter: lcddefault
 
 *background:              #002b36
 *foreground:              #839496
-*Background:              #002b36
-*Foreground:              #839496
 *fading:                  40
 *cursorColor:             #93a1a1
 *pointerColorForeground:  #93a1a1
 *pointerColorBackground:  #586e75
 *fadeColor:               #fdf6e3
 
-! General settings.
-
-! Fonts
 *.font:           xft:Dejavu Mono:style=Regular:pixelsize=12
 *Font:            xft:Dejavu Mono:style=Regular:pixelsize=12
 *faceName:        xft:Dejavu Mono:style=Regular:pixelsize=12
@@ -52,26 +47,21 @@ Xft.lcdfilter: lcddefault
 *.boldFont:       xft:Dejavu Mono:style=Bold:pixelsize=12
 *.italicFont:     xft:Dejavu Mono:style=Italic:pixelsize=12
 
-! abachas dotfiles, github.
-! xscreensaver DIALOG BOX ---------------------------------------------
-xscreensaver.Dialog.foreground              : #ffffff
-xscreensaver.Dialog.background              : #111111
-xscreensaver.Dialog.topShadowColor          : #111111
-xscreensaver.Dialog.bottomShadowColor       : #111111
-xscreensaver.Dialog.Button.foreground       : #666666
-xscreensaver.Dialog.Button.background       : #ffffff
-
-!! xscreensaver INPUT BOX ----------------------------------------------
-xscreensaver.Dialog.text.foreground         : #666666
-xscreensaver.Dialog.text.background         : #ffffff
-xscreensaver.Dialog.internalBorderWidth     : 24
-xscreensaver.Dialog.borderWidth             : 20
-xscreensaver.Dialog.shadowThickness         : 2
+xscreensaver.*.foreground:               #839496
+xscreensaver.*.background:               #002b36
+xscreensaver.captureStderr:              false
+xscreensaver.Dialog.topShadowColor:      #073642
+xscreensaver.Dialog.bottomShadowColor:   #073642
+xscreensaver.Dialog.internalBorderWidth: 0
+xscreensaver.Dialog.borderWidth:         0
+xscreensaver.Dialog.shadowThickness:     0
+xscreensaver.Dialog.Button.background:   #073642
 
 !! xscreensaver TIMEOUT BAR --------------------------------------------
-xscreensaver.passwd.thermometer.foreground  : #ff0000
-xscreensaver.passwd.thermometer.background  : #000000
-xscreensaver.passwd.thermometer.width       : 8
+xscreensaver.passwd.thermometer.foreground      : #dc322f
+xscreensaver.passwd.thermometer.background      : #073642
+xscreensaver.passwd.thermometer.width           : 4
+xscreensaver.passwd.thermometer.shadowThickness : 0
 
 !! xscreensaver DATESTAMP FORMAT ---------------------------------------
 xscreensaver.dateFormat                     : %I:%M%P %a %b %d, %Y
@@ -80,6 +70,8 @@ xscreensaver.dateFormat                     : %I:%M%P %a %b %d, %Y
 xscreensaver.newLoginCommand                : dm-tool switch-to-greeter
 
 ! xterm
+xterm*background:         #073642
+xterm*foreground        : #839496
 xterm*dynamicColors:      true
 xterm*utf8:               2
 xterm*eightBitInput:      true
@@ -95,7 +87,6 @@ xterm*termName:           xterm-256color
 xterm*locale:             true
 
 ! xclock --------------------------------------------------------------------------------
-
 xclock*update:            1
 xclock*analog:            true
 
@@ -148,6 +139,6 @@ XCalc*ShapeStyle:             circle
 
 !!Dmenu
 dmenu.foreground:    #fdf6e3
-dmenu.selforeground: #fdf6e3
+dmenu.selforeground: #002b36
 dmenu.selbackground: #cb4b16
 

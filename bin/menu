@@ -36,7 +36,7 @@ elif [ "$1" = "vid" ]; then
     choose $HOME/videos ".*\.\(mkv\|mp4\|avi\|vob\)"
 
     # Play movie.
-    mpv "$prefix/$choice" &
+    mpv "$HOME/videos/$choice" &
 
 # Music with mpd.
 elif [ "$1" = "music" ]; then

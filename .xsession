@@ -27,4 +27,8 @@ export SSH_ASKPASS=ssh-askpass
 
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
 
-exec /usr/bin/ssh-agent ck-launch-session dbus-launch xmonad
+eval `dbus-launch --auto-syntax`
+
+taffybar &
+
+exec /usr/bin/ssh-agent ck-launch-session xmonad
