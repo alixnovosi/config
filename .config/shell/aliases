@@ -9,10 +9,10 @@ alias ncmpcpp="ncmpcpp -c ${XDG_CONFIG_HOME}/ncmpcpp/config"
 alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config"
 alias mpdscribble="mpdscribble --conf ${XDG_CONFIG_HOME}/mpdscribble/config --log ${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log"
 alias vim="vim -u ${XDG_CONFIG_HOME}/vim/.vimrc"
+alias nvim="nvim -u ${XDG_CONFIG_HOME}/nvim/.nvimrc"
 alias view="view -u ${XDG_CONFIG_HOME}/vim/.vimrc"
 alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/config"
 alias svn="svn --config-dir ${XDG_CONFIG_HOME}/subversion"
-alias cabal="cabal --config-dir ${XDG_CONFIG_HOME}/cabal"
 alias gimp="gimp -g ${XDG_CONFIG_HOME}/gimp/config"
 alias feh="feh --no-fehbg"
 alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config --home=${XDG_CONFIG_HOME}/irssi"
@@ -22,6 +22,7 @@ alias grep="grep --color=auto"
 
 # Useful aliases.
 alias ll="ls -al"
+alias rm="rm -i"
 alias la="ls -A"
 alias l="ls -CF"
 alias df="df -h"
@@ -34,7 +35,3 @@ alias mv="mv -i"
 alias whence="which"
 alias starwars='telnet towel.blinkenlights.nl'
 alias git-yolo='git commit -am "`curl -s http://whatthecommit.com/index.txt`"'
-
-# maturity
-alias fuck='sudo `!!`'
-alias you=''
