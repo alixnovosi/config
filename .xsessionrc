@@ -1,0 +1,45 @@
+#!/bin/sh
+
+CONF="$HOME/.config"
+
+# Update Xresources
+[ -f .Xresources ] && xrdb -merge .Xresources
+
+# Set cursor style and auto-hide cursor
+xsetroot -cursor_name left_ptr
+unclutter &
+
+# Screensaver program
+xscreensaver -no-splash &
+
+# Set wallpaper.
+[ -f $HOME/bin/setWallpaper ] && $HOME/bin/setWallpaper &
+
+# fix screens
+[ -f $HOME/bin/fixscreens ] && $HOME/bin/fixscreens &
+
+# Start dbus and ssh-agent, setting SSH_ASKPASS
+eval `dbus-launch --auto-syntax`
+eval `ssh-agent`
+export SSH_ASKPASS=ssh-askpass
+
+# Start gnome-keyring for secrets
+eval `gnome-keyring-daemon`
+
+# Run programs, checking if they are already started.
+[ ! $(pgrep -x pidgin) ] && pidgin &
+[ ! -s $CONF/mpd/pid ] && mpd &
+[ ! $(pgrep -x mpdscribble) ] && mpdscribble --conf $CONF/mpdscribble/config --log $CONF/mpdscribble/mpdscribble.log &
+
+mate-power-manager &
+
+# Start mpDpris to track what MPD is doing in a standard (?) way
+mpDris2 &
+
+
+synclient HorizTwoFingerScroll=1
+
+# notifications
+[ ! $(pgrep -x dunst) ] && dunst &
+
+taffybar &
