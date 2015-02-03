@@ -74,7 +74,6 @@ xterm*background:         #073642
 xterm*foreground        : #839496
 xterm*dynamicColors:      true
 xterm*utf8:               2
-xterm*eightBitInput:      true
 xterm*saveLines:          10000
 xterm*scrollKey:          true
 xterm*scrollTtyOutput:    false
@@ -85,6 +84,8 @@ xterm*multiScroll:        true
 xterm*toolBar:            false
 xterm*termName:           xterm-256color
 xterm*locale:             true
+xterm*eightBitInput:      false
+xterm*metaSendsEscape:    true
 
 ! xclock --------------------------------------------------------------------------------
 xclock*update:            1
@@ -141,4 +142,3 @@ XCalc*ShapeStyle:             circle
 dmenu.foreground:    #fdf6e3
 dmenu.selforeground: #002b36
 dmenu.selbackground: #cb4b16
-
