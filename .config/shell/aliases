@@ -11,7 +11,7 @@ alias mpdscribble="mpdscribble --conf ${XDG_CONFIG_HOME}/mpdscribble/config --lo
 alias vim="vim -u ${XDG_CONFIG_HOME}/vim/.vimrc"
 alias nvim="nvim -u ${XDG_CONFIG_HOME}/nvim/.nvimrc"
 alias view="view -u ${XDG_CONFIG_HOME}/vim/.vimrc"
-alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/config"
+alias tmux="TERM=xterm-256color tmux -f ${XDG_CONFIG_HOME}/tmux/config"
 alias svn="svn --config-dir ${XDG_CONFIG_HOME}/subversion"
 alias gimp="gimp -g ${XDG_CONFIG_HOME}/gimp/config"
 alias feh="feh --no-fehbg"

@@ -17,26 +17,23 @@ then
     export HISTFILE="$XDG_CACHE_HOME/bash/history"
 fi
 
+export MANPAGER="`which less`"
+
 export LESSHISTFILE="$XDG_CACHE_HOME/less/hist"
 
 # Forcing more xdg spec compliance
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
-
 export TEXMFCONFIG="$XDG_CONFIG_HOME/tex/mfconfig"
 export TEXMFVAR="$XDG_CACHE_HOME/tex/mfvar"
 export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
-
 export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/gimp2"
+export CABAL_CONFIG="$XDG_CONFIG_HOME/cabal/config"
+export MPV_HOME="$XDG_CONFIG_HOME/mpv"
 
-export CABAL_CONFIG=$XDG_CONFIG_HOME/cabal/config
-
-export MPV_HOME=$XDG_CONFIG_HOME/mpv
-
-# Set path.
+# Set path to include home bin and cabal's folder.
 mkdir -p "${HOME}/bin"
-PATH=${HOME}/bin:/usr/local/bin:/usr/local/sbin:$PATH
+PATH=${HOME}/bin:~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # Solarized colors.
 export SOLARIZED_BASE00="#657b83"
