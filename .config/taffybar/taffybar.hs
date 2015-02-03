@@ -1,41 +1,48 @@
 import System.Taffybar
 
 import System.Taffybar.Systray
-import System.Taffybar.XMonadLog
+import System.Taffybar.TaffyPager
+import System.Taffybar.Pager (wrap, colorize, shorten, escape)
 import System.Taffybar.SimpleClock
 import System.Taffybar.FreedesktopNotifications
-import System.Taffybar.Weather
-import System.Taffybar.MPRIS
+import System.Taffybar.MPRIS2
 
-import System.Taffybar.Widgets.PollingBar
-import System.Taffybar.Widgets.PollingGraph
+-------------------
+----- COLORS ------
+-------------------
 
-import System.Information.Memory
-import System.Information.CPU
-
-memCallback = do
-  mi <- parseMeminfo
-  return [memoryUsedRatio mi]
-
-cpuCallback = do
-  (userLoad, systemLoad, totalLoad) <- cpuLoad
-  return [totalLoad, systemLoad]
+base03  = "#002b36"
+yellow  = "#b58900"
+orange  = "#cb4b16"
+red     = "#dc322f"
+magenta = "#d33682"
+violet  = "#6c71c4"
+blue    = "#268bd2"
+cyan    = "#2aa198"
+green   = "#859900"
 
 main = do
-  let memCfg = defaultGraphConfig { graphDataColors = [(1, 0, 0, 1)]
-                                  , graphLabel = Just "mem"
-                                  }
-      cpuCfg = defaultGraphConfig { graphDataColors = [ (0, 1, 0, 1)
-                                                      , (1, 0, 1, 0.5)
-                                                      ]
-                                  , graphLabel = Just "cpu"
-                                  }
-  let clock = textClockNew Nothing "<span fgcolor='#fdf6e3'>%a %b %_d %H:%M</span>" 1
-      log = xmonadLogNew
-      mem = pollingGraphNew memCfg 1 memCallback
-      cpu = pollingGraphNew cpuCfg 0.5 cpuCallback
-      tray = systrayNew
-  defaultTaffybar defaultTaffybarConfig { startWidgets = [log ]
-                                        , endWidgets = [ tray, clock]
+  let clock  = textClockNew Nothing "<span fgcolor='#fdf6e3'>%a %b %_d %H:%M</span>" 1
+      pager  = pagerConfig
+      tray   = systrayNew
+      mpris2 = mpris2New
+  defaultTaffybar defaultTaffybarConfig { startWidgets = [pager]
+                                        , endWidgets = [ tray, clock, mpris2]
                                         , barHeight = 16
                                         }
+
+--------------------------------------------------------------------------------------------
+------------------------------------   FUNCTIONS   -----------------------------------------
+--------------------------------------------------------------------------------------------
+
+-- Pager config.
+pagerConfig = taffyPagerNew defaultPagerConfig
+                { emptyWorkspace   = const ""
+                , activeWorkspace  = colorize base03 orange . wrap "[" "]"
+                , visibleWorkspace = colorize base03 cyan . wrap "(" ")"
+                , urgentWorkspace  = colorize base03 red . wrap "<" ">"
+                , hiddenWorkspace  = take 1
+                , widgetSep = " "
+                , activeLayout = take 1
+                , activeWindow = shorten 70 . escape
+                }
