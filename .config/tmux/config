@@ -9,7 +9,11 @@
 ##########################################################################################
 # Solarized colors.
 
+# Airline/tmuxline nonsense
+if-shell "test -f snapshot" "~/.config/tmux/snapshot"
+
 set-window-option -g xterm-keys on
+set -g default-terminal "screen-256color"
 
 # Default statusbar colors.
 set -g status-fg $SOLARIZED_BASE3

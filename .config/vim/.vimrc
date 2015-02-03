@@ -1,4 +1,3 @@
-" Set up vundle
 set nocompatible
 
 set runtimepath+=$XDG_CONFIG_HOME/vim/vim
@@ -10,52 +9,55 @@ let bundles_dir = expand('$XDG_CONFIG_HOME/vim/vim/vundle')
 
 call vundle#rc(bundles_dir)
 
+""" Bundles.  Look them up on GitHub for more detail.
 Bundle 'gmarik/Vundle.vim'
 
-""" Vundle bundles.
-" Language support.
+""" Language support/language-specific stuff.
 Bundle 'elzr/vim-json'
 Bundle 'derekwyatt/vim-scala'
 Plugin 'fatih/vim-go'
 Plugin 'smancill/conky-syntax.vim'
 Bundle 'dag/vim2hs'
+Bundle 'Twinside/haskellFold'
 
-" Style.
+""" Programming support.
+Bundle 'scrooloose/syntastic'
+Bundle 'fholgado/minibufexpl.vim'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'tComment'
+Bundle 'tpope/vim-surround'
+
+""" Version control nonsense.
+Bundle 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+
+""" Appearance.
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bronson/vim-trailing-whitespace'
+Plugin 'bling/vim-airline'
+Bundle 'edkolev/tmuxline.vim'
 
-" File stuff / things outside vim.
+""" File stuff / things outside vim.
 Bundle 'majutsushi/tagbar'
 Bundle 'scrooloose/nerdtree'
 Bundle 'vim-scripts/a.vim'
-
-" Vim style and code support.
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-surround'
-" Make buffers easy and fun.
-Bundle 'fholgado/minibufexpl.vim'
-" auto-completion magic
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'tComment'
-Plugin 'itchyny/lightline.vim'
 
 call vundle#end()
 set rtp+=$XDG_CONFIG_HOME/vim/vim
 filetype plugin indent on
 
-""" Nice backspacing.
-set backspace=indent,eol,start
-set encoding=utf-8 t_Co=256
+""" Make backspacing reasonable, and force utf-8 and 256 colors.
+set backspace=indent,eol,start encoding=utf-8 t_Co=256
 scriptencoding utf-8
 
-" Tmux nonsense.
-if &term =~ '^screen'
-    " tmux will send xterm-style keys when its xterm-keys option is on
-    execute "set <xUp>=\e[1;*A"
-    execute "set <xDown>=\e[1;*B"
-    execute "set <xRight>=\e[1;*C"
-    execute "set <xLeft>=\e[1;*D"
-endif
+""" Tmuxline and airline config.
+let g:airline_powerline_fonts = 1
+let g:tmuxline_preset = {
+    \'a'    : ['#S'],
+    \'b'    : ['#H'],
+    \'win'  : ['#I', '#W', '#F'],
+    \'cwin' : ['#I', '#W', '#F'],
+    \'z'    : ['%R', '%d %A %Y']}
 
 let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim/vim-go")
 
@@ -63,39 +65,37 @@ let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim/vim-go")
 syntax enable
 set background=dark
 colorscheme solarized
-hi Normal ctermbg=none
+hi clear SignColumn "fix vim-solarized breaking gitgutter.
 
-""" Enable mouse.
-set mouse=a
-""" word wrapping.
-set ww=[,],<,>,h,l,b,s
+""" Enable mouse and word wrapping.
+set mouse=a ww=[,],<,>,h,l,b,s
 
-set textwidth=110
+set textwidth=110 "TODO figure out a way to make this work across machines better.
 
+""" Tabs work nicely, no modeline.
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 set nomodeline showcmd
 
+""" Code folding!
 set nofoldenable foldmethod=indent foldnestmax=10 foldlevel=1
 
 autocmd FileType tex noremap <F5> <Esc>:!pdflatex %<Cr><Cr>
 autocmd FileType tex noremap <F6> <Esc>:!silent !evince %<.pdf >/dev/null 2>&1 &<Cr><Cr>
 
-""" Store cache files elsewhere.
-""" Store backup files
+""" Throw everything in $XDG_CACHE_HOME or /tmp instead of the current directory..
 set backup backupdir=$XDG_CACHE_HOME/vim/backup,.,/tmp
 set dir=$XDG_CACHE_HOME/vim/swap,.,/tmp
-""" Also viminfo.
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 
-" stolen from cstanfill, here because I'm '''cool'''
-"remap jk to escape for 3xtr4 l33t h4xx|ng
+""" Thanks cstanfill
+""" Faster escape if I ever remember to use the damn keybind.
 inoremap jk <Esc>
 
-""more hjkl!!!
+""" Cycle buffers easier.
 noremap <C-h> <Esc>:bp<Cr>
 noremap <C-l> <Esc>:bn<Cr>
 
-" MORE HJKL!!!!!!!!!
+""" Move screen up and down without moving cursor.
 nmap <C-j> <C-e>
 nmap <C-k> <C-y>
 
@@ -105,28 +105,6 @@ set runtimepath+=$XDG_CONFIG_HOME/vim/vim/plugin
 """ These cause the bottom of the screen to contain more useful information
 set laststatus=2 ruler showcmd
 
-""" Lightline
-let g:lightline = {
-    \ 'colorscheme': 'solarized_dark',
-    \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
-    \ },
-    \ 'component': {
-    \   'readonly': '%{&filetype=="help"?"":&readonly?"RO":""}',
-    \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-    \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-    \ },
-    \ 'component_visible_condition': {
-    \   'readonly': '(&filetype!="help"&& &readonly)',
-    \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-    \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-    \ },
-    \ }
-
-" stolen
-let g:miniBufExplForceSyntaxEnable = 1
-
 "lets C-s and C-q be capture by vim instead of the terminal
 silent !stty -ixon > /dev/null 2>/dev/null
 
@@ -135,13 +113,9 @@ nmap <C-s>v :TagbarToggle<CR>
 nmap <C-s>n :NERDTreeToggle<CR>
 nmap <C-s>s :set number!<CR>
 nmap <C-s>h :set hlsearch!<CR>
-nmap <C-s>k :bd<CR>
 
 """ Search settings.
-set incsearch
-set ignorecase
-set smartcase
-set nohlsearch
+set incsearch ignorecase smartcase nohlsearch
 
 """ Automatically reload if someone changes a file on us.
 set autoread
