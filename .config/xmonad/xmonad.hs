@@ -13,7 +13,6 @@ import qualified Data.Char as C (toUpper)
 import Graphics.X11.ExtraTypes.XF86
 import System.Posix.Unistd (nodeName, getSystemID)
 import System.Taffybar.Hooks.PagerHints (pagerHints)
-
 --------------------------------------------------------------------------------
 ---------------------------------  MAIN  ---------------------------------------
 --------------------------------------------------------------------------------
@@ -104,12 +103,12 @@ keybinds host =
     , ((mod4Mask .|. controlMask, xK_a), spawn $ namedCmd "ssh-add" "")
 
     -- Various useful scripts.
-    , ((mod4Mask .|. shiftMask, xK_s), spawn "~/bin/setWallpaper")
-    , ((mod4Mask,               xK_n), spawn "~/bin/toggleOneko")
+    , ((mod4Mask .|. shiftMask, xK_s), spawn "~/.local/bin/setWallpaper")
+    , ((mod4Mask,               xK_n), spawn "~/.local/bin/toggleOneko")
     -- dmenu script for passwords, videos, playlists
-    , ((mod4Mask .|. shiftMask, xK_p), spawn "~/bin/menu pass")
-    , ((mod4Mask,               xK_v), spawn "~/bin/menu vid")
-    , ((mod4Mask .|. shiftMask, xK_o), spawn "~/bin/menu music")
+    , ((mod4Mask .|. shiftMask, xK_p), spawn "~/.local/bin/menu pass")
+    , ((mod4Mask,               xK_v), spawn "~/.local/bin/menu vid")
+    , ((mod4Mask .|. shiftMask, xK_o), spawn "~/.local/bin/menu music")
     ] ++
 
     -- Audio keys.

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
+alias ncmpcpp="ncmpcpp -c ${XDG_CONFIG_HOME}/ncmpcpp/config"
+alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config"
+alias mpdscribble="mpdscribble --conf ${XDG_CONFIG_HOME}/mpdscribble/config --log ${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log"
+alias vim="vim -u ${XDG_CONFIG_HOME}/vim/.vimrc"
+alias nvim="nvim -u ${XDG_CONFIG_HOME}/nvim/.nvimrc"
+alias view="view -u ${XDG_CONFIG_HOME}/vim/.vimrc"
+alias tmux="TERM=xterm-256color tmux -f ${XDG_CONFIG_HOME}/tmux/config"
+alias svn="svn --config-dir ${XDG_CONFIG_HOME}/subversion"
+alias gimp="gimp -g ${XDG_CONFIG_HOME}/gimp/config"
+alias feh="feh --no-fehbg"
+alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config --home=${XDG_CONFIG_HOME}/irssi"
+alias firefox="firefox -profile $XDG_CONFIG_HOME/firefox"
+alias startx="startx $XDG_CONFIG_HOME/X11/xinitrc"
+
+# Forcing more xdg spec compliance
+export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+export WINEPREFIX="$XDG_CONFIG_HOME/wine"
+export TEXMFCONFIG="$XDG_CONFIG_HOME/tex/mfconfig"
+export TEXMFVAR="$XDG_CACHE_HOME/tex/mfvar"
+export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
+export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/gimp2"
+export CABAL_CONFIG="$XDG_CONFIG_HOME/cabal/config"
+export MPV_HOME="$XDG_CONFIG_HOME/mpv"
+export LESSHISTFILE="$XDG_CACHE_HOME/less/hist"
+export GEM_HOME="$HOME/.local/lib/gems"
+export GEM_PATH="$HOME/.local/bin"
+export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"

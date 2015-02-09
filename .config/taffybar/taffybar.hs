@@ -22,7 +22,7 @@ cyan    = "#2aa198"
 green   = "#859900"
 
 main = do
-  let clock  = textClockNew Nothing "<span fgcolor='#fdf6e3'>%a %b %_d %H:%M</span>" 1
+  let clock  = textClockNew Nothing "<span fgcolor='#fdf6e3'>%_d %b %Y|%A|%H:%M</span>" 1
       pager  = pagerConfig
       tray   = systrayNew
       mpris2 = mpris2New

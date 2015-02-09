@@ -18,7 +18,7 @@ Bundle 'derekwyatt/vim-scala'
 Plugin 'fatih/vim-go'
 Plugin 'smancill/conky-syntax.vim'
 Bundle 'dag/vim2hs'
-Bundle 'Twinside/haskellFold'
+Bundle 'Twinside/vim-haskellFold'
 
 """ Programming support.
 Bundle 'scrooloose/syntastic'
@@ -51,13 +51,16 @@ set backspace=indent,eol,start encoding=utf-8 t_Co=256
 scriptencoding utf-8
 
 """ Tmuxline and airline config.
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
+let g:airline_left_sep = ' '
+let g:airline_right_sep = ' '
+let g:tmuxline_powerline_separators = 0
 let g:tmuxline_preset = {
     \'a'    : ['#S'],
     \'b'    : ['#H'],
     \'win'  : ['#I', '#W', '#F'],
     \'cwin' : ['#I', '#W', '#F'],
-    \'z'    : ['%R', '%d %A %Y']}
+    \'z'    : ['%e %b %Y', '%A', '%H %M']}
 
 let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim/vim-go")
 
@@ -66,6 +69,9 @@ syntax enable
 set background=dark
 colorscheme solarized
 hi clear SignColumn "fix vim-solarized breaking gitgutter.
+" stop solarized bg from being non-transparent
+hi Normal ctermbg=none
+
 
 """ Enable mouse and word wrapping.
 set mouse=a ww=[,],<,>,h,l,b,s
