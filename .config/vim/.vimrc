@@ -38,7 +38,6 @@ Plugin 'bling/vim-airline'
 Bundle 'edkolev/tmuxline.vim'
 
 """ File stuff / things outside vim.
-Bundle 'majutsushi/tagbar'
 Bundle 'scrooloose/nerdtree'
 Bundle 'vim-scripts/a.vim'
 
@@ -76,7 +75,7 @@ hi Normal ctermbg=none
 """ Enable mouse and word wrapping.
 set mouse=a ww=[,],<,>,h,l,b,s
 
-set textwidth=110 "TODO figure out a way to make this work across machines better.
+set textwidth=90
 
 """ Tabs work nicely, no modeline.
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
@@ -115,7 +114,6 @@ set laststatus=2 ruler showcmd
 silent !stty -ixon > /dev/null 2>/dev/null
 
 " Also stolen from cstanfill.
-nmap <C-s>v :TagbarToggle<CR>
 nmap <C-s>n :NERDTreeToggle<CR>
 nmap <C-s>s :set number!<CR>
 nmap <C-s>h :set hlsearch!<CR>
