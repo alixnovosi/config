@@ -4,18 +4,19 @@
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_DIRS=/usr/local/share/:/usr/share/
+export XDG_DATA_DIRS="/usr/local/share/:/usr/share/"
+export XDG_CONFIG_DIRS="/etc/xdg"
 
 # Colors
-. $XDG_CONFIG_HOME/shell/colors
+. "$XDG_CONFIG_HOME/shell/colors"
 
 # Useful stuff.
 export EDITOR="/usr/bin/vim -u $XDG_CONFIG_HOME/vim/.vimrc"
-export PAGER="$LESS"
+export PAGER="$(which less)"
 export VISUAL="$EDITOR"
 
-export MANPAGER="`which less`"
-export PAGER="`which less`"
+export MANPAGER="less"
+export PAGER="less"
 
 # Set path to include home bin and cabal's folder.
 mkdir -p "${HOME}/.local/bin"

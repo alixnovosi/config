@@ -22,9 +22,9 @@ choose () {
 if [ "$1" = "pass" ]; then
     echo "[menu] Mode pass"
 
-    choose ${PASSWORD_STORE_DIR-~/.password-store} ".*\.\(gpg\)"
-    # TODO find a cleaner way to do thisc.
-    realchoice=`echo $choice | sed s'|.gpg||'`
+    choose "${PASSWORD_STORE_DIR-~/.local/share/password-store}" ".*\.\(gpg\)"
+    # TODO find a cleaner way to do this.
+    realchoice=$(echo "$choice" | sed s'|.gpg||')
 
     # Copy pass to clipboard.
     pass show -c "$realchoice" 2>/dev/null
@@ -33,7 +33,7 @@ if [ "$1" = "pass" ]; then
 elif [ "$1" = "vid" ]; then
     echo "[menu] Mode video"
 
-    choose $HOME/videos ".*\.\(mkv\|mp4\|avi\|vob\)"
+    choose "$HOME/videos" ".*\.\(mkv\|mp4\|avi\|vob\)"
 
     # Play movie.
     mpv "$HOME/videos/$choice" &
@@ -45,10 +45,10 @@ elif [ "$1" = "music" ]; then
     prefix=~/.config/mpd/playlists
     choose $prefix ".*\.\(m3u\)"
     # TODO find a cleaner way to do thisc.
-    realchoice=`echo $choice | sed s'|.m3u||'`
+    realchoice=$("$choice//.m3u//")
 
     # Clear mpd playlist and play this playlist instead.
-    mpc clear &&  mpc load $realchoice &&  mpc play
+    mpc clear &&  mpc load "$realchoice" &&  mpc play
 
 else
     echo "[menu] Unsupported selection!"

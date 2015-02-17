@@ -1,0 +1,7 @@
+#!/bin/sh
+
+[ ! $(pgrep -x Xorg) ] && exit
+
+DIR="$HOME/pictures/wallpapers"
+
+DISPLAY=:0.0 XAUTHORITY=$HOME/.Xauthority feh --no-fehbg --randomize --recursive --magick-timeout 1 --bg-max $DIR
