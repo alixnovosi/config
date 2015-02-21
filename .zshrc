@@ -29,11 +29,6 @@ elif [[ "$(uname -s)" == "Linux" ]]; then
     . "$XDG_CONFIG_HOME/shell/linux"
 fi
 
-# Load any host-specific stuff.
-if [ -f "$XDG_CONFIG_HOME/shell/host" ]; then
-    . "$XDG_CONFIG_HOME/shell/host"
-fi
-
 # Enable 256 color capabilities for appropriate terminals
 
 # Terminals with any of the following set, support 256 colors (and are local)
@@ -86,5 +81,9 @@ unsetopt caseglob
 setopt auto_cd
 
 # Prompt.
-autoload -U colors && colors
-PROMPT="%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[green]%}%m%{$reset_color%}:%{$fg[blue]%}%~%{$reset_color%}# "
+PROMPT="%{$P_CYAN%}%n%{$P_RESET%}@%{$P_GREEN%}%m%{$P_RESET%}:%{$P_BLUE%}%~%{$P_RESET%}# "
+
+# Load any host-specific stuff.
+if [ -f "$XDG_CONFIG_HOME/shell/host" ]; then
+    . "$XDG_CONFIG_HOME/shell/host"
+fi
