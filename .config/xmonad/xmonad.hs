@@ -1,10 +1,10 @@
 -- Andrew Michaud's XMonad config.
 -- Built from bits and pieces of other configs by other people.
 import XMonad
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers (doCenterFloat, doFullFloat)
 import XMonad.Hooks.SetWMName -- For dealing with Java stuff.
-import XMonad.Hooks.EwmhDesktops -- Add ewmh stuff.
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Util.EZConfig (additionalKeys)
 import qualified XMonad.StackSet as W -- for extra workspaces.
@@ -13,10 +13,10 @@ import qualified Data.Char as C (toUpper)
 import Graphics.X11.ExtraTypes.XF86
 import System.Posix.Unistd (nodeName, getSystemID)
 import System.Taffybar.Hooks.PagerHints (pagerHints)
---------------------------------------------------------------------------------
----------------------------------  MAIN  ---------------------------------------
---------------------------------------------------------------------------------
 
+-----------------------------------------------------------------------------
+-------------------------------  MAIN  --------------------------------------
+-----------------------------------------------------------------------------
 main :: IO ()
 main = do
 
@@ -50,12 +50,11 @@ main = do
         , normalBorderColor  = base03
         , borderWidth        = 2
 
-        } `additionalKeys` keybinds host
+        } `additionalKeys` keybinds host mod4Mask
 
 ---------------------------------------------------------------------
 ----------------------------- COLORS --------------------------------
 ---------------------------------------------------------------------
-
 -- Color variables.
 -- _ :: String
 -- TODO put these in a common file somewhere and refer to them there.
@@ -67,25 +66,16 @@ base0   = "#839496"
 base1   = "#93a1a1"
 base2   = "#eee8d5"
 base3   = "#fdf6e3"
-yellow  = "#b58900"
-orange  = "#cb4b16"
-red     = "#dc322f"
-magenta = "#d33682"
-violet  = "#6c71c4"
-blue    = "#268bd2"
-cyan    = "#2aa198"
-green   = "#859900"
 
----------------------------------------------------------------------------------------------------------------
--------------------------------------------------   KEYBINDS   ------------------------------------------------
----------------------------------------------------------------------------------------------------------------
-
+---------------------------------------------------------------------------------
+--------------------------------   KEYBINDS   -----------------------------------
+---------------------------------------------------------------------------------
 -- Keybinds, depending on host for audio keys.
-keybinds host =
+keybinds host mask =
     [
     -- Start/Halt xscreensaver
-      ((mod4Mask .|. shiftMask,   xK_l), spawn "xscreensaver-command -lock")
-    , ((mod4Mask .|. controlMask, xK_l), spawn "xscreensaver-command -deactivate")
+      ((mask .|. shiftMask,   xK_l), spawn "xscreensaver-command -lock")
+    , ((mask .|. controlMask, xK_l), spawn "xscreensaver-command -deactivate")
 
     -- Backlight.
     , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
@@ -97,27 +87,27 @@ keybinds host =
     , ((shiftMask,   xK_Print), spawn $ scrot "delay")
 
     -- Quick program spawns.
-    , ((mod4Mask,                 xK_a), spawn $ namedCmd "alsamixer" "")
+    , ((mask,                 xK_a), spawn $ namedCmd "alsamixer" "")
     -- TODO- Find a cleaner way to do this.
-    , ((mod4Mask,                 xK_o), spawn $ namedCmd "ncmpcpp" "-c /home/amichaud/.config/ncmpcpp/config")
-    , ((mod4Mask,                 xK_b), spawn "x-www-browser")
+    , ((mask,                 xK_o), spawn $ namedCmd "ncmpcpp" "")
+    , ((mask,                 xK_b), spawn "x-www-browser")
 
-    , ((mod4Mask .|. controlMask, xK_a), spawn $ namedCmd "ssh-add" "")
+    , ((mask .|. controlMask, xK_a), spawn $ namedCmd "ssh-add" "")
 
     -- Various useful scripts.
-    , ((mod4Mask .|. shiftMask, xK_s), spawn "~/.local/bin/setWallpaper")
-    , ((mod4Mask,               xK_n), spawn "~/.local/bin/toggleOneko")
+    , ((mask .|. shiftMask, xK_s), spawn "setWallpaper")
+    , ((mask,               xK_n), spawn "toggleOneko")
     -- dmenu script for passwords, videos, playlists
-    , ((mod4Mask .|. shiftMask, xK_p), spawn "source ~/.zshrc; ~/.local/bin/menu pass")
-    , ((mod4Mask,               xK_v), spawn "~/.local/bin/menu vid")
-    , ((mod4Mask .|. shiftMask, xK_o), spawn "~/.local/bin/menu music")
+    , ((mask .|. shiftMask, xK_p), spawn ". ~/.zshrc; menu pass")
+    , ((mask,               xK_v), spawn "menu vid")
+    , ((mask .|. shiftMask, xK_o), spawn "menu music")
     ] ++
 
     -- Audio keys.
     audioKeys host ++
 
     -- Keys for extra workspaces
-    [((mod4Mask .|. shiftMask, k), windows $ W.shift i) |
+    [((mask .|. shiftMask, k), windows $ W.shift i) |
         (i, k) <- zip spaces wsKeys] ++
 
     [( (mod4Mask,              k), windows $ W.greedyView i) |
@@ -127,7 +117,6 @@ keybinds host =
 ----------------------------------------------------------------------------------------------
 ----------------------------------------    OTHER    -----------------------------------------
 ----------------------------------------------------------------------------------------------
-
 -- Terminal commands
 term              = "xfce4-terminal --hide-menubar --show-borders"
 termCmd cmd       = term ++ " --command=" ++ cmd
@@ -152,9 +141,9 @@ audioKeys h = case h of
                 , ((0,         xF86XK_AudioRaiseVolume), spawn "/usr/bin/pulseaudio-ctl up")
                 , ((0,         xF86XK_AudioLowerVolume), spawn "/usr/bin/pulseaudio-ctl down")]
 
-    _        -> [ ((0, xF86XK_AudioPlay), spawn "mpc toggle")
-                , ((0, xF86XK_AudioNext), spawn "mpc next")
-                , ((0, xF86XK_AudioPrev), spawn "mpc prev")
+    _        -> [ ((0, xF86XK_AudioPlay),        spawn "mpc toggle")
+                , ((0, xF86XK_AudioNext),        spawn "mpc next")
+                , ((0, xF86XK_AudioPrev),        spawn "mpc prev")
                 , ((0, xF86XK_AudioLowerVolume), spawn "amixer -q -D pulse sset Master 2%-")
                 , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -q -D pulse sset Master 2%+")
                 , ((0, xF86XK_AudioMute),        spawn "amixer -q -D pulse sset Master toggle")]
@@ -171,7 +160,6 @@ scrot = \x -> case x of
 --------------------------------------------------
 ----------------   CUSTOM HOOKS   ----------------
 --------------------------------------------------
-
 -- Custom manage hook.
 -- Manage docks, custom layout nonsense.
 mHook :: ManageHook
@@ -190,5 +178,4 @@ mHook = manageDocks <+> composeAll
 
     -- Chat windows go to workspace 3
     , className =? "Pidgin" --> doShift "3:chat"
-    , title     =? "Skype"  --> doShift "3:chat"
     ] <+> manageHook defaultConfig
