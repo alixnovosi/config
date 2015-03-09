@@ -96,7 +96,7 @@ keybinds host mask =
 
     -- Various useful scripts.
     , ((mask .|. shiftMask, xK_s), spawn "setWallpaper")
-    , ((mask,               xK_n), spawn "toggleOneko")
+    , ((mask,               xK_n), spawn ". ~/.zshrc; toggleOneko")
     -- dmenu script for passwords, videos, playlists
     , ((mask .|. shiftMask, xK_p), spawn ". ~/.zshrc; menu pass")
     , ((mask,               xK_v), spawn "menu vid")

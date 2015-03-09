@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Choose something with dmenu.  Takes prefix and regex.
 choose () {
@@ -22,33 +22,25 @@ choose () {
 if [ "$1" = "pass" ]; then
     echo "[menu] Mode pass"
 
-    choose "${PASSWORD_STORE_DIR-~/.local/share/password-store}" ".*\.\(gpg\)"
-    # TODO find a cleaner way to do this.
-    realchoice=$(echo "$choice" | sed s'|.gpg||')
-
     # Copy pass to clipboard.
-    pass show -c "$realchoice" 2>/dev/null
+    choose "$PASSWORD_STORE_DIR" ".*\.\(gpg\)"
+    pass show -c "${choice/.gpg/}" 2>/dev/null
 
 # Videos with mpv.
 elif [ "$1" = "vid" ]; then
     echo "[menu] Mode video"
 
-    choose "$HOME/videos" ".*\.\(mkv\|mp4\|avi\|vob\)"
-
     # Play movie.
+    choose "$HOME/videos" ".*\.\(mkv\|mp4\|avi\|vob\)"
     mpv "$HOME/videos/$choice" &
 
 # Music with mpd.
 elif [ "$1" = "music" ]; then
     echo "[menu] Mode music"
 
-    prefix=~/.config/mpd/playlists
-    choose $prefix ".*\.\(m3u\)"
-    # TODO find a cleaner way to do thisc.
-    realchoice=$("$choice//.m3u//")
-
     # Clear mpd playlist and play this playlist instead.
-    mpc clear &&  mpc load "$realchoice" &&  mpc play
+    choose "$HOME/music/playlists" ".*\.\(m3u\)"
+    mpc clear && mpc load "${choice/.m3u}" && mpc play
 
 else
     echo "[menu] Unsupported selection!"
