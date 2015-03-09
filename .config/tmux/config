@@ -1,58 +1,67 @@
-#----------------------------------------------------------------------------------------
-# file: $XDG_CONFIG_HOME/tmux/conf
+#-------------------------------------------------------------------------------
+# file: $XDG_CONFIG_HOME/tmux/config
 # author: andrew michaud - http://andrewmichaud.com/
 #
-#----------------------------------------------------------------------------------------
-# Based on many.
-##########################################################################################
-######################################## COLORS ##########################################
-##########################################################################################
-# Solarized colors.
+#-------------------------------------------------------------------------------
 
-# Airline/tmuxline nonsense
-if-shell "test -f snapshot" "~/.config/tmux/snapshot"
+# Use C-o
+unbind C-b
+set-option -g prefix C-o
+bind C-o send-prefix
+
+####################################################
+################### COLORS #########################
+####################################################
 
 set-window-option -g xterm-keys on
 set -g default-terminal "screen-256color"
 
+# This attempts to emulate airline's vim solarized dark colors.
+# We use 16 colors because tmux doesn't seem to like 256.
 # Default statusbar colors.
-set -g status-fg $SOLARIZED_BASE3
-set -g status-bg $SOLARIZED_BASE03
+set -g status-fg colour14      #base1
+set -g status-bg colour8       #base03
 set -g status-attr default
 
+# Left section and right section.
+set -g status-left-bg colour11  #base00
+set -g status-left-fg colour15  #base3
+set -g status-right-bg colour11 #base00
+set -g status-right-fg colour15 #base3
+
 # Default window title colors
-setw -g window-status-fg $SOLARIZED_BASE3
-setw -g window-status-bg $SOLARIZED_BASE03
+setw -g window-status-fg colour14 #base1
+setw -g window-status-bg colour8  #base03
 setw -g window-status-attr dim
 
 # Active window title colors.
-setw -g window-status-current-fg $SOLARIZED_BASE03
-setw -g window-status-current-bg $SOLARIZED_ORANGE
-setw -g window-status-current-attr bright
+setw -g window-status-current-fg colour8  #base03
+setw -g window-status-current-bg colour14 #base1
+# setw -g window-status-current-attr bright
 
 # Pane border
-set -g pane-border-fg $SOLARIZED_BASE3
+set -g pane-border-fg colour8         #base03
 set -g pane-border-bg default
-set -g pane-active-border-fg $SOLARIZED_ORANGE
+set -g pane-active-border-fg colour14 #base1
 set -g pane-active-border-bg default
 
 # Command line/ message text
-set -g message-fg $SOLARIZED_ORANGE
-set -g message-bg $SOLARIZED_BASE03
+set -g message-fg colour14            #base1
+set -g message-bg colour8             #base03
 
 # Pane number display
-setw -g display-panes-active-colour $SOLARIZED_ORANGE
-setw -g display-panes-colour $SOLARIZED_BASE3
+setw -g display-panes-active-colour "#93a1a1"
+setw -g display-panes-colour "#002b36"
 
 # Clock
-setw -g clock-mode-colour yellow
+setw -g clock-mode-colour "#268bd2" # cyan
 
-##########################################################################################
-#################################### END COLORS ##########################################
-##########################################################################################
-
+################################################################################
+################################### KEYBINDS ###################################
+################################################################################
 # reload config without killing server
-bind r source-file ~/.config/tmux/config \; display-message "  Config reloaded..".
+bind r source-file ~/.config/tmux/config\; \
+       display-message "Config reloaded.."
 
 # more intuitive keybindings for splitting
 # Vertical
@@ -68,28 +77,25 @@ unbind c
 bind c new-window -c '#{pane_current_path}'
 
 # copy tmux buffer to clipboard
-bind C-y run "tmux show-buffer | xsel -b"ggg
+bind C-y run "tmux show-buffer | xsel -b"
 # move x clipboard into tmux paste buffer
 bind C-p run "tmux set-buffer \"$(xsel -o)\"; tmux paste-buffer"
 
-# pane selection
-bind Left select-pane -L
-bind Right select-pane -R
-bind Up select-pane -U
-bind Down select-pane -D
+# Move between panes with vim movement keys.
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind j select-pane -R
 
-# Move between panes with xmonad bindings.
-unbind o
-bind j select-pane -t :.+
-bind k select-pane -t :.-
-unbind {
-unbind }
-bind { swap-pane -t :.+
-bind } swap-pane -t :.-
+# Move between windows with vim movement keys.
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
 
-unbind l
-bind l resize-pane -R 3
-bind h resize-pane -L 3
+# Resize panes with vim movement keys.
+bind -r H resize-pane -L 3
+bind -r J resize-pane -D 3
+bind -r K resize-pane -U 3
+bind -r L resize-pane -R 3
 
 # scrollback buffer n lines
 set -g history-limit 5000
@@ -99,7 +105,32 @@ setw -g automatic-rename on
 
 # Rename terminal emulator.
 set -g set-titles on
-set -g set-titles-string "#T"
+set -g set-titles-string "#W"
 
 # Resize window based on smallest client actually viewing.
 setw -g aggressive-resize on
+
+# Mouse!
+setw -g mode-mouse on
+set -g mouse-select-pane on
+set -g mouse-resize-pane on
+set -g mouse-select-window on
+
+##############################################################
+####################### PANEL SETUP ##########################
+##############################################################
+
+# Right side: date, dow, time.
+set -g status-right ' #(date +"%_d %b %y|%A|%H:%M") '
+
+# session title, hostname
+set-option -g status-left-length 30
+set -g status-left ' #S|#h '
+
+# apparently tmux is british
+# Session index and window name.
+set-option -g status-justify centre
+set-window-option -g window-status-current-format ' #I|#W '
+set-window-option -g window-status-format ' #I|#W '
+setw -g window-status-current-fg colour15 #base3
+setw -g window-status-current-bg colour11 #base00
