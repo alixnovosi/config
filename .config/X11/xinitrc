@@ -13,10 +13,10 @@ unclutter &
 xscreensaver -no-splash &
 
 # Set wallpaper.
-[ -f $HOME/bin/setWallpaper ] && $HOME/bin/setWallpaper &
+[ -f $HOME/.local/bin/setWallpaper ] && $HOME/.local/bin/setWallpaper &
 
 # fix screens
-[ -f $HOME/bin/fixscreens ] && $HOME/bin/fixscreens &
+[ -f $HOME/.local/bin/fixscreens ] && $HOME/.local/bin/fixscreens &
 
 # Start dbus and ssh-agent, setting SSH_ASKPASS
 eval `dbus-launch --auto-syntax`
@@ -35,7 +35,6 @@ mate-power-manager &
 
 # Start mpDpris to track what MPD is doing in a standard (?) way
 mpDris2 &
-
 
 synclient HorizTwoFingerScroll=1
 

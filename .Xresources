@@ -40,6 +40,7 @@ Xft.lcdfilter: lcddefault
 *pointerColorBackground:  #586e75
 *fadeColor:               #fdf6e3
 
+Tk*font: fixed
 *.font:           xft:Dejavu Mono:style=Regular:pixelsize=12
 *Font:            xft:Dejavu Mono:style=Regular:pixelsize=12
 *faceName:        xft:Dejavu Mono:style=Regular:pixelsize=12
