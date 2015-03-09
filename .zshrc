@@ -15,12 +15,9 @@ if [[ "$(who | grep -c "$USER")" -le 1 ]]; then
 fi
 
 # Load stuff.
-XDG_CONFIG_HOME="$HOME/.config"
-. "$XDG_CONFIG_HOME/shell/env"
+. "$HOME/.config/shell/env"
 . "$XDG_CONFIG_HOME/shell/aliases"
 . "$XDG_CONFIG_HOME/shell/func"
-. "$XDG_CONFIG_HOME/shell/env"
-. "$XDG_CONFIG_HOME/shell/xdg"
 
 # Load any os-specific stuff.
 if [[ "$(uname -s)" == "Darwin" ]]; then
@@ -32,14 +29,13 @@ fi
 # Enable 256 color capabilities for appropriate terminals
 
 # Terminals with any of the following set, support 256 colors (and are local)
-local256="$COLORTERM$XTERM_VERSION$ROXTERM_ID$KONSOLE_DBUS_SESSION"
+local256="$COLORTERM$XTERM_VERSION"
 
 if [ -n "$local256" ] || [ -n "$SEND_256_COLORS_TO_REMOTE" ]; then
 
   case "$TERM" in
     'xterm') TERM=xterm-256color;;
     'screen') TERM=screen-256color;;
-    'Eterm') TERM=Eterm-256color;;
   esac
   export TERM
 

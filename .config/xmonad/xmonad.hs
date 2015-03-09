@@ -108,7 +108,7 @@ keybinds host =
     , ((mod4Mask .|. shiftMask, xK_s), spawn "~/.local/bin/setWallpaper")
     , ((mod4Mask,               xK_n), spawn "~/.local/bin/toggleOneko")
     -- dmenu script for passwords, videos, playlists
-    , ((mod4Mask .|. shiftMask, xK_p), spawn "~/.local/bin/menu pass")
+    , ((mod4Mask .|. shiftMask, xK_p), spawn "source ~/.zshrc; ~/.local/bin/menu pass")
     , ((mod4Mask,               xK_v), spawn "~/.local/bin/menu vid")
     , ((mod4Mask .|. shiftMask, xK_o), spawn "~/.local/bin/menu music")
     ] ++

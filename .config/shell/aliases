@@ -1,20 +1,35 @@
 #!/bin/sh
 
 # Color grep and ls.  Works on mac and linux.
-alias grep="grep --color=auto"
+alias grep='grep --color=auto'
 
 # Useful aliases.
-alias ll="ls -al"
-alias rm="rm -i"
-alias la="ls -A"
-alias l="ls -CF"
-alias df="df -h"
-alias du="du -c -h"
+alias ll='ls -al'
+alias rm='rm -i'
+alias la='ls -A'
+alias l='ls -CF'
+alias df='df -h'
+alias du='du -c -h'
 
 # Safety features.
-alias cp="cp -i"
-alias mv="mv -i"
+alias cp='cp -i'
+alias mv='mv -i'
 
-alias whence="which"
+alias whence='which'
 alias starwars='telnet towel.blinkenlights.nl'
 alias git-yolo='git commit -am "`curl -s http://whatthecommit.com/index.txt`"'
+
+# Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
+alias feh='feh --no-fehbg'
+alias firefox='firefox -profile $XDG_CONFIG_HOME/firefox'
+alias gimp='gimp -g ${XDG_CONFIG_HOME}/gimp/config'
+alias irssi='irssi --config=${XDG_CONFIG_HOME}/irssi/config --home=${XDG_CONFIG_HOME}/irssi'
+alias mpdscribble='mpdscribble --conf ${XDG_CONFIG_HOME}/mpdscribble/config --log ${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log'
+alias ncmpcpp='ncmpcpp -c ${XDG_CONFIG_HOME}/ncmpcpp/config'
+alias nvim='nvim -u ${XDG_CONFIG_HOME}/nvim/.nvimrc'
+alias pip='pip --log-file ${XDG_CACHE_HOME}/pip/pip.log --cache-dir ${XDG_CACHE_HOME}/pip'
+alias startx='startx $XDG_CONFIG_HOME/X11/xinitrc'
+alias svn='svn --config-dir ${XDG_CONFIG_HOME}/subversion'
+alias tmux='TERM=xterm-256color tmux -f ${XDG_CONFIG_HOME}/tmux/config'
+alias view='view -u ${XDG_CONFIG_HOME}/vim/.vimrc'
+alias vim='vim -u ${XDG_CONFIG_HOME}/vim/.vimrc'
