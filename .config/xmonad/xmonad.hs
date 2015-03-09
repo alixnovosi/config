@@ -34,7 +34,9 @@ main = do
         , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
 
         , logHook         = ewmhDesktopsLogHook
-        , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
+        , handleEventHook = ewmhDesktopsEventHook <+>
+                            handleEventHook defaultConfig <+>
+                            fullscreenEventHook
 
         , modMask    = mod4Mask
         , workspaces = spaces
@@ -44,8 +46,8 @@ main = do
         , clickJustFocuses  = False -- Focusing click passed to window.
 
         -- Border jazz
-        , focusedBorderColor = orange
-        , normalBorderColor  = base1
+        , focusedBorderColor = base2
+        , normalBorderColor  = base03
         , borderWidth        = 2
 
         } `additionalKeys` keybinds host
@@ -139,21 +141,23 @@ spaces = ["` term", "1 term", "2 socl", "3 socl", "4 play", "5 play", "6 play", 
 
 -- Audio control keys.
 -- Assuming computer has the proper audio keys if it's not my laptop.
-audioKeys = \h -> case h of
+audioKeys h = case h of
 
     -- Laptop doesn't have proper media keys because Lenovo are dumb.
     -- So, do it manually.
     "pascal" -> [ ((shiftMask, xF86XK_AudioMute),        spawn "mpc toggle")
                 , ((shiftMask, xF86XK_AudioRaiseVolume), spawn "mpc next")
-                , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")] ++ common
+                , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")
+                , ((0,         xF86XK_AudioMute),        spawn "/usr/bin/pulseaudio-ctl mute")
+                , ((0,         xF86XK_AudioRaiseVolume), spawn "/usr/bin/pulseaudio-ctl up")
+                , ((0,         xF86XK_AudioLowerVolume), spawn "/usr/bin/pulseaudio-ctl down")]
 
     _        -> [ ((0, xF86XK_AudioPlay), spawn "mpc toggle")
                 , ((0, xF86XK_AudioNext), spawn "mpc next")
-                , ((0, xF86XK_AudioPrev), spawn "mpc prev")] ++ common
-
-    where common = [ ((0, xF86XK_AudioLowerVolume), spawn "amixer -q -D pulse sset Master 2%-")
-                   , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -q -D pulse sset Master 2%+")
-                   , ((0, xF86XK_AudioMute),        spawn "amixer -q -D pulse sset Master toggle")]
+                , ((0, xF86XK_AudioPrev), spawn "mpc prev")
+                , ((0, xF86XK_AudioLowerVolume), spawn "amixer -q -D pulse sset Master 2%-")
+                , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -q -D pulse sset Master 2%+")
+                , ((0, xF86XK_AudioMute),        spawn "amixer -q -D pulse sset Master toggle")]
 
 -- Screenshot commands
 scrot :: String -> String
