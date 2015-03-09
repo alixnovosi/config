@@ -79,6 +79,7 @@ unsetopt caseglob
 
 # Type directory without needing cd
 setopt auto_cd
+bindkey '^R' history-incremental-search-backward
 
 # Prompt.
 PROMPT="%{$P_CYAN%}%n%{$P_RESET%}@%{$P_GREEN%}%m%{$P_RESET%}:%{$P_BLUE%}%~%{$P_RESET%}# "
