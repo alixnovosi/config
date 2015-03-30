@@ -95,7 +95,7 @@ keybinds host mask =
     , ((mask .|. controlMask, xK_a), spawn $ namedCmd "ssh-add" "")
 
     -- Various useful scripts.
-    , ((mask .|. shiftMask, xK_s), spawn "setWallpaper")
+    , ((mask .|. shiftMask, xK_s), spawn ". ~/.zshrc; setWallpaper")
     , ((mask,               xK_n), spawn ". ~/.zshrc; toggleOneko")
     -- dmenu script for passwords, videos, playlists
     , ((mask .|. shiftMask, xK_p), spawn ". ~/.zshrc; menu pass")

@@ -21,7 +21,7 @@ alias git-yolo='git commit -am "`curl -s http://whatthecommit.com/index.txt`"'
 
 # Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
 alias feh='feh --no-fehbg'
-alias firefox='firefox -profile $XDG_CONFIG_HOME/firefox'
+alias firefox='firefox --profile $XDG_CONFIG_HOME/firefox'
 alias gimp='gimp -g ${XDG_CONFIG_HOME}/gimp/config'
 alias irssi='irssi --config=${XDG_CONFIG_HOME}/irssi/config --home=${XDG_CONFIG_HOME}/irssi'
 alias mpdscribble='mpdscribble --conf ${XDG_CONFIG_HOME}/mpdscribble/config --log ${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log'
