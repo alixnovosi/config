@@ -10,7 +10,7 @@ fi
 if [ -a "$1'.bib'" ]; then
     pdflatex "$1'.tex'"
     latex "$1'.tex'"
-    bibtex "$1.bib'"
+    bibtex "$1'.bib'"
     latex "$1'.tex'"
     latex "$1'.tex'"
 fi

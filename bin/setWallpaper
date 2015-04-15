@@ -1,0 +1,27 @@
+#!/bin/sh
+
+pgrep -x Xorg && exit
+
+# Assign a pictures dir if one doesn't exist.
+if [ -z "$XDG_PICTURES_DIR" ]; then
+    XDG_PICTURES_DIR="$HOME/pictures"
+fi
+
+# Pictures home and script data files home.
+WALLS="$XDG_PICTURES_DIR/wallpapers"
+LAST="$XDG_PICTURES_DIR/wscript/lst"
+USNG="$XDG_PICTURES_DIR/wscript/usng"
+
+# Set wallpapers based on last generated list.
+DISPLAY=:0.0 feh --no-fehbg --bg-max --filelist "$USNG"
+
+# Produce list of wallpapers to use.
+# These will be used on next run of script.
+# Using --randomize, --recursive, and list.
+CURR=$(feh -zrl --magick-timeout 5 "$WALLS" | sed "s_[^/]*/_/_" | sed 1d)
+
+# Remove last 10 seen wallpapers from that list.
+echo "$CURR" | grep -v -x -F "$LAST" > "$USNG"
+
+# Update lst with last used wallpapers.
+head -n 10 < "$USNG" > "$LAST"
