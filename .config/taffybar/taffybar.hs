@@ -1,5 +1,4 @@
 import System.Taffybar
-
 import System.Taffybar.MPRIS2 (mpris2New)
 import System.Taffybar.Pager (wrap, colorize, shorten, escape)
 import System.Taffybar.SimpleClock
@@ -39,9 +38,9 @@ main = do
 pagerConfig = taffyPagerNew defaultPagerConfig
     { emptyWorkspace   = const ""
     , activeWorkspace  = colorize base03 base2 . wrap "[" "]"
-    , visibleWorkspace = colorize base03 base1 . wrap "(" ")"
-    , urgentWorkspace  = colorize base03 base3 . wrap "<" ">"
-    , hiddenWorkspace  = take 1
+    , visibleWorkspace = colorize base03 base2 . wrap "(" ")"
+    , urgentWorkspace  = colorize base03 base2 . wrap "<" ">"
+    , hiddenWorkspace  = colorize base2 base02 . wrap " " " " . take 1
     , widgetSep        = " "
     , activeLayout     = take 1
     , activeWindow     = colorize base03 base2 . shorten 70 . wrap "[" "]"
