@@ -24,7 +24,6 @@ Bundle 'elzr/vim-json'
 Plugin 'fatih/vim-go'
 Bundle 'dag/vim2hs'
 Bundle 'Twinside/vim-haskellFold'
-Bundle 'klen/python-mode'
 Bundle 'derekwyatt/vim-scala'
 Plugin 'tejr/vim-tmux'
 Plugin 'pangloss/vim-javascript'
@@ -41,7 +40,7 @@ Plugin 'airblade/vim-gitgutter'
 Bundle 'tpope/vim-fugitive'
 
 """ Appearance.
-Plugin 'chriskempson/base16-vim'
+Bundle 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'
 Bundle 'bronson/vim-trailing-whitespace'
 
@@ -79,7 +78,7 @@ let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim-go")
 """ Colorscheme
 syntax enable
 set background=dark
-colorscheme base16-default
+colorscheme solarized
 """ fix vim-solarized breaking gitgutter
 hi clear SignColumn
 " stop solarized bg from being non-transparent
