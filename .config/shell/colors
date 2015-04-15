@@ -18,6 +18,9 @@ export SOLARIZED_BLUE="#268bd2"
 export SOLARIZED_CYAN="#2aa198"
 export SOLARIZED_GREEN="#859900"
 
+# Dircolors
+eval "$(dircolors "$XDG_CONFIG_HOME"/dircolors/dircolors.256dark)"
+
 # tput nonsense
 export P_RESET="$(tput sgr0)"
 
