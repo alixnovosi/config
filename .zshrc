@@ -14,7 +14,6 @@ if [[ "$(who | grep -c "$USER")" -le 1 ]]; then
     which fortune &> /dev/null && fortune -s
 fi
 
-# Load stuff.
 . "$HOME/.config/shell/env"
 . "$XDG_CONFIG_HOME/shell/aliases"
 . "$XDG_CONFIG_HOME/shell/func"
@@ -27,7 +26,6 @@ elif [[ "$(uname -s)" == "Linux" ]]; then
 fi
 
 # Enable 256 color capabilities for appropriate terminals
-
 # Terminals with any of the following set, support 256 colors (and are local)
 local256="$COLORTERM$XTERM_VERSION"
 
@@ -49,18 +47,14 @@ unset local256
 export GOPATH=$HOME/src/go
 export PATH=$PATH:$GOPATH/bin
 
-# Options.
 # Better completion
+# Tab completion from both ends.
+# Case-insensitive
+# Better killall completion.
 autoload -U compinit
 compinit
-
-# Tab completion from both ends.
 setopt completeinword
-
-# Case-insensitive
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-
-# Better killall completion.
 zstyle ':completion:*:killall:*' command "ps -u $USER -o cmd"
 
 # Move and expand history.
