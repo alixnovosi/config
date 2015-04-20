@@ -1,19 +1,19 @@
+"------------------------------------------------------------------------------"
+" -------------------------  VUNDLE PREPARATION  ----------------------------- "
+"------------------------------------------------------------------------------"
 set nocompatible
-
-set runtimepath+=$XDG_CONFIG_HOME/vim
 filetype off
 
-if has('nvim')
-    """ Currently nothing
-endif
+set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/vundle/Vundle.vim
 
 let g:vundle_lazy_load=0
-set rtp+=$XDG_CONFIG_HOME/vim/vundle/Vundle.vim
 let g:bundles_dir = expand('$XDG_CONFIG_HOME/vim/vundle')
 
 call vundle#rc(bundles_dir)
 
-""" Bundles.  Look them up on GitHub for more detail.
+"------------------------------------------------------------------------------"
+" ---------------------------  VUNDLE BUNDLES  ------------------------------- "
+"------------------------------------------------------------------------------"
 Bundle 'gmarik/Vundle.vim'
 
 """ Language assistance.
@@ -34,6 +34,7 @@ Bundle 'scrooloose/syntastic'
 Bundle 'tComment'
 Bundle 'tpope/vim-surround'
 Bundle 'Valloric/YouCompleteMe'
+Plugin 'ciaranm/securemodelines'
 
 """ Version control nonsense.
 Plugin 'airblade/vim-gitgutter'
@@ -55,17 +56,17 @@ Bundle 'vim-scripts/a.vim'
 call vundle#end()
 filetype plugin indent on
 
-""" load plugins
-set runtimepath+=$XDG_CONFIG_HOME/vim/plugin
-
-""" Spellcheck.
-set spell spelllang=en_us
+"------------------------------------------------------------------------------"
+" ----------------------  NON-VUNDLE SETTINGS  ------------------------------- "
+"------------------------------------------------------------------------------"
+""" Load plugins.
+set runtimepath+=$XDG_CONFIG_HOME/vim/plugin,$XDG_CONFIG_HOME/vim/ftplugin
 
 """ Make backspacing reasonable, and force utf-8 and 256 colors.
 set backspace=indent,eol,start encoding=utf-8 t_Co=256
 scriptencoding utf-8
 
-""" Any syntastic manual config
+""" Manually enable html5 checking.
 let g:syntastic_html_tidy_exec = '/usr/bin/tidy5'
 
 """ Airline config.
@@ -73,39 +74,36 @@ let g:airline_powerline_fonts = 0
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 
+set spell spelllang=en_us
 let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim-go")
 
-""" Colorscheme
 syntax enable
 set background=dark
 colorscheme solarized
-""" fix vim-solarized breaking gitgutter
-hi clear SignColumn
 " stop solarized bg from being non-transparent
 hi Normal ctermbg=none
 
 """ Enable mouse and word wrapping.
 set mouse=a ww=[,],<,>,h,l,b,s
 
-set textwidth=80
-
-""" Set preferred tabs, don't use modeline, show commands
+""" Set some personal coding preferences.
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 set nomodeline showcmd
-
-""" Code folding!
 set nofoldenable foldmethod=syntax foldnestmax=10 foldlevel=1
+set textwidth=80
 
-""" Throw everything in $XDG_CACHE_HOME or /tmp instead of the current directory..
-set backup backupdir=$XDG_CACHE_HOME/vim/backup,/tmp,.
-set dir=$XDG_CACHE_HOME/vim/swap,/tmp,.
-set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+""" Prefer ~/.cache/vim for swap and backup files.
+set backup backupdir=$XDG_CACHE_HOME/vim/backup,/tmp
+set dir=$XDG_CACHE_HOME/vim/swap,/tmp
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo,/tmp
 
-""" Thanks cstanfill
-""" Faster escape if I ever remember to use the damn keybind.
+"------------------------------------------------------------------------------"
+" -------------------------------  KEYBINDS  --------------------------------- "
+"------------------------------------------------------------------------------"
+""" Thanks cstanfill!
 inoremap jk <Esc>
 
-""" Cycle buffers easier.
+""" Buffer cycling.
 noremap <C-h> <Esc>:bp<Cr>
 noremap <C-l> <Esc>:bn<Cr>
 
@@ -113,31 +111,20 @@ noremap <C-l> <Esc>:bn<Cr>
 nmap <C-j> <C-e>
 nmap <C-k> <C-y>
 
-""" These cause the bottom of the screen to contain more useful information
+""" These cause the bottom of the screen to contain more useful information.
 set laststatus=2 ruler showcmd
 
-"lets C-s and C-q be capture by vim instead of the terminal
+""" Let C-s, C-q go to Vim instead of terminal.
 silent !stty -ixon > /dev/null 2>/dev/null
 
-" Also stolen from cstanfill.
+""" Also stolen from cstanfill.
+""" Filesystem tree, numbering, highlighting search toggle.
 nmap <C-s>n :NERDTreeToggle<CR>
 nmap <C-s>s :set number!<CR>
 nmap <C-s>h :set hlsearch!<CR>
 
-""" Search settings.
+""" Set nicer search settings.
 set incsearch ignorecase smartcase nohlsearch
 
 """ Automatically reload if someone changes a file on us.
 set autoread
-
-"""""""""""""""""""""""""""""
-""" PER-FILETYPE NONSENSE """
-"""""""""""""""""""""""""""""
-
-""" Turn on spellcheck for some files automatically.
-""" Autowrap text to 80 chars for certain filetypes
-autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us textwidth=80
-
-""" Make TeX pleasant
-autocmd FileType tex noremap <F5> <Esc>:!pdflatex %<Cr><Cr>
-autocmd FileType tex noremap <F6> <Esc>:!silent !evince %<.pdf >/dev/null 2>&1 &<Cr><Cr>
