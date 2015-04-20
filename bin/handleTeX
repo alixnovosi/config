@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Handles all the nonsense necessary to get bibtex and pdflatex to work
+# together.
+# No promises.
+
 if [ "$#" -ne 1 ]; then
     echo "Not enough arguments supplied!"
     echo "Usage: handleTeX filename"
@@ -15,5 +19,5 @@ if [ -a "$1'.bib'" ]; then
     latex "$1'.tex'"
 fi
 
+# Compile to PDF.
 pdflatex "$1'.tex'"
-

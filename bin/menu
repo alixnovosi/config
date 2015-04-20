@@ -22,8 +22,9 @@ choose () {
 if [ "$1" = "pass" ]; then
     echo "[menu] Mode pass"
 
+    PASSWORD_STORE_DIR=~/.local/share/password-store
     # Copy pass to clipboard.
-    choose "$PASSWORD_STORE_DIR" ".*\.\(gpg\)"
+    choose ${PASSWORD_STORE_DIR} ".*\.\(gpg\)"
     pass show -c "${choice/.gpg/}" 2>/dev/null
 
 # Videos with mpv.

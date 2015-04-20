@@ -1,16 +1,15 @@
 #!/bin/zsh
 
-# Only show fortune for the first time I log in.
+# Show fortune on first login.
 if [[ "$(who | grep -c "$USER")" -le 1 ]]; then
 
-    # Only show users if I'm not the only one logged in.
+    # Sketchy way of detecting multiuser machine (where users is interesting).
     if [[ "$(who | grep -c "$USER")" -ne "$(who | wc -l)" ]]; then
 
         # display who else is logged in
         users|tr ' ' '\n'|uniq|tr '\n' ' '|awk '{print $0} END {print ""}'
     fi
 
-    # fortune of the day - short message to brighten up your login
     which fortune &> /dev/null && fortune -s
 fi
 
@@ -26,7 +25,6 @@ elif [[ "$(uname -s)" == "Linux" ]]; then
 fi
 
 # Enable 256 color capabilities for appropriate terminals
-# Terminals with any of the following set, support 256 colors (and are local)
 local256="$COLORTERM$XTERM_VERSION"
 
 if [ -n "$local256" ] || [ -n "$SEND_256_COLORS_TO_REMOTE" ]; then

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pgrep -x Xorg && exit
+pgrep -x Xorg | exit
 
 # Assign a pictures dir if one doesn't exist.
 if [ -z "$XDG_PICTURES_DIR" ]; then
@@ -10,6 +10,7 @@ fi
 # Pictures home and script data files home.
 WALLS="$XDG_PICTURES_DIR/wallpapers"
 LAST="$XDG_PICTURES_DIR/wscript/lst"
+TEMP="$XDG_PICTURES_DIR/wscript/tmp"
 USNG="$XDG_PICTURES_DIR/wscript/usng"
 
 # Set wallpapers based on last generated list.
@@ -24,4 +25,6 @@ CURR=$(feh -zrl --magick-timeout 5 "$WALLS" | sed "s_[^/]*/_/_" | sed 1d)
 echo "$CURR" | grep -v -x -F "$LAST" > "$USNG"
 
 # Update lst with last used wallpapers.
-head -n 10 < "$USNG" > "$LAST"
+head -n 6 < "$LAST" > "$TEMP"
+head -n 4 < "$USNG" > "$LAST"
+cat "$TEMP" >> "$LAST"
