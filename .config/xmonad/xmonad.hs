@@ -6,16 +6,20 @@ import XMonad.Actions.CopyWindow -- dwm window tagging
 import XMonad.Actions.GridSelect
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers (doCenterFloat, doFullFloat)
+import XMonad.Hooks.ManageHelpers       (doCenterFloat, doFullFloat)
 import XMonad.Hooks.SetWMName -- For dealing with Java stuff.
-import XMonad.Layout.NoBorders (smartBorders)
-import XMonad.Util.EZConfig (additionalKeys)
+import XMonad.Layout.NoBorders          (smartBorders)
+import XMonad.Util.EZConfig             (additionalKeys)
+import XMonad.Util.Run                  (safeSpawn)
 import qualified XMonad.StackSet as W -- for extra workspaces.
 
-import qualified Data.Char as C (toUpper)
+import qualified Data.Char as C         (toUpper)
 import Graphics.X11.ExtraTypes.XF86
-import System.Posix.Unistd (nodeName, getSystemID)
+import System.Environment               (getEnvironment)
+import System.Posix.Unistd              (nodeName, getSystemID)
 import System.Taffybar.Hooks.PagerHints (pagerHints)
+
+import Colors
 
 -----------------------------------------------------------------------------
 -------------------------------  MAIN  --------------------------------------
@@ -25,6 +29,7 @@ main = do
 
     -- Get hostname for system-dependent stuff.
     host <- fmap nodeName getSystemID
+    env <- getEnvironment
 
     -- Config xmonad.
     xmonad $ pagerHints $ defaultConfig
@@ -32,7 +37,7 @@ main = do
         , layoutHook = lHook
 
         -- Handles Java, ewmh nonsense
-        , startupHook = ewmhDesktopsStartup >> setWMName "LG3D"
+        , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
 
         , logHook         = ewmhDesktopsLogHook
         , handleEventHook = ewmhDesktopsEventHook <+>
@@ -51,28 +56,13 @@ main = do
         , normalBorderColor  = base03
         , borderWidth        = 2
 
-        } `additionalKeys` keybinds host mod4Mask
-
----------------------------------------------------------------------
------------------------------ COLORS --------------------------------
----------------------------------------------------------------------
--- Color variables.
--- _ :: String
--- TODO put these in a common file somewhere and refer to them there.
-base03  = "#002b36"
-base02  = "#073642"
-base01  = "#586e75"
-base00  = "#657b83"
-base0   = "#839496"
-base1   = "#93a1a1"
-base2   = "#eee8d5"
-base3   = "#fdf6e3"
+        } `additionalKeys` keybinds host (Just env) mod4Mask
 
 ---------------------------------------------------------------------------------
 --------------------------------   KEYBINDS   -----------------------------------
 ---------------------------------------------------------------------------------
 -- Keybinds, depending on host for audio keys.
-keybinds host mask =
+keybinds host env mask =
     [ ((mask .|. shiftMask,   xK_l), spawn "xscreensaver-command -lock")
     , ((mask .|. shiftMask,   xK_d), spawn "xscreensaver-command -deactivate")
 
@@ -90,7 +80,7 @@ keybinds host mask =
     , ((mask .|. controlMask, xK_q), spawn "pkill taffybar && taffybar")
 
     -- Suspend and lock (ideally).
-    , ((mask .|. shiftMask,   xK_s), spawn "~/.local/bin/slp")
+    , ((mask .|. shiftMask,   xK_s), script "slp")
 
     , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
     , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 7")
@@ -108,11 +98,12 @@ keybinds host mask =
     , ((mask .|. controlMask, xK_a), spawn $ namedCmd "ssh-add" "")
 
     -- Various useful scripts, which are also in the repo.
-    , ((mask,               xK_s), spawn "~/.local/bin/setWallpaper")
-    , ((mask,               xK_n), spawn "~/.local/bin/toggleOneko")
-    , ((mask .|. shiftMask, xK_p), spawn "~/.local/bin/menu pass")
-    , ((mask,               xK_v), spawn "~/.local/bin/menu vid")
-    , ((mask .|. shiftMask, xK_o), spawn "~/.local/bin/menu music")
+    , ((mask,               xK_s), script "setWallpaper")
+    , ((mask,               xK_n), script "toggleOneko")
+    , ((mask .|. shiftMask, xK_p), spawn ". ~/.zshrc; ~/.local/bin/menu pass")
+    , ((mask,               xK_v), spawn ". ~/.zshrc; ~/.local/bin/menu vid")
+    , ((mask .|. shiftMask, xK_o), spawn ". ~/.zshrc; ~/.local/bin/menu music")
+    , ((mask .|. shiftMask, xK_n), spawn $ namedCmd "note" "")
     ] ++
 
     -- Audio keys.
@@ -135,6 +126,10 @@ termCmd cmd       = term ++ " --command=" ++ cmd
 namedCmd cmd args = term ++ " --title=" ++ name ++ " --command='" ++ cmd ++ " " ++ args ++ "'"
     where name = "__" ++ map C.toUpper cmd
 
+-- Make running scripts less verbose.
+scriptHome = "~/.local/bin/"
+script name = spawn $ scriptHome ++ name
+
 -- Workspace titles
 spaces :: [String]
 spaces = ["` term", "1 term", "2 socl", "3 socl", "4 play", "5 play", "6 play", "7 work",
@@ -145,27 +140,27 @@ spaces = ["` term", "1 term", "2 socl", "3 socl", "4 play", "5 play", "6 play", 
 audioKeys "pascal" =
     [ ((shiftMask, xF86XK_AudioMute),        spawn "mpc toggle")
     , ((shiftMask, xF86XK_AudioRaiseVolume), spawn "mpc next")
-    , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")
-    , ((0,         xF86XK_AudioMute),        spawn "/usr/bin/pulseaudio-ctl mute")
-    , ((0,         xF86XK_AudioLowerVolume), spawn "/usr/bin/pulseaudio-ctl down")
-    , ((0,         xF86XK_AudioRaiseVolume), spawn "/usr/bin/pulseaudio-ctl up")]
+    , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")] ++ commonAudio
 
 -- Other machines are reasonable.
 audioKeys _ =
-    [ ((0, xF86XK_AudioPlay),        spawn "mpc toggle")
-    , ((0, xF86XK_AudioNext),        spawn "mpc next")
-    , ((0, xF86XK_AudioPrev),        spawn "mpc prev")
-    , ((0, xF86XK_AudioMute),        spawn "amixer -q -D pulse sset Master toggle")
-    , ((0, xF86XK_AudioLowerVolume), spawn "amixer -q -D pulse sset Master 2%-")
-    , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -q -D pulse sset Master 2%+")]
+    [ ((0, xF86XK_AudioPlay), spawn "mpc toggle")
+    , ((0, xF86XK_AudioNext), spawn "mpc next")
+    , ((0, xF86XK_AudioPrev), spawn "mpc prev")] ++ commonAudio
+
+commonAudio =
+    [ ((0, xF86XK_AudioMute),        spawn "/usr/bin/pulseaudio-ctl mute")
+    , ((0, xF86XK_AudioLowerVolume), spawn "/usr/bin/pulseaudio-ctl down")
+    , ((0, xF86XK_AudioRaiseVolume), spawn "/usr/bin/pulseaudio-ctl up")]
 
 scrot :: String -> String
 scrot = \x -> case x of
-                  ""       -> "scrot " ++ format ++ destination
-                  "select" -> "scrot " ++ "-s " ++ format ++ destination
-                  "delay"  -> "scrot " ++ "--delay 5 " ++ format ++ destination
-    where format      = "'%Y-%m-%d-%s_$wx$h.png' "
-          destination = "-e 'mv $f ~/pictures/screenshots/' "
+                  ""       -> scrotGen ""
+                  "select" -> scrotGen "-s "
+                  "delay"  -> scrotGen "--delay 5 "
+    where format        = "'%Y-%m-%d-%s_$wx$h.png' "
+          destination   = "-e 'mv $f ~/pictures/screenshots/' "
+          scrotGen    s = "scrot " ++ s ++ format ++ destination
 
 --------------------------------------------------
 ----------------   CUSTOM HOOKS   ----------------

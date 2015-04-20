@@ -8,7 +8,7 @@ export XDG_DATA_DIRS="/usr/local/share/:/usr/share/"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
 # Colors
-. "$XDG_CONFIG_HOME/shell/colors"
+. "$XDG_CONFIG_HOME/colors/colors.sh"
 
 # Useful stuff.
 export EDITOR="/usr/bin/vim -u $XDG_CONFIG_HOME/vim/.vimrc"
