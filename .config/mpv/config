@@ -1,0 +1,11 @@
+# Write your default config options here!
+
+# Set window title using media filename.
+title="${filename}"
+
+# Disable sreensaver.
+heartbeat-cmd="xscreensaver-command -deactivate >&- 2>&- &"
+stop-screensaver="yes"
+
+ao=pulse
+
