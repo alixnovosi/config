@@ -1,5 +1,5 @@
 [global]
-    font = DejaVu Mono 8
+    font = DejaVu Sans Mono 8
 
     # Allow a small subset of html markup:
     #   <b>bold</b>
@@ -33,16 +33,10 @@
     # Possible values are "left", "center" and "right".
     alignment = left
 
-    # The frequency with wich text that is longer than the notification
-    # window allows bounces back and forth.
-    # This option conflicts with "word_wrap".
-    # Set to 0 to disable.
-    bounce_freq = 0
-
     # Show age of message if message is older than show_age_threshold
     # seconds.
     # Set to -1 to disable.
-    show_age_threshold = 60
+    show_age_threshold = -1
 
     # Split notifications into multiple lines if they don't fit into
     # geometry.
@@ -50,7 +44,6 @@
 
     # Ignore newlines '\n' in notifications.
     ignore_newline = no
-
 
     # The geometry of the window:
     #   [{width}]x{height}[+/-{x}+/-{y}]
@@ -78,10 +71,7 @@
     # Don't remove messages, if the user is idle (no mouse or keyboard input)
     # for longer than idle_threshold seconds.
     # Set to 0 to disable.
-    idle_threshold = 120
-
-    # Which monitor should the notifications be displayed on.
-    monitor = 0
+    idle_threshold = 0
 
     # Display notification on focused monitor.  Possible modes are:
     #   mouse: follow mouse pointer
@@ -111,7 +101,7 @@
     # This adds empty space above and under the text.
     line_height = 0
 
-    # Draw a line of "separatpr_height" pixel height between two
+    # Draw a line of "separator_height" pixel height between two
     # notifications.
     # Set to 0 to disable.
     separator_height = 2
@@ -165,8 +155,6 @@
     close_all = ctrl+shift+space
 
     # Redisplay last message(s).
-    # On the US keyboard layout "grave" is normally above TAB and left
-    # of "1".
     history = ctrl+grave
 
     # Context menu.
@@ -175,20 +163,19 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#dc322f"
-    foreground = "#002b36"
-    timeout = 5
+    background = "#002b36"
+    foreground = "#586e75"
+    timeout = 4
 
 [urgency_normal]
     background = "#002b36"
-    foreground = "#fdf6e3"
-    timeout = 2
+    foreground = "#657b83"
+    timeout = 5
 
 [urgency_critical]
     background = "#002b36"
-    foreground = "#fdf6e3"
-    timeout = 1
-
+    foreground = "#cb4b16"
+    timeout = 7
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
@@ -209,37 +196,23 @@
 # NOTE: It might be helpful to run dunst -print in a terminal in order
 # to find fitting options for rules.
 
-#[espeak]
-#    summary = "*"
-#    script = dunst_espeak.sh
+[network]
+    appname = NetworkManager
+    urgency = critical
 
-#[script-test]
-#    summary = "*script*"
-#    script = dunst_test.sh
+[signed_on]
+    appname = Pidgin
+    summary = "*signed on*"
+    urgency = low
 
-#[ignore]
-#    # This notification will not be displayed
-#    summary = "foobar"
-#    format = ""
+[signed_off]
+    appname = Pidgin
+    summary = *signed off*
+    urgency = low
 
-#[signed_on]
-#    appname = Pidgin
-#    summary = "*signed on*"
-#    urgency = low
-#
-#[signed_off]
-#    appname = Pidgin
-#    summary = *signed off*
-#    urgency = low
-#
 [says]
     appname = Pidgin
     summary = *says*
     urgency = normal
-#
-#[twitter]
-#    appname = Pidgin
-#    summary = *twitter.com*
-#    urgency = normal
-#
+
 # vim: ft=cfg

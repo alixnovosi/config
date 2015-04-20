@@ -2,18 +2,18 @@
 
 CONF="$HOME/.config"
 
-# Update Xresources
+# Update Xresources.
 [ -f .Xresources ] && xrdb -merge .Xresources
 
-# Set cursor style and auto-hide cursor
+# Set cursor style and auto-hide cursor.
 xsetroot -cursor_name left_ptr
 unclutter &
 
 xscreensaver -no-splash &
 
-# Run scripts
-[ -f "$HOME/.local/bin/setWallpaper" ] && "$HOME/.local/bin/setWallpaper" &
-[ -f "$HOME/.local/bin/fixscreens" ] && "$HOME/.local/bin/fixscreens" &
+# Run scripts.
+[ -f "$BINHOME/setWallpaper" ] && "$BINHOME/setWallpaper" &
+[ -f "$BINHOME/fixscreens" ] && "$BINHOME/fixscreens" &
 
 # dbus and agents.
 eval "$(dbus-launch --auto-syntax)"
@@ -30,10 +30,10 @@ pgrep -x mpdscribble | mpdscribble \
 
 mate-power-manager &
 
-# Start mpDpris to track what MPD is doing in a standard (?) way
+# Start mpDpris to track what MPD is doing in a standard (?) way.
 mpDris2 &
 
-# notifications
+# Have notifications.
 pgrep -x dunst | dunst &
 
 # Launch Taffybar and XMonad.
