@@ -41,12 +41,12 @@ Xft.lcdfilter: lcddefault
 *fadeColor:               #fdf6e3
 
 Tk*font: fixed
-*.font:           xft:Dejavu Mono:style=Regular:pixelsize=12
-*Font:            xft:Dejavu Mono:style=Regular:pixelsize=12
-*faceName:        xft:Dejavu Mono:style=Regular:pixelsize=12
-*.imFont:         xft:Dejavu Mono:style=Regular:pixelsize=12
-*.boldFont:       xft:Dejavu Mono:style=Bold:pixelsize=12
-*.italicFont:     xft:Dejavu Mono:style=Italic:pixelsize=12
+*.font:           xft:DejaVu Sans Mono:style=Regular:pixelsize=12
+*Font:            xft:DejaVu Sans Mono:style=Regular:pixelsize=12
+*faceName:        xft:DejaVu Sans Mono:style=Regular:pixelsize=12
+*.imFont:         xft:DejaVu Sans Mono:style=Regular:pixelsize=12
+*.boldFont:       xft:DejaVu Sans Mono:style=Bold:pixelsize=12
+*.italicFont:     xft:DejaVu Sans Mono:style=Italic:pixelsize=12
 
 xscreensaver.*.foreground:               #839496
 xscreensaver.*.background:               #002b36
