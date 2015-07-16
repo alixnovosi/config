@@ -6,6 +6,3 @@ title="${filename}"
 # Disable sreensaver.
 heartbeat-cmd="xscreensaver-command -deactivate >&- 2>&- &"
 stop-screensaver="yes"
-
-ao=pulse
-

@@ -1,1 +1,0 @@
-/home/amichaud/src/git/config/.zshrc

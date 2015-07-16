@@ -19,7 +19,17 @@ export SOLARIZED_CYAN="#2aa198"
 export SOLARIZED_GREEN="#859900"
 
 # Dircolors
-eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
+LS_COLORS=...
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+if whence dircolors >/dev/null; then
+    export LS_COLORS
+    alias ls='ls --color'
+else
+    export CLICOLOR=1
+    LSCOLORS=...
+fi
+
+eval "$(dircolors "$XDG_CONFIG_HOME"/dircolors/dircolors.256dark)"
 
 # tput nonsense
 export P_RESET="$(tput sgr0)"

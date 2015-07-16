@@ -19,7 +19,11 @@ export SOLARIZED_CYAN="#2aa198"
 export SOLARIZED_GREEN="#859900"
 
 # Dircolors
-eval "$(dircolors "$XDG_CONFIG_HOME"/dircolors/dircolors.256dark)"
+if [[ $(uname) == 'Linux' ]]; then
+    eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
+elif [[ $(uname) == 'Darwin' ]]; then
+    export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
+fi
 
 # tput nonsense
 export P_RESET="$(tput sgr0)"

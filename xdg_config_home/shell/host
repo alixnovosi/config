@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PROMPT="%{$P_BASE1%}%n%{$P_RESET%}@%{$P_BASE2%}%m%{$P_RESET%}:%{$P_BLUE%}%~%{$P_RESET%}# "
+
+VENV_WRAPPER=/usr/local/bin/virtualenvwrapper.sh
+ 
+if [ -f "$VENV_WRAPPER" ]
+then
+    source $VENV_WRAPPER
+fi
