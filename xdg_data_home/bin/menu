@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Choose something with dmenu.  Takes prefix and regex.
 choose () {

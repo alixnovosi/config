@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Bash script to deploy config files from this git repo.
+
+# Check if config home is set.
+if [ -z "$XDG_CONFIG_HOME" ]; then
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        export XDG_CONFIG_HOME="$HOME/Library/Preferences"
+
+    elif [[ "$(uname -s)" == "Linux" ]]; then
+        export XDG_CONFIG_HOME="$HOME/.config"
+    fi
+fi
+echo "XDG_CONFIG_HOME set to $XDG_CONFIG_HOME"
+
+# Check if cache home is set.
+if [ -z "$XDG_CACHE_HOME" ]; then
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        export XDG_CACHE_HOME="$HOME/Library/Caches"
+
+    elif [[ "$(uname -s)" == "Linux" ]]; then
+        export XDG_CACHE_HOME="$HOME/.cache"
+    fi
+fi
+echo "XDG_CACHE_HOME set to $XDG_CACHE_HOME."
+
+# Set script directory.
+if [ -z "$XDG_DATA_HOME" ]; then
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        export XDG_DATA_HOME="$HOME/Library"
+
+    elif [[ "$(uname -s)" == "Linux" ]]; then
+        export XDG_DATA_HOME="$HOME/.local/share"
+    fi
+fi
+SCRIPT_HOME="$XDG_DATA_HOME/bin"
+mkdir "$XDG_DATA_HOME/bin"
+echo "XDG_DATA_HOME set to $XDG_DATA_HOME"
+echo "SCRIPT_HOME set to $SCRIPT_HOME"
+
+# Grab directory of git repo.
+GIT_DIR="."
+echo "GIT_DIR is $GIT_DIR"
+
+# Deploy scripts.
+echo "Copying all files in $GIT_DIR/bin to $XDG_DATA_HOME/bin."
+ln -s "$GIT_DIR/bin/* $XDG_DATA_HOME/bin/"
+
+# Deploy config files.
+echo "Making directories $XDG_CONFIG_HOME/vim and $XDG_CONFIG_HOME/shell."
+mkdir -p "$XDG_CONFIG_HOME/mpd"
+mkdir -p "$XDG_CONFIG_HOME/shell"
+mkdir -p "$XDG_CONFIG_HOME/vim"
+mkdir -p "$XDG_CONFIG_HOME/zsh"
+
+shopt -s dotglob
+echo "Linking files to those directories."
+ln -s "$GIT_DIR/xdg_config_home/mpd/*" "$XDG_CONFIG_HOME/mpd/"
+ln -s "$GIT_DIR/xdg_config_home/shell/*" "$XDG_CONFIG_HOME/vim/"
+ln -s "$GIT_DIR/xdg_config_home/vim/*" "$XDG_CONFIG_HOME/vim/"
+ln -s "$GIT_DIR/xdg_config_home/zsh/*" "$XDG_CONFIG_HOME/mpd/"
+
+echo "Deploying all other config files."
+ln -s "$GIT_DIR/xdg_config_home/*" "$XDG_CONFIG_HOME/"
+
+# Deploy some other stuff.
+ln -s "$GIT_DIR/.Xresources" "$HOME"
+ln -s "$XDG_CONFIG_HOME/zsh/.zshrc" "$HOME"
+
+# Make expected, but not necessarily existing folders/files.
+mkdir -p "$XDG_CACHE_HOME/zsh/"
+touch "$XDG_CACHE_HOME/zsh/history"
+mkdir -p "$XDG_CACHE_HOME/less"
+touch "$XDG_CACHE_HOME/less/hist"
+mkdir -p "$XDG_CACHE_HOME/tex/mfvar"
+mkdir -p "$XDG_CACHE_HOME/vim/backup"
+mkdir -p "$XDG_CACHE_HOME/vim/swap"
+touch "$XDG_CACHE_HOME/vim/viminfo"

@@ -1,5 +1,9 @@
 #!/bin/sh
 
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+
 # enable color support of ls and also add handy aliases
 if [ -x "$(whence -p dircolors)" ]; then
     eval "$(dircolors -b)"
@@ -10,14 +14,9 @@ if [ -x "$(whence -p dircolors)" ]; then
     alias egrep='egrep --color=auto'
 fi
 
+eval "$(dircolors "$XDG_CONFIG_HOME"/dircolors/dircolors.256dark)"
+
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
-
-# XDG base spec.  OS-independent, theoretically.
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_DIRS="/usr/local/share/:/usr/share/"
-export XDG_CONFIG_DIRS="/etc/xdg"

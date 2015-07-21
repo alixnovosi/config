@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------
 # file: $XDG_CONFIG_HOME/tmux/config
-# author: andrew michaud - http://andrewmichaud.com/
+# author: andrew michaud - https://andrewmichaud.com/
 #
 #-------------------------------------------------------------------------------
 
@@ -37,7 +37,6 @@ setw -g window-status-attr dim
 # Active window title colors.
 setw -g window-status-current-fg colour8  #base03
 setw -g window-status-current-bg colour14 #base1
-# setw -g window-status-current-attr bright
 
 # Pane border
 set -g pane-border-fg colour8         #base03

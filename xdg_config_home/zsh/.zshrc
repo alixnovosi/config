@@ -1,8 +1,8 @@
 #!/bin/zsh
 
 # Show fortune on first login.
-if [[ "$(who | grep -c "$USER")" -le 1 ]]; then
-
+if [ -z ${FIRSTLOGIN+x} ]; then
+    export FIRSTLOGIN="foo"
     # Sketchy way of detecting multiuser machine (where users is interesting).
     if [[ "$(who | grep -c "$USER")" -ne "$(who | wc -l)" ]]; then
 
@@ -13,16 +13,16 @@ if [[ "$(who | grep -c "$USER")" -le 1 ]]; then
     which fortune &> /dev/null && fortune -s
 fi
 
-. "$HOME/.config/shell/env"
-. "$XDG_CONFIG_HOME/shell/aliases"
-. "$XDG_CONFIG_HOME/shell/func"
-
 # Load any os-specific stuff.
 if [[ "$(uname -s)" == "Darwin" ]]; then
-    . "$XDG_CONFIG_HOME/shell/osx"
+    . "$HOME/Library/Preferences/shell/osx"
 elif [[ "$(uname -s)" == "Linux" ]]; then
-    . "$XDG_CONFIG_HOME/shell/linux"
+    . "$HOME/.config/shell/linux"
 fi
+
+. "$XDG_CONFIG_HOME/shell/env"
+. "$XDG_CONFIG_HOME/shell/aliases"
+. "$XDG_CONFIG_HOME/shell/func"
 
 # Enable 256 color capabilities for appropriate terminals
 local256="$COLORTERM$XTERM_VERSION"
@@ -49,6 +49,7 @@ export PATH=$PATH:$GOPATH/bin
 # Tab completion from both ends.
 # Case-insensitive
 # Better killall completion.
+fpath=($XDG_CONFIG_HOME/zsh/completion $fpath)
 autoload -U compinit
 compinit
 setopt completeinword

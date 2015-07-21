@@ -1,6 +1,10 @@
 #!/bin/sh
 
-CONF="$HOME/.config"
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    . "$HOME/Library/Preferences/shell/osx"
+elif [[ "$(uname -s)" == "Linux" ]]; then
+    . "$HOME/.config/shell/linux"
+fi
 
 # Update Xresources.
 [ -f .Xresources ] && xrdb -merge .Xresources
@@ -12,8 +16,8 @@ unclutter &
 xscreensaver -no-splash &
 
 # Run scripts.
-[ -f "$BINHOME/setWallpaper" ] && "$BINHOME/setWallpaper" &
-[ -f "$BINHOME/fixscreens" ] && "$BINHOME/fixscreens" &
+[ -f "$XDG_DATA_HOME/bin/setWallpaper" ] && "$XDG_DATA_HOME/bin/setWallpaper" &
+[ -f "$XDG_DATA_HOME/bin/fixscreens" ] && "$XDG_DATA_HOME/bin/fixscreens" &
 
 # dbus and agents.
 eval "$(dbus-launch --auto-syntax)"
@@ -21,19 +25,11 @@ eval "$(ssh-agent)"
 export SSH_ASKPASS=ssh-askpass
 eval "$(gnome-keyring-daemon)"
 
-# Chat, music daemon, LastFM integration.
+# Launch programs I want running.
+# Chat, music, power management, notifications.
 pgrep -x pidgin | pidgin &
-[ ! -s "$CONF/mpd/pid" ] && mpd &
-pgrep -x mpdscribble | mpdscribble \
-    --conf "$CONF/mpdscribble/config" \
-    --log "$CONF/mpdscribble/mpdscribble.log" &
-
-mate-power-manager &
-
-# Start mpDpris to track what MPD is doing in a standard (?) way.
-mpDris2 &
-
-# Have notifications.
+pgrep -x mopidy | mopidy &
+pgrep -x mate-power-manager | mate-power-manager &
 pgrep -x dunst | dunst &
 
 # Launch Taffybar and XMonad.

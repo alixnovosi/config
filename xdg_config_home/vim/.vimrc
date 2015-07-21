@@ -22,6 +22,8 @@ Bundle 'OrangeT/vim-csharp'
 Plugin 'othree/html5.vim'
 Bundle 'elzr/vim-json'
 Plugin 'fatih/vim-go'
+Plugin 'nsf/gocode', {'rtp': 'vim/'}
+Plugin 'davidhalter/jedi'
 Bundle 'dag/vim2hs'
 Bundle 'Twinside/vim-haskellFold'
 Bundle 'derekwyatt/vim-scala'
@@ -68,10 +70,6 @@ scriptencoding utf-8
 
 """ Manually enable html5 checking.
 let g:syntastic_html_tidy_exec = '/usr/bin/tidy5'
-let g:EclimCompletionMethod = 'omnifunc'
-let g:syntastic_python_checkers = ['flake8']
-
-let g:ycm_autoclose_preview_window_after_completion=1
 
 """ Airline config.
 let g:airline_powerline_fonts = 0
@@ -94,12 +92,12 @@ set mouse=a ww=[,],<,>,h,l,b,s
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 set nomodeline showcmd
 set nofoldenable foldmethod=syntax foldnestmax=10 foldlevel=1
-set textwidth=130
+set textwidth=80
 
-""" Prefer ~/.cache/vim for swap and backup files.
+""" Prefer ~/$XDG_CACHE_HOME/vim for swap and backup files.
 set backup backupdir=$XDG_CACHE_HOME/vim/backup,/tmp
 set dir=$XDG_CACHE_HOME/vim/swap,/tmp
-set viminfo+=n~/.cache/vim/viminfo
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 
 "------------------------------------------------------------------------------"
 " -------------------------------  KEYBINDS  --------------------------------- "

@@ -1,6 +1,8 @@
+*.o
+*.hi
 *.swp
 *.swo
-.netrwhist
-*.hi
-*.o
-taffybar
+*.errors
+*/*.netrwhist
+xmonad-x86_64-linux
+.config/taffybar/taffybar
