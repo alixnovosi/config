@@ -1,4 +1,12 @@
 "------------------------------------------------------------------------------"
+" AUTHOR: Andrew Michaud                                                       "
+" FILE: .vimrc                                                                 "
+" PURPOSE: Vim configuration file                                              "
+" DATE: 2015-07-23                                                             "
+" Free for use!                                                                "
+"------------------------------------------------------------------------------"
+
+"------------------------------------------------------------------------------"
 " -------------------------  VUNDLE PREPARATION  ----------------------------- "
 "------------------------------------------------------------------------------"
 set nocompatible
@@ -17,26 +25,46 @@ call vundle#rc(bundles_dir)
 Bundle 'gmarik/Vundle.vim'
 
 """ Language assistance.
+""" C#
 Bundle 'OmniSharp/omnisharp-vim'
 Bundle 'OrangeT/vim-csharp'
-Plugin 'othree/html5.vim'
-Bundle 'elzr/vim-json'
-Plugin 'fatih/vim-go'
-Plugin 'nsf/gocode', {'rtp': 'vim/'}
-Plugin 'davidhalter/jedi'
+
+""" Haskell
 Bundle 'dag/vim2hs'
 Bundle 'Twinside/vim-haskellFold'
-Bundle 'derekwyatt/vim-scala'
-Plugin 'tejr/vim-tmux'
+
+""" HTML5
+Plugin 'othree/html5.vim'
+
+""" Javascript
 Plugin 'pangloss/vim-javascript'
-Plugin 'vim-scripts/zim-syntax'
+
+""" JSON
+Bundle 'elzr/vim-json'
+
+""" Golang
+Plugin 'fatih/vim-go'
+Plugin 'nsf/gocode', {'rtp': 'vim/'}
+
+""" Python
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'davidhalter/jedi'
+
+""" Scala
+Bundle 'derekwyatt/vim-scala'
+
+""" Tmux
+Plugin 'tejr/vim-tmux'
+
+""" Vimscript
+Bundle 'dbakker/vim-lint'
 
 """ Programming support.
+Plugin 'ciaranm/securemodelines'
 Bundle 'scrooloose/syntastic'
 Bundle 'tComment'
 Bundle 'tpope/vim-surround'
 Bundle 'Valloric/YouCompleteMe'
-Plugin 'ciaranm/securemodelines'
 
 """ Version control nonsense.
 Plugin 'airblade/vim-gitgutter'
@@ -82,8 +110,6 @@ let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim-go")
 syntax enable
 set background=dark
 colorscheme solarized
-" stop solarized bg from being non-transparent
-hi Normal ctermbg=none
 
 """ Enable mouse and word wrapping.
 set mouse=a ww=[,],<,>,h,l,b,s
@@ -91,10 +117,10 @@ set mouse=a ww=[,],<,>,h,l,b,s
 """ Set some personal coding preferences.
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 set nomodeline showcmd
-set nofoldenable foldmethod=syntax foldnestmax=10 foldlevel=1
+set nofoldenable
 set textwidth=80
 
-""" Prefer ~/$XDG_CACHE_HOME/vim for swap and backup files.
+""" Prefer $XDG_CACHE_HOME/vim for swap and backup files.
 set backup backupdir=$XDG_CACHE_HOME/vim/backup,/tmp
 set dir=$XDG_CACHE_HOME/vim/swap,/tmp
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
