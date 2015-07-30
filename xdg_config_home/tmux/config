@@ -59,7 +59,7 @@ setw -g clock-mode-colour "#268bd2" # cyan
 ################################### KEYBINDS ###################################
 ################################################################################
 # reload config without killing server
-bind r source-file ~/.config/tmux/config\; \
+bind r source-file "$XDG_CONFIG_HOME/tmux/config"; \
        display-message "Config reloaded.."
 
 # more intuitive keybindings for splitting
@@ -120,7 +120,7 @@ set -g mouse-select-window on
 ##############################################################
 
 # Right side: date, dow, time.
-set -g status-right ' #(date +"%_d %b %y|%A|%H:%M") '
+set -g status-right ' #(date +"%Y %b %d|%A|%H:%M|%z") '
 
 # session title, hostname
 set-option -g status-left-length 30
