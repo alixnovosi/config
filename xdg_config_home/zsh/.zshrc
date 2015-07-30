@@ -42,9 +42,6 @@ fi
 
 unset local256
 
-export GOPATH=$HOME/src/go
-export PATH=$PATH:$GOPATH/bin
-
 # Better completion
 # Tab completion from both ends.
 # Case-insensitive
@@ -71,7 +68,7 @@ setopt auto_cd
 bindkey '^R' history-incremental-search-backward
 
 # Prompt.
-PROMPT="%{$P_CYAN%}%n%{$P_RESET%}@%{$P_GREEN%}%m%{$P_RESET%}:%{$P_BLUE%}%~%{$P_RESET%}# "
+export PROMPT="%{$P_CYAN%}%n%{$P_RESET%}@%{$P_GREEN%}%m%{$P_RESET%}:%{$P_BLUE%}%~%{$P_RESET%}# "
 
 # Load any host-specific stuff.
 if [ -f "$XDG_CONFIG_HOME/shell/host" ]; then
