@@ -65,6 +65,7 @@ Bundle 'scrooloose/syntastic'
 Bundle 'tComment'
 Bundle 'tpope/vim-surround'
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'embear/vim-localvimrc'
 
 """ Version control nonsense.
 Plugin 'airblade/vim-gitgutter'

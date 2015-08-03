@@ -35,8 +35,6 @@ export TEXMFCONFIG="$XDG_CONFIG_HOME/tex/mfconfig"
 export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
 export TEXMFVAR="$XDG_RUNTIME_HOME/tex/mfvar"
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # Include bin, cabal, gem path.
 PATH=$XDG_DATA_HOME/bin:$GEM_HOME/bin:$GOPATH/bin:$HOME/.cabal/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
-
