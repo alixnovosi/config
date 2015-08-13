@@ -1,0 +1,3 @@
+#!/bin/sh
+
+$(which vim) -u "$XDG_CONFIG_HOME/vim/.vimrc" -- "$@"
