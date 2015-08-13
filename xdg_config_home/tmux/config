@@ -1,18 +1,17 @@
 #-------------------------------------------------------------------------------
 # file: $XDG_CONFIG_HOME/tmux/config
 # author: andrew michaud - https://andrewmichaud.com/
-#
+# updated: 2015-08-03
 #-------------------------------------------------------------------------------
 
-# Use C-o
+# Use C-o as prefix.
 unbind C-b
 set-option -g prefix C-o
 bind C-o send-prefix
 
-####################################################
-################### COLORS #########################
-####################################################
-
+################################################################################
+############################## COLORS ##########################################
+################################################################################
 set-window-option -g xterm-keys on
 set -g default-terminal "screen-256color"
 
@@ -29,7 +28,7 @@ set -g status-left-fg colour15  #base3
 set -g status-right-bg colour11 #base00
 set -g status-right-fg colour15 #base3
 
-# Default window title colors
+# Default window title colors.
 setw -g window-status-fg colour14 #base1
 setw -g window-status-bg colour8  #base03
 setw -g window-status-attr dim
@@ -38,47 +37,55 @@ setw -g window-status-attr dim
 setw -g window-status-current-fg colour8  #base03
 setw -g window-status-current-bg colour14 #base1
 
-# Pane border
+# Pane border.
 set -g pane-border-fg colour8         #base03
 set -g pane-border-bg default
 set -g pane-active-border-fg colour14 #base1
 set -g pane-active-border-bg default
 
-# Command line/ message text
+# Command line/ message text.
 set -g message-fg colour14            #base1
 set -g message-bg colour8             #base03
 
-# Pane number display
+# Pane number display.
 setw -g display-panes-active-colour "#93a1a1"
 setw -g display-panes-colour "#002b36"
 
-# Clock
+# Clock.
 setw -g clock-mode-colour "#268bd2" # cyan
 
 ################################################################################
-################################### KEYBINDS ###################################
+############################# KEYBINDS #########################################
 ################################################################################
-# reload config without killing server
+# Reload config without killing server.
 bind r source-file "$XDG_CONFIG_HOME/tmux/config"; \
-       display-message "Config reloaded.."
+       display-message "Config reloaded."
 
-# more intuitive keybindings for splitting
-# Vertical
+# More intuitive keybindings for splitting.
+# Vertical.
 unbind %
-bind - split-window -v -c '#{pane_current_path}'
+bind - split-window -v -c "#{pane_current_path}"
 
-# Horizontal
+# Horizontal.
 unbind '"'
-bind | split-window -h -c '#{pane_current_path}'
+bind | split-window -h -c "#{pane_current_path}"
 
-# New window
+# New window.
 unbind c
-bind c new-window -c '#{pane_current_path}'
+bind c new-window -c "#{pane_current_path}"
 
-# copy tmux buffer to clipboard
-bind C-y run "tmux show-buffer | xsel -b"
-# move x clipboard into tmux paste buffer
-bind C-p run "tmux set-buffer \"$(xsel -o)\"; tmux paste-buffer"
+if-shell "test '$(uname -s)' = 'Darwin'" \
+    "bind-key y run-shell "tmux how-buffer | pbcopy"'
+
+if-shell 'test "$(uname -s)" = "Linux"' \
+    'bind-key y run-shell "tmux show-buffer | xclip -sel clip -i"'
+
+# Copy tmux buffer to clipboard.
+if-shell 'test "$(uname -s)" = "Linux"' \
+    bind y run "tmux show-buffer | xsel -b"
+# Move x clipboard into tmux paste buffer.
+if-shell 'test "$(uname -s)" = "Darwin"' \
+    bind p run "tmux set-buffer \"$(xsel -o)\"; tmux paste-buffer"
 
 # Move between panes with vim movement keys.
 bind h select-pane -L
@@ -96,10 +103,10 @@ bind -r J resize-pane -D 3
 bind -r K resize-pane -U 3
 bind -r L resize-pane -R 3
 
-# scrollback buffer n lines
+# Scrollback buffer n lines.
 set -g history-limit 5000
 
-# enable auto renaming
+# Enable auto renaming.
 setw -g automatic-rename on
 
 # Rename terminal emulator.
@@ -115,21 +122,20 @@ set -g mouse-select-pane on
 set -g mouse-resize-pane on
 set -g mouse-select-window on
 
-##############################################################
-####################### PANEL SETUP ##########################
-##############################################################
-
+################################################################################
+################################# PANEL SETUP ##################################
+################################################################################
 # Right side: date, dow, time.
-set -g status-right ' #(date +"%Y %b %d|%A|%H:%M|%z") '
+set -g status-right '#(date +"%Y %b %d|%A|%H:%M|%z")'
 
-# session title, hostname
+# Session title, hostname.
 set-option -g status-left-length 30
-set -g status-left ' #S|#h '
+set -g status-left '#S|#h'
 
-# apparently tmux is british
+# Apparently tmux is British.
 # Session index and window name.
 set-option -g status-justify centre
 set-window-option -g window-status-current-format ' #I|#W '
-set-window-option -g window-status-format ' #I|#W '
+set-window-option -g window-status-format '#I|#W'
 setw -g window-status-current-fg colour15 #base3
 setw -g window-status-current-bg colour11 #base00
