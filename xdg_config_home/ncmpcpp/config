@@ -36,17 +36,7 @@ fetch_lyrics_for_current_song_in_background = "no"
 ##
 #lastfm_preferred_language = ""
 #
-startup_screen = "2"
 #
-jump_to_now_playing_song_at_start = "yes"
-#
-ask_before_clearing_main_playlist = "yes"
-#
-clock_display_seconds = "yes"
-#
-display_volume_level = "yes"
-#
-display_remaining_time = "yes"
 #
 ##
 ## Note: If below is enabled, ncmpcpp will ignore leading
