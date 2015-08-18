@@ -1,0 +1,15 @@
+#!/bin/bash
+# Update and upgrade Vundle.
+
+exec > >(tee "$XDG_DATA_HOME/bin/$(basename "$0").log")
+exec 2>&1
+
+printf '=%.0s' {1..80}
+echo
+echo "Running Vundle upgrade."
+printf '=%.0s' {1..80}
+echo
+echo "Upgrading."
+vim -i NONE -c VUndleUpdate -c quitall
+
+echo "Done!"
