@@ -1,66 +1,44 @@
 "------------------------------------------------------------------------------"
-" AUTHOR: Andrew Michaud                                                       "
-" FILE: .vimrc                                                                 "
+" AUTHOR:  Andrew Michaud                                                      "
+" FILE:    .vimrc                                                              "
 " PURPOSE: Vim configuration file                                              "
-" DATE: 2015-07-23                                                             "
+" DATE:    2015-07-23                                                          "
+" UPDATED: 2015-08-20                                                          "
 " Free for use!                                                                "
 "------------------------------------------------------------------------------"
-
 "------------------------------------------------------------------------------"
 " -------------------------  VUNDLE PREPARATION  ----------------------------- "
 "------------------------------------------------------------------------------"
 set nocompatible
 filetype off
-
 set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/vundle/Vundle.vim
 
 let g:vundle_lazy_load=0
 let g:bundles_dir = expand('$XDG_CONFIG_HOME/vim/vundle')
-
-call vundle#rc(bundles_dir)
-
 "------------------------------------------------------------------------------"
 " ---------------------------  VUNDLE BUNDLES  ------------------------------- "
 "------------------------------------------------------------------------------"
+call vundle#rc(bundles_dir)
 Bundle 'gmarik/Vundle.vim'
 
 """ Language assistance.
-""" C#
 Bundle 'OmniSharp/omnisharp-vim'
 Bundle 'OrangeT/vim-csharp'
-
-""" Haskell
 Bundle 'dag/vim2hs'
 Bundle 'Twinside/vim-haskellFold'
-
-""" HTML5
 Plugin 'othree/html5.vim'
-
-""" Javascript
 Plugin 'pangloss/vim-javascript'
-
-""" JSON
 Bundle 'elzr/vim-json'
-
-""" Golang
 Plugin 'fatih/vim-go'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
-
-""" Python
 Plugin 'tmhedberg/SimpylFold'
-Plugin 'davidhalter/jedi'
-
-""" Scala
+Plugin 'davidhalter/jedi' " Python
 Bundle 'derekwyatt/vim-scala'
-
-""" Tmux
 Plugin 'tejr/vim-tmux'
-
-""" Vimscript
 Bundle 'dbakker/vim-lint'
 
 """ Programming support.
-Plugin 'ciaranm/securemodelines'
+Plugin 'majutsushi/tagbar'
 Bundle 'scrooloose/syntastic'
 Bundle 'tComment'
 Bundle 'tpope/vim-surround'
@@ -80,13 +58,10 @@ Bundle 'bronson/vim-trailing-whitespace'
 Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
-Bundle 'techlivezheng/vim-plugin-minibufexpl'
 Bundle 'tpope/vim-dispatch'
 Bundle 'vim-scripts/a.vim'
-
 call vundle#end()
 filetype plugin indent on
-
 "------------------------------------------------------------------------------"
 " ----------------------  NON-VUNDLE SETTINGS  ------------------------------- "
 "------------------------------------------------------------------------------"
@@ -104,6 +79,10 @@ let g:syntastic_html_tidy_exec = '/usr/bin/tidy5'
 let g:airline_powerline_fonts = 0
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tagbar#enabled = 1
 
 set spell spelllang=en_us
 let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim-go")
@@ -112,20 +91,17 @@ syntax enable
 set background=dark
 colorscheme solarized
 
-""" Enable mouse and word wrapping.
+""" Enable mouse and enable word wrapping.
 set mouse=a ww=[,],<,>,h,l,b,s
 
 """ Set some personal coding preferences.
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
-set nomodeline showcmd
-set nofoldenable
-set textwidth=80
+set nomodeline showcmd nofoldenable textwidth=80
 
 """ Prefer $XDG_CACHE_HOME/vim for swap and backup files.
 set backup backupdir=$XDG_CACHE_HOME/vim/backup,/tmp
 set dir=$XDG_CACHE_HOME/vim/swap,/tmp
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
-
 "------------------------------------------------------------------------------"
 " -------------------------------  KEYBINDS  --------------------------------- "
 "------------------------------------------------------------------------------"
@@ -143,14 +119,14 @@ nmap <C-k> <C-y>
 """ These cause the bottom of the screen to contain more useful information.
 set laststatus=2 ruler showcmd
 
+""" Also stolen from cstanfill.
 """ Let C-s, C-q go to Vim instead of terminal.
 silent !stty -ixon > /dev/null 2>/dev/null
-
-""" Also stolen from cstanfill.
 """ Filesystem tree, numbering, highlighting search toggle.
 nmap <C-s>n :NERDTreeToggle<CR>
 nmap <C-s>s :set number!<CR>
 nmap <C-s>h :set hlsearch!<CR>
+nmap <C-s>t :TagbarToggle<CR>
 
 """ Set nicer search settings.
 set incsearch ignorecase smartcase nohlsearch
