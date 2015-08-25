@@ -14,9 +14,9 @@ alias mv='mv -i'
 alias rm='rm -i'
 
 # Silly aliases.
-alias git-yolo='git commit -am "`curl -s http://whatthecommit.com/index.txt`"'
-alias whence='which'
+alias git-yolo='git commit -am "$(curl -s http://whatthecommit.com/index.txt)"'
 alias starwars='telnet towel.blinkenlights.nl'
+alias whence='which'
 
 # Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
 alias feh='feh --no-fehbg'
