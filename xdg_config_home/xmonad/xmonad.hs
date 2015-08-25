@@ -1,5 +1,10 @@
--- Andrew Michaud's XMonad config.
--- Built from bits and pieces of other configs by other people.
+--------------------------------------------------------------------------------
+-- AUTHOR:  Andrew Michaud                                                    --
+-- FILE:    xmonad.hs                                                         --
+-- PURPOSE: Vim configuration file                                            --
+-- UPDATED: 2015-08-23                                                        --
+-- Free for use! (MIT/BSD license, GPL is plague.)                            --
+--------------------------------------------------------------------------------
 import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Actions.CopyWindow -- dwm window tagging
@@ -14,16 +19,17 @@ import XMonad.Util.Run                  (safeSpawn)
 import qualified XMonad.StackSet as W -- for extra workspaces.
 
 import qualified Data.Char as C         (toUpper)
+import Data.Maybe
 import Graphics.X11.ExtraTypes.XF86
-import System.Environment               (getEnvironment)
+import System.Environment               (getEnvironment, getEnv)
 import System.Posix.Unistd              (nodeName, getSystemID)
 import System.Taffybar.Hooks.PagerHints (pagerHints)
 
 import Colors
 
------------------------------------------------------------------------------
--------------------------------  MAIN  --------------------------------------
------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+---------------------------------  MAIN  ---------------------------------------
+--------------------------------------------------------------------------------
 main :: IO ()
 main = do
 
@@ -56,11 +62,11 @@ main = do
         , normalBorderColor  = base03
         , borderWidth        = 2
 
-        } `additionalKeys` keybinds host (Just env) mod4Mask
+        } `additionalKeys` keybinds host env mod4Mask
 
----------------------------------------------------------------------------------
---------------------------------   KEYBINDS   -----------------------------------
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------   KEYBINDS   ----------------------------------
+--------------------------------------------------------------------------------
 -- Keybinds, depending on host for audio keys.
 keybinds host env mask =
     [ ((mask .|. shiftMask,   xK_l), spawn "xscreensaver-command -lock")
@@ -79,9 +85,6 @@ keybinds host env mask =
     -- Restart taffybar
     , ((mask .|. controlMask, xK_q), spawn "pkill taffybar && taffybar")
 
-    -- Suspend and lock (ideally).
-    , ((mask .|. shiftMask,   xK_s), script "slp")
-
     , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
     , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 7")
 
@@ -98,12 +101,11 @@ keybinds host env mask =
     , ((mask .|. controlMask, xK_a), spawn $ namedCmd "ssh-add" "")
 
     -- Various useful scripts, which are also in the repo.
-    , ((mask,               xK_s), script "setWallpaper")
-    , ((mask,               xK_n), script "toggleOneko")
-    , ((mask .|. shiftMask, xK_p), spawn ". ~/.zshrc; ~/.local/bin/menu pass")
-    , ((mask,               xK_v), spawn ". ~/.zshrc; ~/.local/bin/menu vid")
-    , ((mask .|. shiftMask, xK_o), spawn ". ~/.zshrc; ~/.local/bin/menu music")
-    , ((mask .|. shiftMask, xK_n), spawn $ namedCmd "note" "")
+    , ((mask,               xK_s), spawn $ dhome ++ "/bin/setWallpaper")
+    , ((mask,               xK_n), spawn $ dhome ++ "/bin/toggleOneko")
+    , ((mask .|. shiftMask, xK_p), spawn $ dhome ++ "/bin/menu pass")
+    , ((mask,               xK_v), spawn $ dhome ++ "/bin/menu vid")
+    , ((mask .|. shiftMask, xK_o), spawn $ dhome ++ "/bin/menu music")
     ] ++
 
     -- Audio keys.
@@ -114,26 +116,35 @@ keybinds host env mask =
     -- mod-control-shift-[spaces] @@ Copy to workspace N
     [((mask .|. m, k), windows $ f i)
         | (i, k) <- zip spaces wsKeys
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, shiftMask .|. controlMask)]]
-        where wsKeys  = [xK_grave] ++ [xK_1 .. xK_9] ++ [xK_0, xK_minus, xK_equal]
+        , (f, m) <- [(W.view, 0),
+                     (W.shift, shiftMask),
+                     (copy, shiftMask .|. controlMask)]]
 
-----------------------------------------------------------------------------------------------
-----------------------------------------    OTHER    -----------------------------------------
-----------------------------------------------------------------------------------------------
--- Terminal commands
+        where wsKeys = [xK_grave] ++
+                       [xK_1 .. xK_9] ++
+                       [xK_0, xK_minus, xK_equal]
+
+              -- Determine xdg_data_home to grab scripts correctly.
+              -- You may store your scripts elsewhere and want to change this.
+              dhome  = if isNothing $ lookup "XDG_DATA_HOME" env
+                           then "~/.local/share"
+                           else fromJust $ lookup "XDG_DATA_HOME" env
+
+--------------------------------------------------------------------------------
+--------------------------------    OTHER    -----------------------------------
+--------------------------------------------------------------------------------
+-- Terminal commands.
 term              = "xfce4-terminal --hide-menubar --show-borders"
 termCmd cmd       = term ++ " --command=" ++ cmd
-namedCmd cmd args = term ++ " --title=" ++ name ++ " --command='" ++ cmd ++ " " ++ args ++ "'"
+namedCmd cmd args = term ++ " --title=" ++ name ++
+                    " --command='" ++ cmd ++ " " ++ args ++ "'"
     where name = "__" ++ map C.toUpper cmd
 
--- Make running scripts less verbose.
-scriptHome = "~/.local/bin/"
-script name = spawn $ scriptHome ++ name
-
--- Workspace titles
+-- Workspace titles.
 spaces :: [String]
-spaces = ["` term", "1 term", "2 socl", "3 socl", "4 play", "5 play", "6 play", "7 work",
-          "8 work", "9 work", "0 etc.", "- etc.", "= etc"]
+spaces = ["` term", "1 term", "2 socl", "3 socl",
+          "4 play", "5 play", "6 play", "7 work",
+          "8 work", "9 work", "0 etc.", "- etc.", "= etc."]
 
 -- Laptop doesn't have proper media keys because Lenovo are dumb.
 -- So, do it manually.
@@ -162,9 +173,9 @@ scrot = \x -> case x of
           destination   = "-e 'mv $f ~/pictures/screenshots/' "
           scrotGen    s = "scrot " ++ s ++ format ++ destination
 
---------------------------------------------------
-----------------   CUSTOM HOOKS   ----------------
---------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------   CUSTOM HOOKS   ------------------------------
+--------------------------------------------------------------------------------
 -- Manage docks, custom layout nonsense.
 mHook :: ManageHook
 mHook = manageDocks <+> composeAll

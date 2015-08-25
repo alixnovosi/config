@@ -41,7 +41,7 @@ if [ "$(tput colors)" = "256" ]; then
     export P_GREEN && P_GREEN="$(tput setaf 64)"
 
 # Fine, only 16 colors.
-elif [ "$(tput colors)" = "16" ]; then
+else
     export P_BASE03 && P_BASE03="$(tput setaf 8)"
     export P_BASE02 && P_BASE02="$(tput setaf 0)"
     export P_BASE01 && P_BASE01="$(tput setaf 10)"

@@ -21,17 +21,13 @@ xscreensaver -no-splash &
 
 # dbus and agents.
 eval "$(dbus-launch --auto-syntax)"
-eval "$(ssh-agent)"
-export SSH_ASKPASS=ssh-askpass
-eval "$(gnome-keyring-daemon)"
 
 # Launch programs I want running.
 # Chat, music, power management, notifications.
 pgrep -x pidgin | pidgin &
-pgrep -x mopidy | mopidy &
+pgrep -x mpd | mpd &
 pgrep -x mate-power-manager | mate-power-manager &
 pgrep -x dunst | dunst &
 
 # Launch Taffybar and XMonad.
 taffybar &
-exec xmonad
