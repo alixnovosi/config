@@ -1,10 +1,6 @@
 #!/bin/sh
 
-if [[ "$(uname -s)" == "Darwin" ]]; then
-    . "$HOME/Library/Preferences/shell/osx"
-elif [[ "$(uname -s)" == "Linux" ]]; then
-    . "$HOME/.config/shell/linux"
-fi
+. "$HOME/.config/shell/linux"
 
 # Update Xresources.
 [ -f .Xresources ] && xrdb -merge .Xresources
@@ -12,8 +8,6 @@ fi
 # Set cursor style and auto-hide cursor.
 xsetroot -cursor_name left_ptr
 unclutter &
-
-xscreensaver -no-splash &
 
 # Run scripts.
 [ -f "$XDG_DATA_HOME/bin/setWallpaper" ] && "$XDG_DATA_HOME/bin/setWallpaper" &
@@ -23,7 +17,7 @@ xscreensaver -no-splash &
 eval "$(dbus-launch --auto-syntax)"
 
 # Launch programs I want running.
-# Chat, music, power management, notifications.
+pgrep -x xscreensaver | xscreensaver -no-splash &
 pgrep -x pidgin | pidgin &
 pgrep -x mpd | mpd &
 pgrep -x mate-power-manager | mate-power-manager &
