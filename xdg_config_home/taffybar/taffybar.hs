@@ -5,6 +5,7 @@ import System.Taffybar.SimpleClock
 import System.Taffybar.Systray (systrayNew)
 import System.Taffybar.TaffyPager
 import System.Taffybar.Weather
+
 import Colors
 
 main = do
@@ -16,13 +17,13 @@ main = do
 
     defaultTaffybar defaultTaffybarConfig
         { startWidgets = [pager]
-        , endWidgets = [ tray, clock, weather, mpris2]
-        , barHeight = 16
+        , endWidgets   = [tray, clock, weather, mpris2]
+        , barHeight    = 16
         }
 
---------------------------------------------------------------------------
----------------------------   FUNCTIONS   --------------------------------
---------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+------------------------------   FUNCTIONS   -----------------------------------
+--------------------------------------------------------------------------------
 pagerConfig = taffyPagerNew defaultPagerConfig
     { emptyWorkspace   = const ""
     , activeWorkspace  = colorize base03 base2 . wrap "[" "]"
@@ -35,9 +36,7 @@ pagerConfig = taffyPagerNew defaultPagerConfig
     }
 
 weatherConfig = weatherNew ( defaultWeatherConfig "KCQT" )
-    {weatherTemplate = " $tempF$ \176F|$tempC$ \176C "}
-    10.0
+                           { weatherTemplate = " $tempF$ \176F|$tempC$ \176C "}
+                           10.0
 
-clockConfig = textClockNew Nothing
-                           "%_d %b %Y|%A|%H:%M"
-                           1
+clockConfig = textClockNew Nothing "%_d %b %Y|%A|%H:%M" 1
