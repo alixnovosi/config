@@ -79,6 +79,7 @@ scriptencoding utf-8
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 set nomodeline showcmd nofoldenable textwidth=80
 set spell spelllang=en_us
+set spellfile=$XDG_CACHE_HOME/vim/spell/en-utf-8.add
 set wildmenu wildmode=list:longest,full
 set background=dark
 colorscheme solarized
