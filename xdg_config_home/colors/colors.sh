@@ -18,10 +18,10 @@ export SOLARIZED_BLUE="#268bd2"
 export SOLARIZED_CYAN="#2aa198"
 export SOLARIZED_GREEN="#859900"
 
-# tput nonsense
+# tput nonsense.
 export P_RESET && P_RESET="$(tput sgr0)"
 
-# 256 colors
+# 256 colors.
 if [ "$(tput colors)" = "256" ]; then
     export P_BASE03 && P_BASE03="$(tput setaf 234)"
     export P_BASE02 && P_BASE02="$(tput setaf 235)"
