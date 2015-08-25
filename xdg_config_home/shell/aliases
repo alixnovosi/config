@@ -1,19 +1,17 @@
 #!/bin/sh
 
-# Color grep and ls.  Works on mac and linux.
-alias grep='grep --color=auto'
-
 # Useful aliases.
 alias df='df -h'
 alias du='du -c -h'
+alias grep='grep --color=auto'
 alias l='ls -CFh'
 alias la='ls -Ah'
 alias ll='ls -alh'
-alias rm='rm -i'
 
 # Safety aliases.
 alias cp='cp -i'
 alias mv='mv -i'
+alias rm='rm -i'
 
 # Silly aliases.
 alias git-yolo='git commit -am "`curl -s http://whatthecommit.com/index.txt`"'
