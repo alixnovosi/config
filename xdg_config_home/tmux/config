@@ -1,5 +1,6 @@
 #-------------------------------------------------------------------------------------------------#
-# FILE:    $XDG_CONFIG_HOME/tmux/config                                                           #
+# FILE:    config                                                                                 #
+# PURPOSE: tmux config file                                                                       #
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # UPDATED: 2015-08-25                                                                             #
 # LICENSE: BSD/MIT                                                                                #
@@ -63,8 +64,7 @@ set-option -g prefix C-o
 bind C-o send-prefix
 
 # Reload config without killing server.
-bind r source-file "$XDG_CONFIG_HOME/tmux/config"; \
-       display-message "Config reloaded."
+bind r source-file "$XDG_CONFIG_HOME/tmux/config"; display-message "Config reloaded."
 
 # More intuitive keybindings for splitting.
 # Vertical.
@@ -120,7 +120,7 @@ set -g mouse-select-window on
 ###################################################################################################
 ########################################### PANEL SETUP ###########################################
 ###################################################################################################
-# Right side: date, dow, time.
+# Right side: date, dow, time, timezone offset.
 set -g status-right ' #(date +"%Y %b %d|%A|%H:%M|%z") '
 
 # Session title, hostname.
