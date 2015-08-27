@@ -47,7 +47,7 @@ Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
 Plug 'tComment'
 Plug 'tpope/vim-surround'
-Plug 'Valloric/YouCompleteMe',    { 'do': './install.sh --clang-completer --gocode-completer' }
+Plug 'Valloric/YouCompleteMe'
 
 """ Version control nonsense.
 Plug 'airblade/vim-gitgutter'
