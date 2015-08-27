@@ -1,3 +1,10 @@
+---------------------------------------------------------------------------------------------------
+-- AUTHOR:  Andrew Michaud                                                                       --
+-- FILE:    taffybar.hs                                                                          --
+-- PURPOSE: Taffybar configuration file                                                          --
+-- UPDATED: 2015-08-26                                                                           --
+-- LICENSE: MIT/BSD                                                                              --
+---------------------------------------------------------------------------------------------------
 import System.Taffybar
 import System.Taffybar.MPRIS2 (mpris2New)
 import System.Taffybar.Pager (wrap, colorize, shorten, escape)
@@ -15,15 +22,14 @@ main = do
         mpris2  = mpris2New
         weather = weatherConfig
 
-    defaultTaffybar defaultTaffybarConfig
-        { startWidgets = [pager]
-        , endWidgets   = [tray, clock, weather, mpris2]
-        , barHeight    = 16
-        }
+    defaultTaffybar defaultTaffybarConfig { startWidgets = [pager]
+                                          , endWidgets = [ tray, clock, weather, mpris2]
+                                          , barHeight = 16
+                                          }
 
---------------------------------------------------------------------------------
-------------------------------   FUNCTIONS   -----------------------------------
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+------------------------------------   FUNCTIONS   ------------------------------------------------
+---------------------------------------------------------------------------------------------------
 pagerConfig = taffyPagerNew defaultPagerConfig
     { emptyWorkspace   = const ""
     , activeWorkspace  = colorize base03 base2 . wrap "[" "]"
@@ -35,8 +41,8 @@ pagerConfig = taffyPagerNew defaultPagerConfig
     , activeWindow     = colorize base03 base2 . shorten 70 . wrap "[" "]"
     }
 
-weatherConfig = weatherNew ( defaultWeatherConfig "KCQT" )
-                           { weatherTemplate = " $tempF$ \176F|$tempC$ \176C "}
-                           10.0
+weatherConfig = weatherNew ( defaultWeatherConfig "KHWD" )
+    {weatherTemplate = " $tempF$ \176F|$tempC$ \176C "}
+    10.0
 
 clockConfig = textClockNew Nothing "%_d %b %Y|%A|%H:%M" 1
