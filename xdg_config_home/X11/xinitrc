@@ -1,27 +1,32 @@
 #!/bin/sh
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud                                                                         #
+# FILE:    xinitrc                                                                                #
+# PURPOSE: System login configuration file                                                        #
+# UPDATED: 2015-08-27                                                                             #
+# LICENSE: MIT/BSD                                                                                #
+#-------------------------------------------------------------------------------------------------#
 
+# Set XDG vars, anything else important.
 . "$HOME/.config/shell/linux"
 
-# Update Xresources.
-[ -f .Xresources ] && xrdb -merge .Xresources
-
-# Set cursor style and auto-hide cursor.
-xsetroot -cursor_name left_ptr
-unclutter &
-
-# Run scripts.
+# Update xresources, run scripts.
+[ -f "$XDG_CONFIG_HOME/X11/xresources" ] && xrdb -merge "$XDG_CONFIG_HOME/X11/xresources"
 [ -f "$XDG_DATA_HOME/bin/setWallpaper" ] && "$XDG_DATA_HOME/bin/setWallpaper" &
 [ -f "$XDG_DATA_HOME/bin/fixscreens" ] && "$XDG_DATA_HOME/bin/fixscreens" &
 
-# dbus and agents.
-eval "$(dbus-launch --auto-syntax)"
-
 # Launch programs I want running.
+# Screensaver, chat, music, power management, notifications, cursor-autohide and styling.
 pgrep -x xscreensaver | xscreensaver -no-splash &
 pgrep -x pidgin | pidgin &
 pgrep -x mpd | mpd &
 pgrep -x mate-power-manager | mate-power-manager &
 pgrep -x dunst | dunst &
+unclutter &
+xsetroot -cursor_name left_ptr
 
-# Launch Taffybar and XMonad.
+# dbus, which taffybar/XMonad use, as well as other things.
+eval "$(dbus-launch --auto-syntax)"
+
+# Launch Taffybar.
 taffybar &
