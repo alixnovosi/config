@@ -6,6 +6,7 @@
 # Extra XDG env variables.
 export XDG_DATA_DIRS="$XDG_DATA_HOME/:/usr/local/share/:/usr/share/"
 export XDG_CONFIG_DIRS="$XDG_CONFIG_HOME/:/etc/xdg"
+export XDG_RUNTIME_DIR="/tmp"
 
 # Useful stuff.
 export EDITOR="$XDG_DATA_HOME/bin/EDITOR"
@@ -31,9 +32,12 @@ export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 export PYTHONPATH="$XDG_DATA_HOME/bin"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/tex/mfconfig"
 export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
-export TEXMFVAR="$XDG_RUNTIME_HOME/tex/mfvar"
+export TEXMFVAR="$XDG_RUNTIME_DIR/tex/mfvar"
+export TMUX_TMPDIR="$XDG_RUNTIME_DIR/tmux"
+export XAUTHORITY="$XDG_RUNTIME_DIR/X11/xauthority"
+export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # Include bin, cabal, gem path.
-PATH=$XDG_DATA_HOME/bin:$GEM_HOME/bin:$GOPATH/bin:$HOME/.cabal/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+PATH=$XDG_DATA_HOME/bin:$GEM_HOME/bin:$GOPATH/bin:$XDG_DATA_HOME/cabal/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
