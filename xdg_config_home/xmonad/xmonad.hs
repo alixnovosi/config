@@ -1,18 +1,18 @@
---------------------------------------------------------------------------------
--- AUTHOR:  Andrew Michaud                                                    --
--- FILE:    xmonad.hs                                                         --
--- PURPOSE: Vim configuration file                                            --
--- UPDATED: 2015-08-23                                                        --
--- Free for use! (MIT/BSD license, GPL is plague.)                            --
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+-- AUTHOR:  Andrew Michaud                                                                       --
+-- FILE:    xmonad.hs                                                                            --
+-- PURPOSE: XMonad configuration file                                                            --
+-- UPDATED: 2015-08-26                                                                           --
+-- LICENSE: MIT/BSD                                                                              --
+---------------------------------------------------------------------------------------------------
 import XMonad
 import XMonad.Actions.CycleWS
-import XMonad.Actions.CopyWindow -- dwm window tagging
+import XMonad.Actions.CopyWindow      -- dwm window tagging
 import XMonad.Actions.GridSelect
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers       (doCenterFloat, doFullFloat)
-import XMonad.Hooks.SetWMName -- For dealing with Java stuff.
+import XMonad.Hooks.SetWMName         -- For dealing with Java stuff.
 import XMonad.Layout.NoBorders          (smartBorders)
 import XMonad.Util.EZConfig             (additionalKeys)
 import XMonad.Util.Run                  (safeSpawn)
@@ -27,9 +27,9 @@ import System.Taffybar.Hooks.PagerHints (pagerHints)
 
 import Colors
 
---------------------------------------------------------------------------------
----------------------------------  MAIN  ---------------------------------------
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+------------------------------------------  MAIN  -------------------------------------------------
+---------------------------------------------------------------------------------------------------
 main :: IO ()
 main = do
 
@@ -64,9 +64,9 @@ main = do
 
         } `additionalKeys` keybinds host env mod4Mask
 
---------------------------------------------------------------------------------
---------------------------------   KEYBINDS   ----------------------------------
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+------------------------------------------   KEYBINDS   -------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Keybinds, depending on host for audio keys.
 keybinds host env mask =
     [ ((mask .|. shiftMask,   xK_l), spawn "xscreensaver-command -lock")
@@ -97,15 +97,14 @@ keybinds host env mask =
     , ((mask,                 xK_a), spawn $ namedCmd "alsamixer" "")
     , ((mask,                 xK_o), spawn $ namedCmd "ncmpcpp" "")
     , ((mask,                 xK_b), spawn "x-www-browser")
-
     , ((mask .|. controlMask, xK_a), spawn $ namedCmd "ssh-add" "")
 
     -- Various useful scripts, which are also in the repo.
-    , ((mask,               xK_s), spawn $ dhome ++ "/bin/setWallpaper")
-    , ((mask,               xK_n), spawn $ dhome ++ "/bin/toggleOneko")
-    , ((mask .|. shiftMask, xK_p), spawn $ dhome ++ "/bin/menu pass")
-    , ((mask,               xK_v), spawn $ dhome ++ "/bin/menu vid")
-    , ((mask .|. shiftMask, xK_o), spawn $ dhome ++ "/bin/menu music")
+    , ((mask,               xK_s), spawn $ bin ++ "setWallpaper")
+    , ((mask,               xK_n), spawn $ bin ++ "toggleOneko")
+    , ((mask .|. shiftMask, xK_p), spawn $ bin ++ "menu pass")
+    , ((mask,               xK_v), spawn $ bin ++ "menu vid")
+    , ((mask .|. shiftMask, xK_o), spawn $ bin ++ "menu music")
     ] ++
 
     -- Audio keys.
@@ -129,22 +128,21 @@ keybinds host env mask =
               dhome  = if isNothing $ lookup "XDG_DATA_HOME" env
                            then "~/.local/share"
                            else fromJust $ lookup "XDG_DATA_HOME" env
+              bin    = dhome + "/bin/"
 
---------------------------------------------------------------------------------
---------------------------------    OTHER    -----------------------------------
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+-----------------------------------------    OTHER    ---------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Terminal commands.
 term              = "xfce4-terminal --hide-menubar --show-borders"
 termCmd cmd       = term ++ " --command=" ++ cmd
-namedCmd cmd args = term ++ " --title=" ++ name ++
-                    " --command='" ++ cmd ++ " " ++ args ++ "'"
+namedCmd cmd args = term ++ " --title=" ++ name ++ " --command='" ++ cmd ++ " " ++ args ++ "'"
     where name = "__" ++ map C.toUpper cmd
 
 -- Workspace titles.
 spaces :: [String]
-spaces = ["` term", "1 term", "2 socl", "3 socl",
-          "4 play", "5 play", "6 play", "7 work",
-          "8 work", "9 work", "0 etc.", "- etc.", "= etc."]
+spaces = ["` term", "1 term", "2 socl", "3 socl", "4 play", "5 play", "6 play", "7 work", "8 work",
+          "9 work", "0 etc.", "- etc.", "= etc."]
 
 -- Laptop doesn't have proper media keys because Lenovo are dumb.
 -- So, do it manually.
@@ -173,9 +171,9 @@ scrot = \x -> case x of
           destination   = "-e 'mv $f ~/pictures/screenshots/' "
           scrotGen    s = "scrot " ++ s ++ format ++ destination
 
---------------------------------------------------------------------------------
---------------------------------   CUSTOM HOOKS   ------------------------------
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+-----------------------------------------   CUSTOM HOOKS   ----------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Manage docks, custom layout nonsense.
 mHook :: ManageHook
 mHook = manageDocks <+> composeAll
