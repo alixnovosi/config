@@ -5,9 +5,16 @@
 -- UPDATED: 2015-08-26                                                                           --
 -- LICENSE: MIT/BSD                                                                              --
 ---------------------------------------------------------------------------------------------------
+import qualified Data.Char as C         (toUpper)
+import Data.Maybe                       (fromMaybe)
+import Graphics.X11.ExtraTypes.XF86
+import System.Environment               (getEnvironment)
+import System.Posix.Unistd              (nodeName, getSystemID)
+import System.Taffybar.Hooks.PagerHints (pagerHints)
+
 import XMonad
 import XMonad.Actions.CycleWS
-import XMonad.Actions.CopyWindow      -- dwm window tagging
+import XMonad.Actions.CopyWindow      -- dwm-style window tagging
 import XMonad.Actions.GridSelect
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
@@ -15,25 +22,17 @@ import XMonad.Hooks.ManageHelpers       (doCenterFloat, doFullFloat)
 import XMonad.Hooks.SetWMName         -- For dealing with Java stuff.
 import XMonad.Layout.NoBorders          (smartBorders)
 import XMonad.Util.EZConfig             (additionalKeys)
-import XMonad.Util.Run                  (safeSpawn)
 import qualified XMonad.StackSet as W -- for extra workspaces.
-
-import qualified Data.Char as C         (toUpper)
-import Data.Maybe
-import Graphics.X11.ExtraTypes.XF86
-import System.Environment               (getEnvironment, getEnv)
-import System.Posix.Unistd              (nodeName, getSystemID)
-import System.Taffybar.Hooks.PagerHints (pagerHints)
 
 import Colors
 
 ---------------------------------------------------------------------------------------------------
-------------------------------------------  MAIN  -------------------------------------------------
+-------------------------------------------  MAIN  ------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 main :: IO ()
 main = do
 
-    -- Get hostname for system-dependent stuff.
+    -- Get hostname for system-dependent stuff, and environment for xdg_data_home later.
     host <- fmap nodeName getSystemID
     env <- getEnvironment
 
@@ -42,12 +41,11 @@ main = do
         { manageHook = mHook
         , layoutHook = lHook
 
-        -- Handles Java, ewmh nonsense
+        -- Handles Java, ewmh nonsense.
         , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
 
         , logHook         = ewmhDesktopsLogHook
-        , handleEventHook = ewmhDesktopsEventHook <+>
-                            handleEventHook defaultConfig <+>
+        , handleEventHook = ewmhDesktopsEventHook <+> handleEventHook defaultConfig <+>
                             fullscreenEventHook
 
         , modMask    = mod4Mask
@@ -57,7 +55,7 @@ main = do
         , focusFollowsMouse = False -- Mice are for squares.
         , clickJustFocuses  = False -- Focusing click passed to window.
 
-        -- Border jazz
+        -- Border jazz.
         , focusedBorderColor = base2
         , normalBorderColor  = base03
         , borderWidth        = 2
@@ -65,7 +63,7 @@ main = do
         } `additionalKeys` keybinds host env mod4Mask
 
 ---------------------------------------------------------------------------------------------------
-------------------------------------------   KEYBINDS   -------------------------------------------
+-------------------------------------------  KEYBINDS  --------------------------------------------
 ---------------------------------------------------------------------------------------------------
 -- Keybinds, depending on host for audio keys.
 keybinds host env mask =
@@ -82,7 +80,7 @@ keybinds host env mask =
     , ((mask .|. controlMask .|. shiftMask, xK_h), shiftToPrev)
     , ((mask .|. controlMask .|. shiftMask, xK_l), shiftToNext)
 
-    -- Restart taffybar
+    -- Restart taffybar.
     , ((mask .|. controlMask, xK_q), spawn "pkill taffybar && taffybar")
 
     , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
@@ -99,39 +97,32 @@ keybinds host env mask =
     , ((mask,                 xK_b), spawn "x-www-browser")
     , ((mask .|. controlMask, xK_a), spawn $ namedCmd "ssh-add" "")
 
-    -- Various useful scripts, which are also in the repo.
-    , ((mask,               xK_s), spawn $ bin ++ "setWallpaper")
-    , ((mask,               xK_n), spawn $ bin ++ "toggleOneko")
-    , ((mask .|. shiftMask, xK_p), spawn $ bin ++ "menu pass")
-    , ((mask,               xK_v), spawn $ bin ++ "menu vid")
-    , ((mask .|. shiftMask, xK_o), spawn $ bin ++ "menu music")
+    -- Various useful scripts, which are also in my config repo.
+    , ((mask,               xK_s), spawn $ binHome ++ "setWallpaper")
+    , ((mask,               xK_n), spawn $ binHome ++ "toggleOneko")
+    , ((mask .|. shiftMask, xK_p), spawn $ binHome ++ "menu pass")
+    , ((mask,               xK_v), spawn $ binHome ++ "menu vid")
+    , ((mask .|. shiftMask, xK_o), spawn $ binHome ++ "menu music")
     ] ++
 
     -- Audio keys.
     audioKeys host ++
 
-    -- mod-[spaces] @@ Switch to workspace N
-    -- mod-shift-[spaces] @@ Move to workspace N
-    -- mod-control-shift-[spaces] @@ Copy to workspace N
+    -- mod-<N> switches to workspace N.
+    -- mod-shift-<N> moves to workspace N.
+    -- mod-control-shift-<N> copies to workspace N.
     [((mask .|. m, k), windows $ f i)
         | (i, k) <- zip spaces wsKeys
-        , (f, m) <- [(W.view, 0),
-                     (W.shift, shiftMask),
-                     (copy, shiftMask .|. controlMask)]]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, shiftMask .|. controlMask)]]
 
-        where wsKeys = [xK_grave] ++
-                       [xK_1 .. xK_9] ++
-                       [xK_0, xK_minus, xK_equal]
+        where wsKeys  = [xK_grave] ++ [xK_1 .. xK_9] ++ [xK_0, xK_minus, xK_equal]
 
               -- Determine xdg_data_home to grab scripts correctly.
               -- You may store your scripts elsewhere and want to change this.
-              dhome  = if isNothing $ lookup "XDG_DATA_HOME" env
-                           then "~/.local/share"
-                           else fromJust $ lookup "XDG_DATA_HOME" env
-              bin    = dhome + "/bin/"
+              binHome = fromMaybe "~/.local/share" (lookup "XDG_DATA_HOME" env) ++ "/bin"
 
 ---------------------------------------------------------------------------------------------------
------------------------------------------    OTHER    ---------------------------------------------
+--------------------------------------------  OTHER  ----------------------------------------------
 ---------------------------------------------------------------------------------------------------
 -- Terminal commands.
 term              = "xfce4-terminal --hide-menubar --show-borders"
@@ -162,6 +153,7 @@ commonAudio =
     , ((0, xF86XK_AudioLowerVolume), spawn "/usr/bin/pulseaudio-ctl down")
     , ((0, xF86XK_AudioRaiseVolume), spawn "/usr/bin/pulseaudio-ctl up")]
 
+-- Previously mentioned screenshotting nonsense.
 scrot :: String -> String
 scrot = \x -> case x of
                   ""       -> scrotGen ""
@@ -172,7 +164,7 @@ scrot = \x -> case x of
           scrotGen    s = "scrot " ++ s ++ format ++ destination
 
 ---------------------------------------------------------------------------------------------------
------------------------------------------   CUSTOM HOOKS   ----------------------------------------
+------------------------------------------  CUSTOM HOOKS  -----------------------------------------
 ---------------------------------------------------------------------------------------------------
 -- Manage docks, custom layout nonsense.
 mHook :: ManageHook
