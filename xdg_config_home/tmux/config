@@ -8,13 +8,10 @@
 ###################################################################################################
 #########################################  COLOURS  ###############################################
 ###################################################################################################
-set-window-option -g xterm-keys on
-set -g default-terminal "screen-256color"
-
 # This attempts to emulate airline's (https://github.com/bling/vim-airline) solarized dark colours.
 # We use 16 colours because tmux doesn't seem to like 256.
-# Default statusbar colours.
 # Apparently tmux is British.
+# Default statusbar colours.
 set -g status-fg colour14                 # base1
 set -g status-bg colour8                  # base03
 set -g status-attr default
@@ -60,7 +57,6 @@ setw -g window-status-current-bg colour11 # base00
 ###################################################################################################
 # Use C-o as prefix.
 unbind C-b
-set-option -g prefix C-o
 bind C-o send-prefix
 
 # Reload config without killing server.
@@ -98,13 +94,15 @@ bind -r L resize-pane -R 3
 ###################################################################################################
 ######################################  SETTINGS  #################################################
 ###################################################################################################
+
+# Use C-o as prefix.
+set-option -g prefix C-o
+
 # Scrollback buffer of 5000 lines.
 set -g history-limit 5000
 
-# Enable auto renaming.
+# Enable auto renaming and rename pane based on what terminal is doing.
 setw -g automatic-rename on
-
-# Rename pane based on what terminal is doing.
 set -g set-titles on
 set -g set-titles-string "#W"
 
@@ -117,17 +115,17 @@ set -g mouse-select-pane on
 set -g mouse-resize-pane on
 set -g mouse-select-window on
 
-###################################################################################################
-#########################################  PANEL SETUP  ###########################################
-###################################################################################################
-# Right side: date, dow, time.
+set-window-option -g xterm-keys on
+set -g default-terminal "screen-256color"
+
+# Panel right side: date, dow, time.
 set -g status-right ' #(date +"%Y %b %d|%a|%H:%M") '
 
-# Left side: session title, hostname.
+# Panel left side: session title, hostname.
 set-option -g status-left-length 30
 set -g status-left ' #S|#h '
 
-# Centre: session index and window name.
+# Panel centre: session index and window name.
 set-option -g status-justify centre
 set-window-option -g window-status-current-format ' #I|#W '
 set-window-option -g window-status-format '#I|#W'
