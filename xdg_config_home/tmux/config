@@ -121,7 +121,7 @@ set -g mouse-select-window on
 ########################################### PANEL SETUP ###########################################
 ###################################################################################################
 # Right side: date, dow, time, timezone offset.
-set -g status-right ' #(date +"%Y %b %d|%A|%H:%M|%z") '
+set -g status-right ' #(date +"%Y %b %d|%a|%H:%M") '
 
 # Session title, hostname.
 set-option -g status-left-length 30
