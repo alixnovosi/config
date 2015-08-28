@@ -1,4 +1,12 @@
-#!/bin/sh
+#!/bin/bash
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud                                                                         #
+#          https://andrewmichaud.com                                                              #
+# FILE:    linux                                                                                  #
+# PURPOSE: Linux-specific shell nonsense definition file.                                         #
+# UPDATED: 2015-08-27                                                                             #
+# LICENSE: MIT/BSD                                                                                #
+#-------------------------------------------------------------------------------------------------#
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -20,9 +28,9 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 if ! pgrep ssh-agent > /dev/null; then
-    ssh-agent > $XDG_RUNTIME_DIR/ssh/agent
+    ssh-agent > "$XDG_RUNTIME_DIR/ssh/agent"
 fi
 if [[ "$SSH_AGENT_PID" == "" ]]; then
-    eval $(<$XDG_RUNTIME_DIR/ssh/agent)
+    eval "$(<"$XDG_RUNTIME_DIR"/ssh/agent)"
 fi
 ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'

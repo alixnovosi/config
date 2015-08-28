@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -jar "$(find "$HOME" | grep "MagicLauncher.*.jar" | tail -1)"

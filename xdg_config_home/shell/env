@@ -1,4 +1,12 @@
 #!/bin/sh
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud                                                                         #
+#          https://andrewmichaud.com                                                              #
+# FILE:    env                                                                                    #
+# PURPOSE: shell environment variables definition file                                            #
+# UPDATED: 2015-08-27                                                                             #
+# LICENSE: MIT/BSD                                                                                #
+#-------------------------------------------------------------------------------------------------#
 
 # Colors
 . "$XDG_CONFIG_HOME/colors/colors.sh"
@@ -42,4 +50,4 @@ export WINEPREFIX="$XDG_CONFIG_HOME/wine"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # Include bin, cabal, gem path.
-PATH=$XDG_DATA_HOME/bin:$GEM_HOME/bin:$GOPATH/bin:$XDG_DATA_HOME/cabal/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+PATH="$XDG_DATA_HOME/bin:$GEM_HOME/bin:$GOPATH/bin:$XDG_DATA_HOME/cabal/bin:$PATH"

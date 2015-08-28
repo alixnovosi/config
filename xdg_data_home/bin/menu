@@ -1,4 +1,12 @@
 #!/bin/bash
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud                                                                         #
+#          https://andrewmichaud.com                                                              #
+# FILE:    menu                                                                                   #
+# PURPOSE: File for choosing things with dmenu.                                                   #
+# UPDATED: 2015-08-27                                                                             #
+# LICENSE: MIT/BSD                                                                                #
+#-------------------------------------------------------------------------------------------------#
 
 # Choose something with dmenu.  Takes prefix and regex and type.
 choose () {
@@ -30,7 +38,7 @@ elif [ "$1" = "vid" ]; then
 
     # Play movie.
     choose "$HOME/videos" ".*\.\(mkv\|mp4\|avi\|vob\)" "video"
-    mpv "$HOME/videos/$choice" &
+    mpv "$HOME/videos/$choice" & disown
 
 # Music with mpd.
 elif [ "$1" = "music" ]; then

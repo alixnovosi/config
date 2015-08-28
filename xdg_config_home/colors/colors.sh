@@ -1,4 +1,11 @@
 #!/bin/sh
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud                                                                         #
+# FILE:    colors.sh                                                                              #
+# PURPOSE: color-related environment variable generator                                           #
+# UPDATED: 2015-08-27                                                                             #
+# LICENSE: MIT/BSD                                                                                #
+#-------------------------------------------------------------------------------------------------#
 
 # Solarized colors.
 export SOLARIZED_BASE00="#657b83"
@@ -18,10 +25,9 @@ export SOLARIZED_BLUE="#268bd2"
 export SOLARIZED_CYAN="#2aa198"
 export SOLARIZED_GREEN="#859900"
 
-# tput nonsense.
-export P_RESET && P_RESET="$(tput sgr0)"
-
-# 256 colors.
+# tput color nonsense.
+# 256 colors, if we have them.
+# Technically the assignment could error out or something, so we export then assign.
 if [ "$(tput colors)" = "256" ]; then
     export P_BASE03 && P_BASE03="$(tput setaf 234)"
     export P_BASE02 && P_BASE02="$(tput setaf 235)"
@@ -59,3 +65,6 @@ else
     export P_CYAN && P_CYAN="$(tput setaf 6)"
     export P_GREEN && P_GREEN="$(tput setaf 2)"
 fi
+
+# Do this in any case.
+export P_RESET && P_RESET="$(tput sgr0)"

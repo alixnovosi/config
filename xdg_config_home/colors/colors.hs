@@ -1,3 +1,10 @@
+---------------------------------------------------------------------------------------------------
+-- AUTHOR:  Andrew Michaud                                                                       --
+-- FILE:    colors.hs                                                                            --
+-- PURPOSE: color-related haskell library.  almost too short to justify.                         --
+-- UPDATED: 2015-08-27                                                                           --
+-- LICENSE: MIT/BSD                                                                              --
+---------------------------------------------------------------------------------------------------
 module Colors where
 
 -- Solarized colors
