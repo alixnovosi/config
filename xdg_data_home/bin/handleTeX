@@ -11,13 +11,13 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # .bib file, run bibtex
-if [ -a "$1'.bib'" ]; then
-    pdflatex "$1'.tex'"
-    latex "$1'.tex'"
-    bibtex "$1'.bib'"
-    latex "$1'.tex'"
-    latex "$1'.tex'"
+if [ -a "${1}.bib" ]; then
+    pdflatex "${1}.tex"
+    latex "${1}.tex"
+    bibtex "${1}.bib"
+    latex "${1}.tex"
+    latex "${1}.tex"
 fi
 
 # Compile to PDF.
-pdflatex "$1'.tex'"
+pdflatex "${1}.tex"
