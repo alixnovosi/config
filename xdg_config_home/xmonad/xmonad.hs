@@ -9,7 +9,6 @@ import qualified Data.Char as C         (toUpper)
 import Data.Maybe                       (fromMaybe)
 import Graphics.X11.ExtraTypes.XF86
 import System.Environment               (getEnvironment)
-import System.Posix.Unistd              (nodeName, getSystemID)
 import System.Taffybar.Hooks.PagerHints (pagerHints)
 
 import XMonad
@@ -32,21 +31,20 @@ import Colors
 main :: IO ()
 main = do
 
-    -- Get hostname for system-dependent stuff, and environment for xdg_data_home later.
-    host <- fmap nodeName getSystemID
+    -- Get environment to pull some XDG vars.
     env <- getEnvironment
 
     -- Config xmonad.
     xmonad $ pagerHints $ defaultConfig
-        { manageHook = mHook
+        { manageHook = mHook <+> manageHook defaultConfig
         , layoutHook = lHook
 
         -- Handles Java, ewmh nonsense.
         , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
 
         , logHook         = ewmhDesktopsLogHook
-        , handleEventHook = ewmhDesktopsEventHook <+> handleEventHook defaultConfig <+>
-                            fullscreenEventHook
+        , handleEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook <+>
+                            handleEventHook defaultConfig
 
         , modMask    = mod4Mask
         , workspaces = spaces
@@ -60,36 +58,35 @@ main = do
         , normalBorderColor  = base03
         , borderWidth        = 2
 
-        } `additionalKeys` keybinds host env mod4Mask
+        } `additionalKeys` keybinds env mod4Mask
 
 ---------------------------------------------------------------------------------------------------
 -------------------------------------------  KEYBINDS  --------------------------------------------
 ---------------------------------------------------------------------------------------------------
 -- Keybinds, depending on host for audio keys.
-keybinds host env mask =
-    [ ((mask .|. shiftMask,   xK_l), spawn "xscreensaver-command -lock")
-    , ((mask .|. shiftMask,   xK_d), spawn "xscreensaver-command -deactivate")
-
+keybinds env mask =
     -- Killing a window only removes it from current workspace.
-    , ((mask .|. shiftMask,   xK_c), kill1)
-    , ((mask,                 xK_x), goToSelected defaultGSConfig)
+    [ ((mask .|. shiftMask, xK_c), kill1)
+    , ((mask,               xK_x), goToSelected defaultGSConfig)
 
     -- Cycle/shift workspaces.
-    , ((mask .|. controlMask, xK_h), prevWS)
-    , ((mask .|. controlMask, xK_l), nextWS)
+    , ((mask .|. controlMask,               xK_h), prevWS)
+    , ((mask .|. controlMask,               xK_l), nextWS)
     , ((mask .|. controlMask .|. shiftMask, xK_h), shiftToPrev)
     , ((mask .|. controlMask .|. shiftMask, xK_l), shiftToNext)
 
+    -- Commands.
+    , ((0,                    xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
+    , ((0,                    xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 7")
+    , ((mask .|. shiftMask,   xK_l),                     spawn "xscreensaver-command -lock")
+    , ((mask .|. shiftMask,   xK_d),                     spawn "xscreensaver-command -deactivate")
     -- Restart taffybar.
-    , ((mask .|. controlMask, xK_q), spawn "pkill taffybar && taffybar")
-
-    , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 7")
-    , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 7")
+    , ((mask .|. controlMask, xK_q),                     spawn "pkill taffybar && taffybar")
 
     -- Screenshots.
-    , ((0,           xK_Print), spawn $ scrot "")
-    , ((controlMask, xK_Print), spawn $ scrot "select")
-    , ((shiftMask,   xK_Print), spawn $ scrot "delay")
+    , ((0,           xK_Print), spawn $ scrot picHome "")
+    , ((controlMask, xK_Print), spawn $ scrot picHome "select")
+    , ((shiftMask,   xK_Print), spawn $ scrot picHome"delay")
 
     -- Quick program spawns.
     , ((mask,                 xK_a), spawn $ namedCmd "alsamixer" "")
@@ -119,49 +116,52 @@ keybinds host env mask =
 
               -- Determine xdg_data_home to grab scripts correctly.
               -- You may store your scripts elsewhere and want to change this.
-              binHome = fromMaybe "~/.local/share" (lookup "XDG_DATA_HOME" env) ++ "/bin"
+              binHome = fromMaybe "~/.local/share" (lookup "XDG_DATA_HOME"    env) ++ "/bin"
+              picHome = fromMaybe "~/pictures"     (lookup "XDG_PICTURES_DIR" env)
 
 ---------------------------------------------------------------------------------------------------
 --------------------------------------------  OTHER  ----------------------------------------------
 ---------------------------------------------------------------------------------------------------
 -- Terminal commands.
 term              = "xfce4-terminal --hide-menubar --show-borders"
-termCmd cmd       = term ++ " --command=" ++ cmd
-namedCmd cmd args = term ++ " --title=" ++ name ++ " --command='" ++ cmd ++ " " ++ args ++ "'"
-    where name = "__" ++ map C.toUpper cmd
+cmd cmd           = term ++ " --title=" ++ name ++ " --command='" ++ cmd ++ "'"
+    where name = "__" ++ map C.toUpper $ head $ words cmd
 
 -- Workspace titles.
 spaces :: [String]
 spaces = ["` term", "1 term", "2 socl", "3 socl", "4 play", "5 play", "6 play", "7 work", "8 work",
           "9 work", "0 etc.", "- etc.", "= etc."]
+spaces = concat [map (++ " term") ["`", "1"], map (++ " socl") ["2", "3"],
+                 map (++ " play") ["4", "5", "6"], map (++ " work") ["7", "8", "9"],
+                 map (++ " etc.") ["-", "-", "="]]
+spaces = zipWith ++ concat [replicate 2 " term", replicate 2 " socl", replicate 3 " play",
+                            replicate 3 " work", replicate 3 " etc."]
+                    (["`"] ++ map show [1..9] ++ ["0", "-", "="])
+spaces = zipWith ++ (concat $ concatMap (replicate 2) [" term", " socl"] ++
+                              concatMap (replicate 3) [" play", " work", " etc."])
+                    (["`"] ++ map show [1..9] ++ ["0", "-", "="])
 
--- Laptop doesn't have proper media keys because Lenovo are dumb.
--- So, do it manually.
-audioKeys "pascal" =
-    [ ((shiftMask, xF86XK_AudioMute),        spawn "mpc toggle")
-    , ((shiftMask, xF86XK_AudioRaiseVolume), spawn "mpc next")
-    , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")] ++ commonAudio
-
--- Other machines are reasonable.
-audioKeys _ =
-    [ ((0, xF86XK_AudioPlay), spawn "mpc toggle")
-    , ((0, xF86XK_AudioNext), spawn "mpc next")
-    , ((0, xF86XK_AudioPrev), spawn "mpc prev")] ++ commonAudio
-
-commonAudio =
-    [ ((0, xF86XK_AudioMute),        spawn "/usr/bin/pulseaudio-ctl mute")
-    , ((0, xF86XK_AudioLowerVolume), spawn "/usr/bin/pulseaudio-ctl down")
-    , ((0, xF86XK_AudioRaiseVolume), spawn "/usr/bin/pulseaudio-ctl up")]
+-- Laptop doesn't have proper media keys because Lenovo are dumb.  So, do it manually.
+-- Actually, why not define those silly media keys for any host?  No downside.
+audioKeys = [ ((shiftMask, xF86XK_AudioMute),        spawn "mpc toggle")
+            , ((shiftMask, xF86XK_AudioRaiseVolume), spawn "mpc next")
+            , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc prev")
+            , ((0,         xF86XK_AudioPlay),        spawn "mpc toggle")
+            , ((0,         xF86XK_AudioNext),        spawn "mpc next")
+            , ((0,         xF86XK_AudioPrev),        spawn "mpc prev")
+            , ((0,         xF86XK_AudioMute),        spawn "/usr/bin/pulseaudio-ctl mute")
+            , ((0,         xF86XK_AudioLowerVolume), spawn "/usr/bin/pulseaudio-ctl down")
+            , ((0,         xF86XK_AudioRaiseVolume), spawn "/usr/bin/pulseaudio-ctl up")]
 
 -- Previously mentioned screenshotting nonsense.
-scrot :: String -> String
-scrot = \x -> case x of
-                  ""       -> scrotGen ""
-                  "select" -> scrotGen "-s "
-                  "delay"  -> scrotGen "--delay 5 "
-    where format        = "'%Y-%m-%d-%s_$wx$h.png' "
-          destination   = "-e 'mv $f ~/pictures/screenshots/' "
-          scrotGen    s = "scrot " ++ s ++ format ++ destination
+scrot :: String -> String -> String
+scrot picHome t = case t of ""       -> scrotGen ""
+                            "select" -> scrotGen "-s "
+                            "delay"  -> scrotGen "--delay 5 "
+          -- Year, month, day, width by height.
+    where format      = "'%Y-%m-%d-%s_$wx$h.png' "
+          destination = "-e 'mv $f " ++ picHome ++ "/screenshots/' "
+          scrotGen s  = "scrot " ++ s ++ format ++ destination
 
 ---------------------------------------------------------------------------------------------------
 ------------------------------------------  CUSTOM HOOKS  -----------------------------------------
@@ -180,7 +180,7 @@ mHook = manageDocks <+> composeAll
 
     -- Chat windows go to workspace 3
     , className =? "Pidgin" --> doShift "3:chat"
-    ] <+> manageHook defaultConfig
+    ]
 
 lHook = avoidStruts $ smartBorders layouts
     where layouts = tiled ||| Mirror tiled ||| Full

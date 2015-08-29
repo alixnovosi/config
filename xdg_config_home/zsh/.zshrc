@@ -17,12 +17,9 @@ which fortune &> /dev/null && fortune -s
 [[ "$(uname -s)" == "Linux" ]] && source "$HOME/.config/shell/linux"
 
 # I could check if these exist, but I want zsh to let me know if I haven't created them.
+files=('env' 'aliases' 'func' 'host')
+for file in $files; do source "$XDG_CONFIG_HOME/shell/$file"; done
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-source "$XDG_CONFIG_HOME/shell/env"
-source "$XDG_CONFIG_HOME/shell/aliases"
-source "$XDG_CONFIG_HOME/shell/func"
-# Load any host-specific stuff (incl. prompt).
-source "$XDG_CONFIG_HOME/shell/host"
 
 # Enable 256 color capabilities for appropriate terminals.
 if [ -n "$SEND_256_COLORS_TO_REMOTE" ]; then

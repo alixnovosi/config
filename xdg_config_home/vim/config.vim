@@ -35,6 +35,7 @@ Plug 'Twinside/vim-haskellFold', {'for': 'haskell'}
 Plug 'othree/html5.vim',         {'for': 'html'}
 Plug 'pangloss/vim-javascript',  {'for': 'javascript'}
 Plug 'elzr/vim-json',            {'for': 'json'}
+Plug 'darfink/vim-plist'
 Plug 'rodjek/vim-puppet',        {'for': 'puppet'}
 Plug 'tmhedberg/SimpylFold',     {'for': 'python'}
 Plug 'davidhalter/jedi',         {'for': 'python'}
@@ -77,6 +78,7 @@ scriptencoding utf-8
 
 """ Personal preferences (space >> tabs, modelines scary, folds often annoying).
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4 textwidth=99 nomodeline nofoldenable
+set colorcolumn=100
 set background=dark
 colorscheme solarized
 
