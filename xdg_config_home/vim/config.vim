@@ -17,8 +17,19 @@ set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CACHE_HOME/vim
 set backup backupdir=$XDG_CACHE_HOME/vim/backup,/tmp dir=$XDG_CACHE_HOME/vim/swap,/tmp
 set undodir=$XDG_CACHE_HOME/vim/undo,/tmp undofile undolevels=1000 undoreload=10000
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
-set spell spelllang=en_us spellfile=$XDG_CACHE_HOME/vim/spell/en-utf-8.add
 let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim-go")
+
+""" nvim-/Windows-specific stuff
+if has("nvim")
+    set nospell
+else
+    set spell spelllang=en_us spellfile=$XDG_CACHE_HOME/vim/spell/en-utf-8.add
+endif
+
+if has("win32") || has("win16")
+    """ Always prefer unix line endings.
+    set fileformats=unix,dos
+endif
 
 "-------------------------------------------------------------------------------------------------"
 " --------------------------------------  PLUGINS  ---------------------------------------------- "
