@@ -75,9 +75,11 @@ Plug 'bronson/vim-trailing-whitespace'
 
 """ File stuff/ things outside vim.
 Plug 'jmcantrell/vim-virtualenv'
-Plug 'scrooloose/nerdtree',      {'on': 'NERDTreeToggle'}
+Plug 'ryanoasis/vim-devicons'
+Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
+Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-dispatch'
-Plug 'vim-scripts/a.vim',        {'for': ['c', 'cpp']}
+Plug 'vim-scripts/a.vim',           {'for': ['c', 'cpp']}
 call plug#end()
 
 "-------------------------------------------------------------------------------------------------"
@@ -102,12 +104,21 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#eclim#enabled = 1
 let g:airline_extensions = ["hunks", "syntastic", "tagbar", "tabline"]
+let g:airline_inactive_collapse=1
 
 """ Enable mouse and enable nice cursor wrapping, use 2h status for airline, show commands.
 """ Set nicer search settings, and reload if a file is changed on us.
 set mouse=a whichwrap=[,],<,>,h,l,b,s laststatus=2 showcmd
 set incsearch ignorecase smartcase nohlsearch autoread
+set ttimeoutlen=50
+
+""" Become a better person.
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
 
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  KEYBINDS  -------------------------------------------- "
