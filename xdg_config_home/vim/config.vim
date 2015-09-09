@@ -10,19 +10,15 @@
 " ----------------------------------  PLUGIN PREPARATION  --------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
 """ Prefer XDG_CONFIG_HOME/XDG_CACHE_HOME, and don't be vi.
-set nocompatible
+set nocompatible runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CACHE_HOME/vim
 filetype plugin indent on
 syntax enable
-set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CACHE_HOME/vim
-set backup backupdir=$XDG_CACHE_HOME/vim/backup,/tmp dir=$XDG_CACHE_HOME/vim/swap,/tmp
-set undodir=$XDG_CACHE_HOME/vim/undo,/tmp undofile undolevels=1000 undoreload=10000
-set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
-let g:go_bin_path = expand("$XDG_CONFIG_HOME/vim/vim-go")
+set backup backupdir=$XDG_DATA_HOME/vim/backup dir=$XDG_DATA_HOME/vim/swap
+set undodir=$XDG_DATA_HOME/vim/undo undofile undolevels=1000 undoreload=10000
+set viminfo+=n$XDG_DATA_HOME/vim/viminfo
 
 """ nvim-/Windows-specific stuff
-if has("nvim")
-    set nospell
-else
+if !has("nvim")
     set spell spelllang=en_us spellfile=$XDG_CACHE_HOME/vim/spell/en-utf-8.add
 endif
 
@@ -42,22 +38,22 @@ Plug 'OrangeT/vim-csharp',       {'for': 'csharp'}
 Plug 'fatih/vim-go',             {'for': 'go'}
 Plug 'nsf/gocode',               {'rtp': 'vim/', 'for': 'go'}
 Plug 'dag/vim2hs',               {'for': 'haskell'}
-Plug 'Twinside/vim-haskellFold', {'for': 'haskell'}
 Plug 'othree/html5.vim',         {'for': 'html'}
 Plug 'pangloss/vim-javascript',  {'for': 'javascript'}
 Plug 'elzr/vim-json',            {'for': 'json'}
 Plug 'darfink/vim-plist'
 Plug 'rodjek/vim-puppet',        {'for': 'puppet'}
-Plug 'tmhedberg/SimpylFold',     {'for': 'python'}
-Plug 'davidhalter/jedi',         {'for': 'python'}
+Plug 'klen/python-mode',         {'for': 'python'}
 Plug 'derekwyatt/vim-scala',     {'for': 'scala'}
 Plug 'tejr/vim-tmux',            {'for': 'tmux'}
 Plug 'dbakker/vim-lint',         {'for': 'vimscript'}
+Plug 'tpope/vim-endwise'
 
 """ Programming support.
 Plug 'embear/vim-localvimrc'
 Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
+Plug 'mbbill/undotree'
 Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
 Plug 'tComment'
@@ -69,13 +65,12 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 """ Appearance.
-Plug 'altercation/vim-colors-solarized'
 Plug 'bling/vim-airline'
 Plug 'bronson/vim-trailing-whitespace'
+Plug 'flazz/vim-colorschemes'
 
 """ File stuff/ things outside vim.
 Plug 'jmcantrell/vim-virtualenv'
-Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-dispatch'
@@ -90,13 +85,13 @@ set backspace=indent,eol,start encoding=utf-8 t_Co=256
 scriptencoding utf-8
 
 """ Personal preferences (space >> tabs, modelines scary, folds often annoying).
-set expandtab tabstop=4 softtabstop=4 shiftwidth=4 textwidth=99 nomodeline nofoldenable
-set colorcolumn=100
-set background=dark
+set et ts=4 softtabstop=4 shiftwidth=4 textwidth=99 nomodeline nofoldenable colorcolumn=100
 colorscheme solarized
 
 """ Make opening files not suck.
 set wildmenu wildmode=list:longest,full
+
+let g:EclimCompletionMethod = 'omnifunc'
 
 """ Airline preferences.
 let g:airline_powerline_fonts = 0
@@ -110,15 +105,8 @@ let g:airline_inactive_collapse=1
 
 """ Enable mouse and enable nice cursor wrapping, use 2h status for airline, show commands.
 """ Set nicer search settings, and reload if a file is changed on us.
-set mouse=a whichwrap=[,],<,>,h,l,b,s laststatus=2 showcmd
-set incsearch ignorecase smartcase nohlsearch autoread
-set ttimeoutlen=50
-
-""" Become a better person.
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+set mouse=a whichwrap=[,],<,>,h,l,b,s laststatus=2 showcmd noshowmode
+set incsearch ignorecase smartcase nohlsearch autoread ttimeoutlen=50
 
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  KEYBINDS  -------------------------------------------- "
@@ -141,3 +129,10 @@ nmap <C-s>s :set number!<CR>
 nmap <C-s>r :set relativenumber!<CR>
 nmap <C-s>h :set hlsearch!<CR>
 nmap <C-s>t :TagbarToggle<CR>
+nmap <C-s>u :UndotreeToggle<CR>
+
+""" Become a better person.
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
