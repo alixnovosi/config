@@ -2,30 +2,39 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    config.vim                                                                             "
 " PURPOSE: Vim configuration file                                                                 "
-" UPDATED: 2015-08-26                                                                             "
+" UPDATED: 2015-09-14                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
 
 "-------------------------------------------------------------------------------------------------"
-" ----------------------------------  PLUGIN PREPARATION  --------------------------------------- "
+" ----------------------------------  NON-PLUGIN SETTINGS  -------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
-""" Prefer XDG_CONFIG_HOME/XDG_CACHE_HOME, and don't be vi.
-set nocompatible runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CACHE_HOME/vim
-filetype plugin indent on
-syntax enable
-set backup backupdir=$XDG_DATA_HOME/vim/backup dir=$XDG_DATA_HOME/vim/swap
-set undodir=$XDG_DATA_HOME/vim/undo undofile undolevels=1000 undoreload=10000
-set viminfo+=n$XDG_DATA_HOME/vim/viminfo
-
-""" nvim-/Windows-specific stuff
+""" nvim-/Windows-specific stuff.  neovim sets some settings by default, so only set them for vim.
 if !has("nvim")
+    """ Be vim, load reloaded file, make mouse work, make backspace nice, utf-8 is great.
+    set nocompatible autoread mouse=a backspace=indent,eol,start encoding=utf-8
+    """ Setting this breaks neovim for some reason I haven't figured out.
     set spell spelllang=en_us spellfile=$XDG_CACHE_HOME/vim/spell/en-utf-8.add
+    """ Make opening files not suck, make search better.
+    set wildmenu wildmode=list:longest,full incsearch ttyfast
+    set autoindent
+else
+    set background=dark nohlsearch
 endif
 
 if has("win32") || has("win16")
-    """ Always prefer unix line endings.
+    """ Always always always prefer unix line endings.
     set fileformats=unix,dos
 endif
+
+""" Syntax!
+filetype plugin indent on
+syntax enable
+""" Prefer XDG_CONFIG_HOME/XDG_CACHE_HOME.
+set runtimepath+=$XDG_CONFIG_HOME/vim viminfo+=n$XDG_DATA_HOME/vim/viminfo
+set backup backupdir=$XDG_DATA_HOME/vim/backup dir=$XDG_DATA_HOME/vim/swap
+set undodir=$XDG_DATA_HOME/vim/undo undofile undolevels=1000 undoreload=10000
+let g:netrw_home=$XDG_CACHE_HOME.'/vim'
 
 "-------------------------------------------------------------------------------------------------"
 " --------------------------------------  PLUGINS  ---------------------------------------------- "
@@ -36,7 +45,7 @@ call plug#begin('$XDG_CACHE_HOME/vim/plugins')
 Plug 'OmniSharp/omnisharp-vim',  {'for': 'csharp'}
 Plug 'OrangeT/vim-csharp',       {'for': 'csharp'}
 Plug 'fatih/vim-go',             {'for': 'go'}
-Plug 'nsf/gocode',               {'rtp': 'vim/', 'for': 'go'}
+Plug 'nsf/gocode',               {'for': 'go'}
 Plug 'dag/vim2hs',               {'for': 'haskell'}
 Plug 'othree/html5.vim',         {'for': 'html'}
 Plug 'pangloss/vim-javascript',  {'for': 'javascript'}
@@ -59,6 +68,7 @@ Plug 'SirVer/ultisnips'
 Plug 'tComment'
 Plug 'tpope/vim-surround'
 Plug 'Valloric/YouCompleteMe'
+Plug 'vim-scripts/a.vim',           {'for': ['c', 'cpp']}
 
 """ Version control nonsense.
 Plug 'airblade/vim-gitgutter'
@@ -72,24 +82,20 @@ Plug 'flazz/vim-colorschemes'
 """ File stuff/ things outside vim.
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
-Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-dispatch'
-Plug 'vim-scripts/a.vim',           {'for': ['c', 'cpp']}
+Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
 call plug#end()
 
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  SETTINGS  -------------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
 """ Make backspacing reasonable, and force utf-8 and 256 colors.
-set backspace=indent,eol,start encoding=utf-8 t_Co=256
+set t_Co=256
 scriptencoding utf-8
 
 """ Personal preferences (space >> tabs, modelines scary, folds often annoying).
-set et ts=4 softtabstop=4 shiftwidth=4 textwidth=99 nomodeline nofoldenable colorcolumn=100
+set et tabstop=4 softtabstop=4 shiftwidth=4 nomodeline nofoldenable textwidth=99 colorcolumn=100
 colorscheme solarized
-
-""" Make opening files not suck.
-set wildmenu wildmode=list:longest,full
 
 let g:EclimCompletionMethod = 'omnifunc'
 
@@ -99,14 +105,13 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#buffer_min_count = 2
 let g:airline#extensions#eclim#enabled = 1
 let g:airline_extensions = ["hunks", "syntastic", "tagbar", "tabline"]
 let g:airline_inactive_collapse=1
 
 """ Enable mouse and enable nice cursor wrapping, use 2h status for airline, show commands.
-""" Set nicer search settings, and reload if a file is changed on us.
-set mouse=a whichwrap=[,],<,>,h,l,b,s laststatus=2 showcmd noshowmode
-set incsearch ignorecase smartcase nohlsearch autoread ttimeoutlen=50
+set whichwrap=[,],<,>,h,l,b,s laststatus=2 showcmd noshowmode ignorecase smartcase ttimeoutlen=50
 
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  KEYBINDS  -------------------------------------------- "
