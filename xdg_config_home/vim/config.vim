@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    config.vim                                                                             "
 " PURPOSE: Vim configuration file                                                                 "
-" UPDATED: 2015-09-14                                                                             "
+" UPDATED: 2015-09-21                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
 
@@ -15,7 +15,7 @@ if !has("nvim")
     set nocompatible autoread mouse=a backspace=indent,eol,start encoding=utf-8
     """ Setting this breaks neovim for some reason I haven't figured out.
     set spell spelllang=en_us spellfile=$XDG_CACHE_HOME/vim/spell/en-utf-8.add
-    """ Make opening files not suck, make search better.
+    """ Make opening files not suck, make search better, be faster.
     set wildmenu wildmode=list:longest,full incsearch ttyfast
     set autoindent
 else
@@ -44,23 +44,16 @@ call plug#begin('$XDG_CACHE_HOME/vim/plugins')
 """ Language assistance.
 Plug 'OmniSharp/omnisharp-vim',  {'for': 'csharp'}
 Plug 'OrangeT/vim-csharp',       {'for': 'csharp'}
-Plug 'fatih/vim-go',             {'for': 'go'}
-Plug 'nsf/gocode',               {'for': 'go'}
 Plug 'dag/vim2hs',               {'for': 'haskell'}
-Plug 'othree/html5.vim',         {'for': 'html'}
 Plug 'pangloss/vim-javascript',  {'for': 'javascript'}
 Plug 'elzr/vim-json',            {'for': 'json'}
-Plug 'darfink/vim-plist'
 Plug 'rodjek/vim-puppet',        {'for': 'puppet'}
 Plug 'klen/python-mode',         {'for': 'python'}
 Plug 'derekwyatt/vim-scala',     {'for': 'scala'}
 Plug 'tejr/vim-tmux',            {'for': 'tmux'}
-Plug 'dbakker/vim-lint',         {'for': 'vimscript'}
-Plug 'tpope/vim-endwise'
 
 """ Programming support.
 Plug 'embear/vim-localvimrc'
-Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree'
 Plug 'scrooloose/syntastic'
@@ -80,7 +73,6 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'flazz/vim-colorschemes'
 
 """ File stuff/ things outside vim.
-Plug 'jmcantrell/vim-virtualenv'
 Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-dispatch'
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
@@ -108,7 +100,30 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#buffer_min_count = 2
 let g:airline#extensions#eclim#enabled = 1
 let g:airline_extensions = ["hunks", "syntastic", "tagbar", "tabline"]
-let g:airline_inactive_collapse=1
+let g:airlione_inactive_collapse=1
+
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+               return "\<TAB>"
+            endif
+        endif
+    endif
+    return ""
+endfunction
+
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsListSnippets="<c-e>"
+" this mapping Enter key to <C-y> to chose the current highlight item
+" and close the selection list, same as other IDEs.
+" CONFLICT with some plugins like tpope/Endwise
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 """ Enable mouse and enable nice cursor wrapping, use 2h status for airline, show commands.
 set whichwrap=[,],<,>,h,l,b,s laststatus=2 showcmd noshowmode ignorecase smartcase ttimeoutlen=50
