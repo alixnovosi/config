@@ -4,12 +4,16 @@
 #          https://andrewmichaud.com                                                              #
 # FILE:    .zshrc                                                                                 #
 # PURPOSE: zsh config file.                                                                       #
-# UPDATED: 2015-08-27                                                                             #
+# UPDATED: 2015-09-28                                                                             #
 # LICENSE: MIT/BSD                                                                                #
 #-------------------------------------------------------------------------------------------------#
 
-# This is the only thing I can think of that needs to be done every session instead of once,
-# which is why my zshenv is so full and this so empty.
+# Sketchy way of detecting multiuser machine (where users is interesting).
+if [[ "$(who | grep -c "$USER")" -ne "$(who | wc -l)" ]]; then
+
+    # Display who else is logged in.
+    users|tr ' ' '\n'|uniq|tr '\n' ' '|awk '{print $0} END {print ""}'
+fi
 which fortune &> /dev/null && fortune -s
 
 # Load any os-specific stuff.
