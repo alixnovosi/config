@@ -59,9 +59,7 @@ main = do
         -- Border jazz.
         , focusedBorderColor = CL.base2
         , normalBorderColor  = CL.base03
-        , borderWidth        = 2
-
-        } `EZConfig.additionalKeys` keybinds env mod4Mask
+        , borderWidth        = 2} `EZConfig.additionalKeys` keybinds env mod4Mask
 
 ---------------------------------------------------------------------------------------------------
 -------------------------------------------  KEYBINDS  --------------------------------------------
@@ -100,8 +98,7 @@ keybinds env mask =
     , ((mask,               xK_n), spawn $ binHome ++ "toggleOneko")
     , ((mask .|. shiftMask, xK_p), spawn $ binHome ++ "menu pass")
     , ((mask,               xK_v), spawn $ binHome ++ "menu vid")
-    , ((mask .|. shiftMask, xK_o), spawn $ binHome ++ "menu music")
-    ] ++ audioKeys ++
+    , ((mask .|. shiftMask, xK_o), spawn $ binHome ++ "menu music")] ++ audioKeys ++
 
     -- mod-<N> switches to workspace N.
     -- mod-shift-<N> moves window to workspace N.
@@ -111,7 +108,7 @@ keybinds env mask =
                                                    (SSet.shift, shiftMask),
                                                    (CW.copy,    shiftMask .|. controlMask)]]
 
-        where wsKeys  = xK_grave : [xK_1 .. xK_9] ++ [xK_0, xK_minus, xK_equal]
+        where wsKeys  = xK_grave : [xK_1..xK_9] ++ [xK_0, xK_minus, xK_equal]
 
               -- Determine xdg_data_home to grab scripts correctly.
               -- You may store your scripts elsewhere and want to change this.
@@ -145,10 +142,10 @@ audioKeys = [ ((shiftMask, X.xF86XK_AudioMute),        spawn "mpc toggle")
 
 -- Previously mentioned screenshotting nonsense.
 scrot :: String -> String -> String
-scrot picHome cmd = unwords ["scrot",format, destination, cmd]
+scrot picHome cmd = unwords ["scrot", format, destination, cmd]
           -- Year, month, day, width by height.
-    where format       = "'%Y-%m-%d-%s_$wx$h.png'"
-          destination  = "-e 'mv $f " ++ picHome ++ "/screenshots/'"
+    where format      = "'%Y-%m-%d-%s_$wx$h.png'"
+          destination = "-e 'mv $f " ++ picHome ++ "/screenshots/'"
 
 ---------------------------------------------------------------------------------------------------
 ------------------------------------------  CUSTOM HOOKS  -----------------------------------------
@@ -166,8 +163,7 @@ mHook = MD.manageDocks <+> composeAll
     , className =? "mpv"  --> MH.doFullFloat
 
     -- Chat windows go to workspace 3
-    , className =? "Pidgin" --> doShift "3:chat"
-    ]
+    , className =? "Pidgin" --> doShift "3:chat"]
 
 lHook = MD.avoidStruts $ NB.smartBorders layouts
     where layouts = tiled ||| Mirror tiled ||| Full
