@@ -13,6 +13,14 @@ export XDG_CACHE_HOME="$HOME/Library/Caches"
 export XDG_DATA_HOME="$HOME/Library"
 export XDG_RUNTIME_DIR="/tmp/$USER"
 
+export PATH=$HOME/Library/Haskell/bin:$PATH
+export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
+# Add GHC 7.10.2 to the PATH, via https://ghcformacosx.github.io/
+export GHC_DOT_APP="/Applications/ghc-7.10.2.app"
+if [ -d "$GHC_DOT_APP" ]; then
+    export PATH="${HOME}/.local/bin:${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+fi
+
 alias ls="ls -FG"
 
 # Eww.
