@@ -30,6 +30,7 @@ endif
 """ Syntax!
 filetype plugin indent on
 syntax enable
+
 """ Prefer XDG_CONFIG_HOME/XDG_CACHE_HOME.
 set runtimepath+=$XDG_CONFIG_HOME/vim viminfo+=n$XDG_DATA_HOME/vim/viminfo
 set backup backupdir=$XDG_DATA_HOME/vim/backup dir=$XDG_DATA_HOME/vim/swap
@@ -44,7 +45,7 @@ call plug#begin('$XDG_CACHE_HOME/vim/plugins')
 """ Language assistance.
 Plug 'OmniSharp/omnisharp-vim',  {'for': 'csharp'}
 Plug 'OrangeT/vim-csharp',       {'for': 'csharp'}
-Plug 'dag/vim2hs',               {'for': 'haskell'}
+Plug 'alecthomas/gometalinter',  {'for': 'go'}
 Plug 'pangloss/vim-javascript',  {'for': 'javascript'}
 Plug 'elzr/vim-json',            {'for': 'json'}
 Plug 'rodjek/vim-puppet',        {'for': 'puppet'}
@@ -60,6 +61,7 @@ Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
 Plug 'tComment'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-scripts/a.vim',           {'for': ['c', 'cpp']}
 
@@ -86,8 +88,12 @@ set t_Co=256
 scriptencoding utf-8
 
 """ Personal preferences (space >> tabs, modelines scary, folds often annoying).
-set et tabstop=4 softtabstop=4 shiftwidth=4 nomodeline nofoldenable textwidth=99 colorcolumn=100
+set et tabstop=4 softtabstop=4 shiftwidth=4 nomodeline textwidth=99 colorcolumn=100
+set foldenable foldlevelstart=10 foldnestmax=10 foldmethod=syntax
 colorscheme solarized
+
+set cursorline
+set lazyredraw
 
 let g:EclimCompletionMethod = 'omnifunc'
 
@@ -102,24 +108,6 @@ let g:airline#extensions#eclim#enabled = 1
 let g:airline_extensions = ["hunks", "syntastic", "tagbar", "tabline"]
 let g:airlione_inactive_collapse=1
 
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-               return "\<TAB>"
-            endif
-        endif
-    endif
-    return ""
-endfunction
-
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsListSnippets="<c-e>"
 " this mapping Enter key to <C-y> to chose the current highlight item
 " and close the selection list, same as other IDEs.
 " CONFLICT with some plugins like tpope/Endwise
