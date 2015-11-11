@@ -18,8 +18,9 @@ if !has("nvim")
     """ Make opening files not suck, make search better, be faster.
     set wildmenu wildmode=list:longest,full incsearch ttyfast
     set autoindent
+    set viminfo+=n$XDG_DATA_HOME/vim/viminfo
 else
-    set background=dark nohlsearch
+    set viminfo+=n$XDG_DATA_HOME/nvim/nviminfo
 endif
 
 if has("win32") || has("win16")
@@ -27,12 +28,14 @@ if has("win32") || has("win16")
     set fileformats=unix,dos
 endif
 
+set background=dark nohlsearch
+
 """ Syntax!
 filetype plugin indent on
 syntax enable
 
 """ Prefer XDG_CONFIG_HOME/XDG_CACHE_HOME.
-set runtimepath+=$XDG_CONFIG_HOME/vim viminfo+=n$XDG_DATA_HOME/vim/viminfo
+set runtimepath+=$XDG_CONFIG_HOME/vim
 set backup backupdir=$XDG_DATA_HOME/vim/backup dir=$XDG_DATA_HOME/vim/swap
 set undodir=$XDG_DATA_HOME/vim/undo undofile undolevels=1000 undoreload=10000
 let g:netrw_home=$XDG_CACHE_HOME.'/vim'
