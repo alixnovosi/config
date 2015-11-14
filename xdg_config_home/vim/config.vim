@@ -20,7 +20,7 @@ if !has("nvim")
     set autoindent
     set viminfo+=n$XDG_DATA_HOME/vim/viminfo
 else
-    set viminfo+=n$XDG_DATA_HOME/nvim/nviminfo
+    set shada+=n$XDG_DATA_HOME/nvim/nviminfo
 endif
 
 if has("win32") || has("win16")
