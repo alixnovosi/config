@@ -95,6 +95,12 @@ bind -r L resize-pane -R 3
 ######################################  SETTINGS  #################################################
 ###################################################################################################
 
+# Fix neovim bug with 'sticky' escape.
+set -s escape-time 0
+
+# Fix neovim bug on mac with ^H not working.
+bind-key -n C-h send-keys Escape "[104;5u"
+
 # Use C-o as prefix.
 set-option -g prefix C-o
 

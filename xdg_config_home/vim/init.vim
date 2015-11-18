@@ -9,7 +9,7 @@
 "-------------------------------------------------------------------------------------------------"
 " ----------------------------------  NON-PLUGIN SETTINGS  -------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
-""" nvim-/Windows-specific stuff.  neovim sets some settings by default, so only set them for vim.
+""" nvim-/vim-specfic options  neovim sets some settings by default, so only set them for vim.
 if !has("nvim")
     """ Be vim, load reloaded file, make mouse work, make backspace nice, utf-8 is great.
     set nocompatible autoread mouse=a backspace=indent,eol,start encoding=utf-8
@@ -20,9 +20,11 @@ if !has("nvim")
     set autoindent
     set viminfo+=n$XDG_DATA_HOME/vim/viminfo
 else
-    set viminfo+=n$XDG_DATA_HOME/nvim/nviminfo
+    set shada+=n$XDG_DATA_HOME/nvim/nviminfo
+    set ttimeoutlen=-1
 endif
 
+""" Windows-specific options.
 if has("win32") || has("win16")
     """ Always always always prefer unix line endings.
     set fileformats=unix,dos
