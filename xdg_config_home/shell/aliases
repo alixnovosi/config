@@ -37,7 +37,7 @@ alias pip="pip --log-file \${XDG_CACHE_HOME}/pip/pip.log --cache-dir \${XDG_CACH
 alias startx="startx \${XDG_CONFIG_HOME}/X11/xinitrc"
 alias svn="svn --config-dir \${XDG_CONFIG_HOME}/subversion"
 alias tmux="TERM=xterm-256color tmux -f \${XDG_CONFIG_HOME}/tmux/config"
-alias view="nvim -e"
+alias view="nvim -R"
 alias nview="nvim -e"
 # Neovim now defaults to init.vim, so I default to that.
 alias vim="vim -u \${XDG_CONFIG_HOME}/vim/init.vim"

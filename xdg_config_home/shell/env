@@ -16,8 +16,8 @@ export XDG_DATA_DIRS="$XDG_DATA_HOME/:/usr/local/share/:/usr/share/"
 export XDG_CONFIG_DIRS="$XDG_CONFIG_HOME/:/etc/xdg"
 
 # Useful stuff.
-export EDITOR="$XDG_DATA_HOME/bin/EDITOR"
-export VISUAL="$XDG_DATA_HOME/bin/VISUAL"
+export EDITOR="nvim"
+export VISUAL="nvim"
 export PAGER="less"
 export MANPAGER="$PAGER"
 

@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# Gets around zsh expanding my vim alias weirdly.
-vim -u "${XDG_CONFIG_HOME}/vim/config.vim" "$@"
