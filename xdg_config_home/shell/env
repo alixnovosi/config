@@ -4,7 +4,7 @@
 #          https://andrewmichaud.com                                                              #
 # FILE:    env                                                                                    #
 # PURPOSE: shell environment variables definition file                                            #
-# UPDATED: 2015-08-27                                                                             #
+# UPDATED: 2015-11-18                                                                            #
 # LICENSE: MIT/BSD                                                                                #
 #-------------------------------------------------------------------------------------------------#
 
@@ -12,14 +12,14 @@
 . "$XDG_CONFIG_HOME/colors/colors.sh"
 
 # Extra XDG env variables.
-export XDG_DATA_DIRS="$XDG_DATA_HOME/:/usr/local/share/:/usr/share/"
 export XDG_CONFIG_DIRS="$XDG_CONFIG_HOME/:/etc/xdg"
+export XDG_DATA_DIRS="$XDG_DATA_HOME/:/usr/local/share/:/usr/share/"
 
 # Useful stuff.
 export EDITOR="nvim"
-export VISUAL="nvim"
 export PAGER="less"
 export MANPAGER="$PAGER"
+export VISUAL="$EDITOR"
 
 # Forcing more xdg spec compliance
 export CABAL_CONFIG="$XDG_CONFIG_HOME/cabal/config"

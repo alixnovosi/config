@@ -4,7 +4,7 @@
 #          https://andrewmichaud.com                                                              #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
-# UPDATED: 2015-08-27                                                                             #
+# UPDATED: 2015-11-18                                                                             #
 # LICENSE: MIT/BSD                                                                                #
 #-------------------------------------------------------------------------------------------------#
 
@@ -33,11 +33,11 @@ alias gimp="gimp -g \${XDG_CONFIG_HOME}/gimp/config"
 alias mpdscribble="mpdscribble --conf \${XDG_CONFIG_HOME}/mpdscribble/config \
 --log \${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log"
 alias ncmpcpp="ncmpcpp -c \${XDG_CONFIG_HOME}/ncmpcpp/config"
+alias nview="nvim -e"
 alias pip="pip --log-file \${XDG_CACHE_HOME}/pip/pip.log --cache-dir \${XDG_CACHE_HOME}/pip"
 alias startx="startx \${XDG_CONFIG_HOME}/X11/xinitrc"
 alias svn="svn --config-dir \${XDG_CONFIG_HOME}/subversion"
 alias tmux="TERM=xterm-256color tmux -f \${XDG_CONFIG_HOME}/tmux/config"
 alias view="nvim -R"
-alias nview="nvim -e"
 # Neovim now defaults to init.vim, so I default to that.
 alias vim="vim -u \${XDG_CONFIG_HOME}/vim/init.vim"
