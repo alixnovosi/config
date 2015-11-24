@@ -52,6 +52,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
 Plug 'OmniSharp/omnisharp-vim', {'for': 'csharp'}
 Plug 'OrangeT/vim-csharp',      {'for': 'csharp'}
 Plug 'alecthomas/gometalinter', {'for': 'go'}
+Plug 'fatih/vim-go',            {'for': 'go'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'elzr/vim-json',           {'for': 'json'}
 Plug 'rodjek/vim-puppet',       {'for': 'puppet'}
@@ -68,8 +69,9 @@ Plug 'SirVer/ultisnips'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'Valloric/MatchTagAlways', {'for': 'html'}
 Plug 'Valloric/YouCompleteMe'
-Plug 'vim-scripts/a.vim',           {'for': ['c', 'cpp']}
+Plug 'vim-scripts/a.vim',       {'for': ['c', 'cpp']}
 
 """ Version control nonsense.
 Plug 'airblade/vim-gitgutter'
@@ -145,6 +147,7 @@ silent !stty -ixon > /dev/null 2>/dev/null
 nmap <C-s>n :NERDTreeToggle<CR>
 nmap <C-s>s :set number!<CR>
 nmap <C-s>r :set relativenumber!<CR>
+nmap <C-s>nn :set nonumber norelativenumber<CR>
 nmap <C-s>h :set hlsearch!<CR>
 nmap <C-s>t :TagbarToggle<CR>
 nmap <C-s>u :UndotreeToggle<CR>
