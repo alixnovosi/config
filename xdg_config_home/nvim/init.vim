@@ -2,14 +2,14 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    init.vim                                                                               "
 " PURPOSE: (neo)vim configuration file                                                            "
-" UPDATED: 2015-11-18                                                                             "
+" UPDATED: 2015-11-25                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
 
 "-------------------------------------------------------------------------------------------------"
 " ----------------------------------  NON-PLUGIN SETTINGS  -------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
-""" nvim-/vim-specfic options  neovim sets some settings by default, so only set them for vim.
+""" nvim-/vim-specfic options. neovim sets some settings by default, set manually for vim.
 if !has("nvim")
     """ Be vim, load reloaded file, make mouse work, make backspace nice, utf-8 is great.
     set nocompatible autoread mouse=a backspace=indent,eol,start encoding=utf-8
@@ -25,6 +25,8 @@ if !has("nvim")
     set viminfo+=n$XDG_DATA_HOME/vim/viminfo dir=$XDG_DATA_HOME/vim/swap//
     set runtimepath+=$XDG_DATA_HOME/vim/site,$XDG_CONFIG_HOME/vim
     set backupdir=$XDG_DATA_HOME/vim/backup// undodir=$XDG_DATA_HOME/vim/undo//
+    """ I don't know if neovim sets this by default, assuming.
+    let g:netrw_home=$XDG_DATA_HOME.'/vim'
 
     """ Syntax, and 256 colors!
     filetype plugin indent on
@@ -33,15 +35,10 @@ else
     set backupdir=$XDG_DATA_HOME/nvim/backup//
 endif
 
-""" Windows-specific options.
+""" Always always always prefer unix line endings.
 if has("win32") || has("win16")
-    """ Always always always prefer unix line endings.
     set fileformats=unix,dos
 endif
-
-""" Save backup files just in case. Save undo files for undo-history even if we close files.
-set backup undofile
-let g:netrw_home=$XDG_DATA_HOME.'/vim'
 
 "-------------------------------------------------------------------------------------------------"
 " --------------------------------------  PLUGINS  ---------------------------------------------- "
@@ -101,9 +98,14 @@ set foldenable foldlevelstart=10 foldnestmax=10 foldmethod=syntax
 
 """ Dark solarized is the way to go.
 """ Show the line we're editing, and be lazy because eh.
+""" Save backup files just in case. Save undo files for undo-history even if we close files.
 set background=dark
 colorscheme solarized
-set cursorline lazyredraw
+set cursorline lazyredraw backup undofile
+
+""" Enable nice cursor wrapping, use 2h status for airline, show commands.
+""" Don't show redundant mode, case search usefully.
+set whichwrap=[,],h,l,b,s laststatus=2 showcmd noshowmode ignorecase smartcase
 
 """ Airline preferences.
 let g:airline_left_sep = ''
@@ -123,10 +125,6 @@ let g:EclimCompletionMethod = 'omnifunc'
 """ CONFLICT with some plugins like tpope/Endwise
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 set ttimeoutlen=50
-
-""" Enable nice cursor wrapping, use 2h status for airline, show commands.
-""" Don't show redundant mode, case search usefully.
-set whichwrap=[,],h,l,b,s laststatus=2 showcmd noshowmode ignorecase smartcase
 
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  KEYBINDS  -------------------------------------------- "
