@@ -15,9 +15,6 @@ if !has("nvim")
     set nocompatible autoread mouse=a backspace=indent,eol,start encoding=utf-8
     syntax enable
 
-    """ Setting this breaks neovim for some reason I haven't figured out.
-    set spell spelllang=en_us
-
     """ Make opening files not suck, make search better, be faster, indent.
     set wildmenu wildmode=list:longest,full incsearch ttyfast autoindent
 
@@ -99,9 +96,11 @@ set foldenable foldlevelstart=10 foldnestmax=10 foldmethod=syntax
 """ Dark solarized is the way to go.
 """ Show the line we're editing, and be lazy because eh.
 """ Save backup files just in case. Save undo files for undo-history even if we close files.
+""" Enable english spelling.
 set background=dark
 colorscheme solarized
-set cursorline lazyredraw backup undofile
+set cursorline lazyredraw backup undofile spell spelllang=en
+
 
 """ Enable nice cursor wrapping, use 2h status for airline, show commands.
 """ Don't show redundant mode, case search usefully.
