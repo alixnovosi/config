@@ -1,5 +1,4 @@
 """ Force spellcheck and textwidth for git commit messages.
-set spell
-set spelllang=en_us
+set spell spelllang=en_us
 set textwidth=72
-set colorcolumn=73
+execute "set colorcolumn=" . join(map(range(2,259), '"+" . v:val'), ',')

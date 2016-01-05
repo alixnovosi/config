@@ -1,2 +1,3 @@
+""" Java is verbose.
 setlocal textwidth=130
-setlocal colorcolumn=131
+execute "set colorcolumn=" . join(map(range(2,259), '"+" . v:val'), ',')
