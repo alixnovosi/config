@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    init.vim                                                                               "
 " PURPOSE: (neo)vim configuration file                                                            "
-" UPDATED: 2016-01-04                                                                             "
+" UPDATED: 2016-01-13                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
 
@@ -52,8 +52,7 @@ Plug 'elzr/vim-json',           {'for': 'json'}
 Plug 'rodjek/vim-puppet',       {'for': 'puppet'}
 Plug 'klen/python-mode',        {'for': 'python'}
 Plug 'derekwyatt/vim-scala',    {'for': 'scala'}
-Plug 'keith/tmux.vim',          {'for': 'tmux'}
-Plug 'tejr/vim-tmux',           {'for': 'tmux'}
+Plug 'keith/tmux.vim'
 
 """ General programming support.
 Plug 'ap/vim-css-color'

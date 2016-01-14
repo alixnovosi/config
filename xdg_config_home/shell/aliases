@@ -4,7 +4,7 @@
 #          https://andrewmichaud.com                                                              #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
-# UPDATED: 2015-11-18                                                                             #
+# UPDATED: 2016-01-13                                                                             #
 # LICENSE: MIT/BSD                                                                                #
 #-------------------------------------------------------------------------------------------------#
 
@@ -37,7 +37,7 @@ alias nview="nvim -R"
 alias pip="pip --log-file \${XDG_CACHE_HOME}/pip/pip.log --cache-dir \${XDG_CACHE_HOME}/pip"
 alias startx="startx \${XDG_CONFIG_HOME}/X11/xinitrc"
 alias svn="svn --config-dir \${XDG_CONFIG_HOME}/subversion"
-alias tmux="TERM=xterm-256color tmux -f \${XDG_CONFIG_HOME}/tmux/config.tmux"
+alias tmux="TERM=xterm-256color tmux -f \${XDG_CONFIG_HOME}/tmux/tmux.conf"
 alias view="nvim -R"
 # Neovim now defaults to init.vim, so I default to that.
 alias vim="vim -u \${XDG_CONFIG_HOME}/vim/init.vim"
