@@ -52,9 +52,10 @@ Plug 'elzr/vim-json',           {'for': 'json'}
 Plug 'rodjek/vim-puppet',       {'for': 'puppet'}
 Plug 'klen/python-mode',        {'for': 'python'}
 Plug 'derekwyatt/vim-scala',    {'for': 'scala'}
+Plug 'keith/tmux.vim',          {'for': 'tmux'}
 Plug 'tejr/vim-tmux',           {'for': 'tmux'}
 
-""" Programming support.
+""" General programming support.
 Plug 'ap/vim-css-color'
 Plug 'embear/vim-localvimrc'
 Plug 'majutsushi/tagbar'
