@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    init.vim                                                                               "
 " PURPOSE: (neo)vim configuration file                                                            "
-" UPDATED: 2016-01-13                                                                             "
+" UPDATED: 2016-01-19                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
 
@@ -32,21 +32,19 @@ else
     set backupdir=$XDG_DATA_HOME/nvim/backup//
 endif
 
-""" Always always always prefer unix line endings.
-if has("win32") || has("win16")
-    set fileformats=unix,dos
-endif
-
 "-------------------------------------------------------------------------------------------------"
 " --------------------------------------  PLUGINS  ---------------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
 
 """ Language assistance.
+Plug 'vim-scripts/a.vim',       {'for': ['c', 'cpp']}
+Plug 'ap/vim-css-color',        {'for': 'css'}
 Plug 'OmniSharp/omnisharp-vim', {'for': 'csharp'}
 Plug 'OrangeT/vim-csharp',      {'for': 'csharp'}
 Plug 'alecthomas/gometalinter', {'for': 'go'}
 Plug 'fatih/vim-go',            {'for': 'go'}
+Plug 'Valloric/MatchTagAlways', {'for': 'html'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'elzr/vim-json',           {'for': 'json'}
 Plug 'rodjek/vim-puppet',       {'for': 'puppet'}
@@ -55,31 +53,27 @@ Plug 'derekwyatt/vim-scala',    {'for': 'scala'}
 Plug 'keith/tmux.vim'
 
 """ General programming support.
-Plug 'ap/vim-css-color'
 Plug 'embear/vim-localvimrc'
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree'
 Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
 Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-jdaddy'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'Valloric/MatchTagAlways', {'for': 'html'}
 Plug 'Valloric/YouCompleteMe'
-Plug 'vim-scripts/a.vim',       {'for': ['c', 'cpp']}
 
 """ Version control nonsense.
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 """ Appearance.
-Plug 'bling/vim-airline'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'flazz/vim-colorschemes'
+Plug 'vim-airline/vim-airline'
 
 """ File stuff/ things outside vim.
-Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-dispatch'
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
 call plug#end()
@@ -90,12 +84,15 @@ call plug#end()
 """ Force utf-8.
 scriptencoding utf-8
 
-""" No tabs, 4-wide space indents. No modeline. Edit 99 chars wide.
+""" Always always always prefer unix line endings.
+set fileformats=unix
+
+""" Use 4-wide space indents instead of tab characters. Don't use modeline.
 """ Color columns past textwidth.
 """ (Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns)
 """ Enable folding, with reasonable settings.
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4 nomodeline textwidth=99
-execute "set colorcolumn=" . join(map(range(1,259), '"+" . v:val'), ',')
+execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
 set foldenable foldlevelstart=10 foldnestmax=10 foldmethod=syntax
 
 """ Dark solarized is the way to go.
@@ -107,7 +104,7 @@ colorscheme solarized
 set cursorline lazyredraw backup undofile spell spelllang=en
 
 """ Enable nice cursor wrapping, use 2h status for airline, show commands.
-""" Don't show redundant mode, case search usefully.
+""" Airline handles mode for me. Use better (for me) search settings.
 set whichwrap=[,],h,l,b,s laststatus=2 showcmd noshowmode ignorecase smartcase
 
 """ Airline preferences.
@@ -123,9 +120,9 @@ let g:airlione_inactive_collapse=1
 """ Attempts to get Eclim and Eclipse and Vim and YCM to play nicely.
 let g:EclimCompletionMethod = 'omnifunc'
 
-""" this mapping Enter key to <C-y> to chose the current highlight item
-""" and close the selection list, same as other IDEs.
-""" CONFLICT with some plugins like tpope/Endwise
+""" Copied from somewhere.
+""" this mapping Enter key to <C-y> to chose the current highlight item and close the selection
+""" list, same as other IDEs. CONFLICTS with some plugins like tpope/Endwise
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 set ttimeoutlen=50
 
