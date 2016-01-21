@@ -49,7 +49,7 @@ Plug 'Valloric/MatchTagAlways', {'for': 'html'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'elzr/vim-json',           {'for': 'json'}
 Plug 'rodjek/vim-puppet',       {'for': 'puppet'}
-Plug 'klen/python-mode',        {'for': 'python'}
+Plug 'nvie/vim-flake8',         {'for': 'python'}
 Plug 'derekwyatt/vim-scala',    {'for': 'scala'}
 Plug 'keith/tmux.vim'
 
