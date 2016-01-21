@@ -22,8 +22,9 @@ if !has("nvim")
     set viminfo+=n$XDG_DATA_HOME/vim/viminfo dir=$XDG_DATA_HOME/vim/swap//
     set runtimepath+=$XDG_DATA_HOME/vim/site,$XDG_CONFIG_HOME/vim
     set backupdir=$XDG_DATA_HOME/vim/backup// undodir=$XDG_DATA_HOME/vim/undo//
+
     """ I don't know if neovim sets this by default, assuming.
-    let g:netrw_home=$XDG_DATA_HOME.'/vim'
+    let g:netrw_home=$XDG_DATA_HOME."/vim"
 
     """ Syntax, and 256 colors!
     filetype plugin indent on
@@ -35,7 +36,7 @@ endif
 "-------------------------------------------------------------------------------------------------"
 " --------------------------------------  PLUGINS  ---------------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
-call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
+call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
 
 """ Language assistance.
 Plug 'vim-scripts/a.vim',       {'for': ['c', 'cpp']}
@@ -108,17 +109,16 @@ set cursorline lazyredraw backup undofile spell spelllang=en
 set whichwrap=[,],h,l,b,s laststatus=2 showcmd noshowmode ignorecase smartcase
 
 """ Airline preferences.
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#right_sep = ' '
+let g:airline_left_sep = ""
+let g:airline_right_sep = ""
+let g:airline#extensions#tabline#left_sep = " "
+let g:airline#extensions#tabline#right_sep = " "
 let g:airline#extensions#tabline#buffer_min_count = 2
-let g:airline#extensions#eclim#enabled = 1
-let g:airline_extensions = ["hunks", "syntastic", "tagbar", "tabline"]
-let g:airlione_inactive_collapse=1
+let g:airline_extensions = ["eclim", "hunks", "syntastic", "tagbar", "tabline"]
+let g:airline_inactive_collapse = 1
 
 """ Attempts to get Eclim and Eclipse and Vim and YCM to play nicely.
-let g:EclimCompletionMethod = 'omnifunc'
+let g:EclimCompletionMethod = "omnifunc"
 
 """ Copied from somewhere.
 """ this mapping Enter key to <C-y> to chose the current highlight item and close the selection
@@ -129,8 +129,14 @@ set ttimeoutlen=50
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  KEYBINDS  -------------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
+""" Use sudo after accessing file where sudo is needed, without having to reload.
+cmap w!! w !sudo tee % >/dev/null
+
 """ Fast escape.
 inoremap jk <Esc>
+
+""" Faster commands.
+nnoremap ; :
 
 """ Buffer cycling.
 noremap <C-h> <Esc>:bprevious<Cr>
