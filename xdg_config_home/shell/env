@@ -1,19 +1,19 @@
-#!/bin/sh
-#-------------------------------------------------------------------------------------------------#
+#!/bin/sh  #--------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud                                                                         #
 #          https://andrewmichaud.com                                                              #
 # FILE:    env                                                                                    #
-# PURPOSE: shell environment variables definition file                                            #
-# UPDATED: 2015-11-18                                                                            #
+# PURPOSE: Shell environment variables definition file                                            #
+# UPDATED: 2016-01-20                                                                             #
 # LICENSE: MIT/BSD                                                                                #
 #-------------------------------------------------------------------------------------------------#
 
-# Colors
+# Colors.
+# shellcheck source=/dev/null
 . "$XDG_CONFIG_HOME/colors/colors.sh"
 
 # Extra XDG env variables.
-export XDG_CONFIG_DIRS="$XDG_CONFIG_HOME/:/etc/xdg"
-export XDG_DATA_DIRS="$XDG_DATA_HOME/:/usr/local/share/:/usr/share/"
+export XDG_CONFIG_DIRS="/etc/xdg"
+export XDG_DATA_DIRS="/usr/local/share/:/usr/share/"
 
 # Useful stuff.
 export EDITOR="nvim"
@@ -21,7 +21,10 @@ export PAGER="less"
 export MANPAGER="$PAGER"
 export VISUAL="$EDITOR"
 
-# Forcing more xdg spec compliance
+# Stuff.
+export GOPATH="$HOME/src/go"
+
+# Forcing more xdg spec compliance.
 export CABAL_CONFIG="$XDG_CONFIG_HOME/cabal/config"
 export ECLIPSE_HOME="$XDG_DATA_HOME/eclipse"
 export GEM_HOME="$XDG_DATA_HOME/gems"
@@ -29,9 +32,12 @@ export GEM_PATH="$XDG_DATA_HOME/bin:$XDG_DATA_HOME/gems"
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/gimp2"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
-export GOPATH="$HOME/src/go"
+export GTK_RC_FILES="$XDG_CONFIG_HOME/gtk-1.0/gtkrc"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export HGRCPATH="$XDG_CONFIG_HOME/hg/config"
-export LESSHISTFILE="$XDG_CACHE_HOME/less/hist"
+export ICEAUTHORITY="$XDG_RUNTIME_HOME/ICEauthority"
+export LESSHISTFILE=-
+export LESSKEY="$XDG_CONFIG_HOME/less/keys"
 export MOZBUILD_STATE_PATH="$XDG_CACHE_HOME/mozbuild"
 export MPV_HOME="$XDG_CONFIG_HOME/mpv"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
@@ -40,14 +46,18 @@ export PSQLRC="$XDG_CONFIG_HOME/psql/config"
 export PULSE_COOKIE="$XDG_RUNTIME_HOME/pulse/cookie"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 export PYTHONPATH="$XDG_DATA_HOME/bin"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/startup"
+export PYTHON_EGG_CACHE="$XDG_CACHE_HOME/python-eggs"
+export SUBVERSION_HOME="$XDG_CONFIG_HOME/subversion"
+export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:$TERMINFO_DIRS"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/tex/mfconfig"
 export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
 export TEXMFVAR="$XDG_RUNTIME_DIR/tex/mfvar"
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR/tmux"
-export XAUTHORITY="$HOME/.Xauthority"
-export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
+export XAUTHORITY="$XDG_RUNTIME_DIR/X11/xauthority"
+export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # Include bin, cabal, gem path.
-PATH="$XDG_DATA_HOME/bin:$GEM_HOME/bin:$HOME/.cabal/bin:$GOPATH/bin:$XDG_DATA_HOME/cabal/bin:$PATH"
+PATH="$XDG_DATA_HOME/bin:$GEM_HOME/bin:$HOME/.cabal/bin:$GOPATH/bin:$PATH"

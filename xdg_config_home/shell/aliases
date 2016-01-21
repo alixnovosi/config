@@ -1,20 +1,23 @@
-#!/bin/sh
-#-------------------------------------------------------------------------------------------------#
+#!/bin/sh  #--------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud                                                                         #
 #          https://andrewmichaud.com                                                              #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
-# UPDATED: 2016-01-13                                                                             #
+# UPDATED: 2016-01-20                                                                             #
 # LICENSE: MIT/BSD                                                                                #
 #-------------------------------------------------------------------------------------------------#
 
 # Useful aliases.
 alias df="df -h"
 alias du="du -ch"
+alias feh="feh --no-fehbg"
 alias grep="grep --color=auto"
 alias l="ls -CFh"
 alias la="ls -Ah"
 alias ll="ls -alh"
+alias lt="ls -alht"
+alias nview="nvim -R"
+alias view="nvim -R"
 
 # Safety aliases.
 alias cp="cp -i"
@@ -27,17 +30,16 @@ alias starwars="telnet towel.blinkenlights.nl"
 alias whence="which"
 
 # Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
-alias feh="feh --no-fehbg"
 alias firefox="firefox --profile \${XDG_CONFIG_HOME}/firefox"
 alias gimp="gimp -g \${XDG_CONFIG_HOME}/gimp/config"
+alias gpg="gpg --homedir \${XDG_CONFIG_HOME}/gnupg"
+alias gpg2="gpg2 --homedir \${XDG_CONFIG_HOME}/gnupg"
 alias mpdscribble="mpdscribble --conf \${XDG_CONFIG_HOME}/mpdscribble/config \
 --log \${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log"
 alias ncmpcpp="ncmpcpp -c \${XDG_CONFIG_HOME}/ncmpcpp/config"
-alias nview="nvim -R"
 alias pip="pip --log-file \${XDG_CACHE_HOME}/pip/pip.log --cache-dir \${XDG_CACHE_HOME}/pip"
 alias startx="startx \${XDG_CONFIG_HOME}/X11/xinitrc"
 alias svn="svn --config-dir \${XDG_CONFIG_HOME}/subversion"
-alias tmux="TERM=xterm-256color tmux -f \${XDG_CONFIG_HOME}/tmux/tmux.conf"
-alias view="nvim -R"
+alias tmux="tmux -2 -f \${XDG_CONFIG_HOME}/tmux/tmux.conf"
 # Neovim now defaults to init.vim, so I default to that.
 alias vim="vim -u \${XDG_CONFIG_HOME}/vim/init.vim"
