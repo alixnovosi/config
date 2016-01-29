@@ -2,36 +2,9 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    init.vim                                                                               "
 " PURPOSE: (neo)vim configuration file                                                            "
-" UPDATED: 2016-01-19                                                                             "
+" UPDATED: 2016-01-29                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
-
-"-------------------------------------------------------------------------------------------------"
-" ----------------------------------  NON-PLUGIN SETTINGS  -------------------------------------- "
-"-------------------------------------------------------------------------------------------------"
-""" nvim-/vim-specfic options. neovim sets some settings by default, set manually for vim.
-if !has("nvim")
-    """ Be vim, load reloaded file, make mouse work, make backspace nice, utf-8 is great.
-    set nocompatible autoread mouse=a backspace=indent,eol,start encoding=utf-8
-    syntax enable
-
-    """ Make opening files not suck, make search better, be faster, indent.
-    set wildmenu wildmode=list:longest,full incsearch ttyfast autoindent
-
-    """ Use XDG dirs. Neovim does this by default. dir==swap dir.
-    set viminfo+=n$XDG_DATA_HOME/vim/viminfo dir=$XDG_DATA_HOME/vim/swap//
-    set runtimepath+=$XDG_DATA_HOME/vim/site,$XDG_CONFIG_HOME/vim
-    set backupdir=$XDG_DATA_HOME/vim/backup// undodir=$XDG_DATA_HOME/vim/undo//
-
-    """ I don't know if neovim sets this by default, assuming.
-    let g:netrw_home=$XDG_DATA_HOME."/vim"
-
-    """ Syntax, and 256 colors!
-    filetype plugin indent on
-    set t_Co=256
-else
-    set backupdir=$XDG_DATA_HOME/nvim/backup//
-endif
 
 "-------------------------------------------------------------------------------------------------"
 " --------------------------------------  PLUGINS  ---------------------------------------------- "
@@ -39,18 +12,22 @@ endif
 call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
 
 """ Language assistance.
-Plug 'vim-scripts/a.vim',       {'for': ['c', 'cpp']}
-Plug 'ap/vim-css-color',        {'for': 'css'}
-Plug 'OmniSharp/omnisharp-vim', {'for': 'csharp'}
-Plug 'OrangeT/vim-csharp',      {'for': 'csharp'}
-Plug 'alecthomas/gometalinter', {'for': 'go'}
-Plug 'fatih/vim-go',            {'for': 'go'}
-Plug 'Valloric/MatchTagAlways', {'for': 'html'}
-Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-Plug 'elzr/vim-json',           {'for': 'json'}
-Plug 'rodjek/vim-puppet',       {'for': 'puppet'}
-Plug 'nvie/vim-flake8',         {'for': 'python'}
-Plug 'derekwyatt/vim-scala',    {'for': 'scala'}
+Plug 'vim-scripts/a.vim',                      {'for': ['c', 'cpp']}
+Plug 'ap/vim-css-color',                       {'for': 'css'}
+Plug 'OmniSharp/omnisharp-vim',                {'for': 'csharp'}
+Plug 'OrangeT/vim-csharp',                     {'for': 'csharp'}
+Plug 'alecthomas/gometalinter',                {'for': 'go'}
+Plug 'fatih/vim-go',                           {'for': 'go'}
+Plug 'burnettk/vim-angular',                   {'for': 'html'}
+Plug 'matthewsimo/angular-vim-snippets',       {'for': 'html'}
+Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'Valloric/MatchTagAlways',                {'for': 'html'}
+Plug 'pangloss/vim-javascript',                {'for': 'javascript'}
+Plug 'ternjs/tern_for_vim',                    {'for': 'javascript'}
+Plug 'elzr/vim-json',                          {'for': 'json'}
+Plug 'rodjek/vim-puppet',                      {'for': 'puppet'}
+Plug 'nvie/vim-flake8',                        {'for': 'python'}
+Plug 'derekwyatt/vim-scala',                   {'for': 'scala'}
 Plug 'keith/tmux.vim'
 
 """ General programming support.
@@ -82,6 +59,8 @@ call plug#end()
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  SETTINGS  -------------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
+set backupdir=$XDG_DATA_HOME/nvim/backup//
+
 """ Force utf-8.
 scriptencoding utf-8
 

@@ -1,6 +1,5 @@
 """ Google/PEP8 coding standards.
-setlocal textwidth=79
-execute "set colorcolumn=" . join(map(range(2,259), '"+" . v:val'), ',')
+setlocal textwidth=99
 
 setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
 setlocal foldexpr< foldmethod<
