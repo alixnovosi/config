@@ -1,3 +1,3 @@
 setlocal nonumber
-setlocal colorcolumn=
 setlocal textwidth=0
+setlocal colorcolumn=
