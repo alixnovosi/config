@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    init.vim                                                                               "
 " PURPOSE: (neo)vim configuration file                                                            "
-" UPDATED: 2016-01-29                                                                             "
+" UPDATED: 2016-02-02                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
 
@@ -32,6 +32,7 @@ Plug 'keith/tmux.vim'
 
 """ General programming support.
 Plug 'embear/vim-localvimrc'
+Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree'
 Plug 'scrooloose/syntastic'
@@ -49,6 +50,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 """ File stuff/ things outside vim.
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
@@ -93,7 +95,7 @@ let g:airline_right_sep = ""
 let g:airline#extensions#tabline#left_sep = " "
 let g:airline#extensions#tabline#right_sep = " "
 let g:airline#extensions#tabline#buffer_min_count = 2
-let g:airline_extensions = ["eclim", "hunks", "syntastic", "tagbar", "tabline"]
+let g:airline_extensions = ["eclim", "hunks", "syntastic", "tagbar", "tabline", "ycm"]
 let g:airline_inactive_collapse = 1
 
 """ Attempts to get Eclim and Eclipse and Vim and YCM to play nicely.
