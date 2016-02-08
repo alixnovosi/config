@@ -141,3 +141,6 @@ nnoremap <c-l> viwu
 """ Quote word.
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+
+""" 'Become a better person' section
+inoremap <esc> <nop>
