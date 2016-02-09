@@ -33,7 +33,9 @@ Plug 'keith/tmux.vim'
 """ General programming support.
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'embear/vim-localvimrc'
+Plug 'ervandew/supertab'
 Plug 'junegunn/vim-easy-align'
+Plug 'honza/vim-snippets'
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree'
 Plug 'scrooloose/syntastic'
@@ -87,6 +89,16 @@ let g:airline_inactive_collapse = 1
 """ Attempt to get Eclim and Eclipse and Vim and YCM to play nicely.
 let g:EclimCompletionMethod = "omnifunc"
 
+""" Make YCM and UltiSnips work together via supertab.
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+""" Better key bindings for UltiSnipsExpandTrigger.
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
 """ Let C-s and C-q go to Vim instead of terminal. We'll later set commands using that.
 silent !stty -ixon > /dev/null 2>/dev/null
 
@@ -98,11 +110,6 @@ let maplocalleader = "_"
 "-------------------------------------------------------------------------------------------------"
 """ Use sudo after accessing file where sudo is needed, without having to reload.
 cnoremap w!! w !sudo tee % >/dev/null
-
-""" Additional attempts to get Eclipse/Eclim/Vim/YCM to play nicely.
-""" Copied from somewhere. Map Enter key to <C-y> to chose the current highlight item and close
-""" the selection list, same as other IDEs. CONFLICTS with some plugins like tpope/Endwise.
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 """ Fast escape.
 inoremap jk <Esc>
@@ -131,12 +138,6 @@ nnoremap ; :
 """ Move line downward/upward with one keystroke.
 noremap - ddp
 noremap _ dd2kp
-
-""" Quick all-caps/all-lower.
-inoremap <c-u> <esc>viwUi
-inoremap <c-l> <esc>viwui
-nnoremap <c-u> viwU
-nnoremap <c-l> viwu
 
 """ Quote word.
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
