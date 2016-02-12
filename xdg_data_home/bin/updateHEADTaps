@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Simple script to update all --HEAD taps you have set up with Homebrew.
+# Assumes you've defined HEAD such taps in $XDG_CONFIG_HOME/homebrew/headTaps.
+while read p; do
+    reinstallCommand="brew reinstall --HEAD ${p} --with-ssl"
+    echo "$reinstallCommand"
+    $reinstallCommand || break
+done < "$XDG_CONFIG_HOME/homebrew/headTaps"

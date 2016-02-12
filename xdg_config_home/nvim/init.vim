@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    init.vim                                                                               "
 " PURPOSE: (neo)vim configuration file                                                            "
-" UPDATED: 2016-01-29                                                                             "
+" UPDATED: 2016-02-08                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
 
@@ -31,7 +31,11 @@ Plug 'derekwyatt/vim-scala',                   {'for': 'scala'}
 Plug 'keith/tmux.vim'
 
 """ General programming support.
+Plug 'bronson/vim-trailing-whitespace'
 Plug 'embear/vim-localvimrc'
+Plug 'ervandew/supertab'
+Plug 'junegunn/vim-easy-align'
+Plug 'honza/vim-snippets'
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree'
 Plug 'scrooloose/syntastic'
@@ -46,9 +50,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 """ Appearance.
-Plug 'bronson/vim-trailing-whitespace'
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 """ File stuff/ things outside vim.
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
@@ -59,33 +63,19 @@ call plug#end()
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  SETTINGS  -------------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
-set backupdir=$XDG_DATA_HOME/nvim/backup//
-
-""" Force utf-8.
+""" Most of these are hopefully self-explanatory. Try :help <thing> for more info.
+""" File settings.
+set fileformats=unix nobackup nomodeline spell spelllang=en undofile
 scriptencoding utf-8
 
-""" Always always always prefer unix line endings.
-set fileformats=unix
-
-""" Use 4-wide space indents instead of tab characters. Don't use modeline.
-""" Color columns past textwidth.
-""" (Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns)
-""" Enable folding, with reasonable settings.
-set expandtab tabstop=4 softtabstop=4 shiftwidth=4 nomodeline textwidth=99
-execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
+""" Editing/editor settings.
+set expandtab lazyredraw shiftwidth=4 softtabstop=4 tabstop=4 textwidth=99 whichwrap=[,],h,l,b,s
 set foldenable foldlevelstart=10 foldnestmax=10 foldmethod=syntax
-
-""" Dark solarized is the way to go.
-""" Show the line we're editing, and be lazy because eh.
-""" Save backup files just in case. Save undo files for undo-history even if we close files.
-""" Enable english spelling.
-set background=dark
+set background=dark cursorline ignorecase laststatus=2 noshowmode showcmd smartcase
+""" Color columns past textwidth.
+""" Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns.
+execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
 colorscheme solarized
-set cursorline lazyredraw backup undofile spell spelllang=en
-
-""" Enable nice cursor wrapping, use 2h status for airline, show commands.
-""" Airline handles mode for me. Use better (for me) search settings.
-set whichwrap=[,],h,l,b,s laststatus=2 showcmd noshowmode ignorecase smartcase
 
 """ Airline preferences.
 let g:airline_left_sep = ""
@@ -93,50 +83,65 @@ let g:airline_right_sep = ""
 let g:airline#extensions#tabline#left_sep = " "
 let g:airline#extensions#tabline#right_sep = " "
 let g:airline#extensions#tabline#buffer_min_count = 2
-let g:airline_extensions = ["eclim", "hunks", "syntastic", "tagbar", "tabline"]
+let g:airline_extensions = ["eclim", "hunks", "syntastic", "tagbar", "tabline", "ycm"]
 let g:airline_inactive_collapse = 1
 
-""" Attempts to get Eclim and Eclipse and Vim and YCM to play nicely.
+""" Attempt to get Eclim and Eclipse and Vim and YCM to play nicely.
 let g:EclimCompletionMethod = "omnifunc"
 
-""" Copied from somewhere.
-""" this mapping Enter key to <C-y> to chose the current highlight item and close the selection
-""" list, same as other IDEs. CONFLICTS with some plugins like tpope/Endwise
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-set ttimeoutlen=50
+""" Make YCM and UltiSnips work together via supertab.
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+""" Better key bindings for UltiSnipsExpandTrigger.
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+""" Let C-s and C-q go to Vim instead of terminal. We'll later set commands using that.
+silent !stty -ixon > /dev/null 2>/dev/null
+
+""" 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
+let maplocalleader = "_"
 
 "-------------------------------------------------------------------------------------------------"
 " ---------------------------------------  KEYBINDS  -------------------------------------------- "
 "-------------------------------------------------------------------------------------------------"
 """ Use sudo after accessing file where sudo is needed, without having to reload.
-cmap w!! w !sudo tee % >/dev/null
+cnoremap w!! w !sudo tee % >/dev/null
 
 """ Fast escape.
 inoremap jk <Esc>
-
-""" Faster commands.
-nnoremap ; :
 
 """ Buffer cycling.
 noremap <C-h> <Esc>:bprevious<Cr>
 noremap <C-l> <Esc>:bnext<Cr>
 
+""" Stuff.
+nnoremap <C-s>n :NERDTreeToggle<CR>
+nnoremap <C-s>s :set number!<CR>
+nnoremap <C-s>r :set relativenumber!<CR>
+nnoremap <C-s>nn :set nonumber norelativenumber<CR>
+nnoremap <C-s>h :set hlsearch!<CR>
+nnoremap <C-s>t :TagbarToggle<CR>
+nnoremap <C-s>u :UndotreeToggle<CR>
+
 """ Move screen up and down without moving cursor.
-nmap <C-j> <C-e>
-nmap <C-k> <C-y>
+nnoremap <C-j> <C-e>
+nnoremap <C-k> <C-y>
 
-""" Let C-s and C-q go to Vim instead of terminal, and then define some commands using C-s.
-silent !stty -ixon > /dev/null 2>/dev/null
-nmap <C-s>n :NERDTreeToggle<CR>
-nmap <C-s>s :set number!<CR>
-nmap <C-s>r :set relativenumber!<CR>
-nmap <C-s>nn :set nonumber norelativenumber<CR>
-nmap <C-s>h :set hlsearch!<CR>
-nmap <C-s>t :TagbarToggle<CR>
-nmap <C-s>u :UndotreeToggle<CR>
+""" Faster commands.
+nnoremap ; :
 
-""" Become a better person.
-inoremap <Up> <NOP>
-inoremap <Down> <NOP>
-inoremap <Left> <NOP>
-inoremap <Right> <NOP>
+""" 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
+""" Move line downward/upward with one keystroke.
+noremap - ddp
+noremap _ dd2kp
+
+""" Quote word.
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+
+""" 'Become a better person' section
+inoremap <esc> <nop>

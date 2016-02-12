@@ -1,3 +1,4 @@
 """ Java is verbose.
 setlocal textwidth=130
-execute "set colorcolumn=" . join(map(range(2,259), '"+" . v:val'), ',')
+
+iabbrev jpr System.out.println(
