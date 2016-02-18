@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    init.vim                                                                               "
 " PURPOSE: (neo)vim configuration file                                                            "
-" UPDATED: 2016-02-08                                                                             "
+" UPDATED: 2016-02-17                                                                             "
 " LICENSE: MIT/BSD                                                                                "
 "-------------------------------------------------------------------------------------------------"
 
@@ -13,7 +13,6 @@ call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
 
 """ Language assistance.
 Plug 'vim-scripts/a.vim',                      {'for': ['c', 'cpp']}
-Plug 'ap/vim-css-color',                       {'for': 'css'}
 Plug 'OmniSharp/omnisharp-vim',                {'for': 'csharp'}
 Plug 'OrangeT/vim-csharp',                     {'for': 'csharp'}
 Plug 'alecthomas/gometalinter',                {'for': 'go'}
@@ -26,6 +25,7 @@ Plug 'pangloss/vim-javascript',                {'for': 'javascript'}
 Plug 'ternjs/tern_for_vim',                    {'for': 'javascript'}
 Plug 'elzr/vim-json',                          {'for': 'json'}
 Plug 'rodjek/vim-puppet',                      {'for': 'puppet'}
+Plug 'davidhalter/jedi-vim',                   {'for': 'python'}
 Plug 'nvie/vim-flake8',                        {'for': 'python'}
 Plug 'derekwyatt/vim-scala',                   {'for': 'scala'}
 Plug 'keith/tmux.vim'
@@ -50,7 +50,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 """ Appearance.
-Plug 'flazz/vim-colorschemes'
+Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -71,11 +71,17 @@ scriptencoding utf-8
 """ Editing/editor settings.
 set expandtab lazyredraw shiftwidth=4 softtabstop=4 tabstop=4 textwidth=99 whichwrap=[,],h,l,b,s
 set foldenable foldlevelstart=10 foldnestmax=10 foldmethod=syntax
-set background=dark cursorline ignorecase laststatus=2 noshowmode showcmd smartcase
+set cursorline ignorecase laststatus=2 noshowmode showcmd smartcase
 """ Color columns past textwidth.
 """ Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns.
 execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
-colorscheme solarized
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
+let base16colorspace=256
+set t_Co=256
+set background=dark
+colorscheme base16-solarized
 
 """ Airline preferences.
 let g:airline_left_sep = ""
@@ -138,6 +144,9 @@ nnoremap ; :
 """ Move line downward/upward with one keystroke.
 noremap - ddp
 noremap _ dd2kp
+
+onoremap in( :<c-u>normal! f(vi(<cr>
+onoremap il( :<c-u>normal! F)vi(<cr>
 
 """ Quote word.
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
