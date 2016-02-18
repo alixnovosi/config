@@ -1,10 +1,14 @@
-#!/bin/sh  #--------------------------------------------------------------------------------------#
+#!/bin/bash #-------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud                                                                         #
 # FILE:    colors.sh                                                                              #
 # PURPOSE: color-related environment variable generator                                           #
-# UPDATED: 2016-01-20                                                                             #
+# UPDATED: 2016-02-17                                                                             #
 # LICENSE: MIT/BSD                                                                                #
 #-------------------------------------------------------------------------------------------------#
+
+# Base16 Shell
+BASE16_SHELL="$XDG_DATA_HOME/bin/base16-shell/base16-solarized.dark.sh"
+[[ -s "$BASE16_SHELL" ]] && source "$BASE16_SHELL"
 
 # tput color nonsense. Use 256 colors, if we have them.
 # Technically the assignment could error out or something, so we export then assign.
