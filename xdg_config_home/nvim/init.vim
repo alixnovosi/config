@@ -44,6 +44,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'Valloric/YouCompleteMe'
+Plug 'vim-airline/vim-airline'
 
 """ Version control nonsense.
 Plug 'airblade/vim-gitgutter'
@@ -51,7 +52,6 @@ Plug 'tpope/vim-fugitive'
 
 """ Appearance.
 Plug 'chriskempson/base16-vim'
-Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 """ File stuff/ things outside vim.
@@ -76,12 +76,12 @@ set cursorline ignorecase laststatus=2 noshowmode showcmd smartcase
 """ Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns.
 execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+""" One day I'll untangle the bugs this introduces.
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
 let base16colorspace=256
-set t_Co=256
-set background=dark
 colorscheme base16-solarized
+set background=dark
 
 """ Airline preferences.
 let g:airline_left_sep = ""
