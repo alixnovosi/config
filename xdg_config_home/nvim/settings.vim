@@ -31,7 +31,6 @@ let g:airline_right_sep = ""
 let g:airline#extensions#tabline#left_sep = " "
 let g:airline#extensions#tabline#right_sep = " "
 let g:airline#extensions#tabline#buffer_min_count = 2
-let g:airline_extensions = ["eclim", "hunks", "syntastic", "tagbar", "tabline", "ycm"]
 let g:airline_inactive_collapse = 1
 
 """ Attempt to get Eclim and Eclipse and Vim and YCM to play nicely.

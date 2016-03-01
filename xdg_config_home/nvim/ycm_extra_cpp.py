@@ -16,7 +16,7 @@ flags = [
     # specify a "-std=<something>".
     # For a C project, you would set this to something like 'c99' instead of
     # 'c++11'.
-    '-std=c++11',
+    '-std=c++14',
     # ...and the same thing goes for the magic -x option which specifies the
     # language that the files to be compiled are written in. This is mostly
     # relevant for c++ headers.  For a C project, you would set this to 'c'
@@ -42,16 +42,14 @@ flags = [
     '-isystem',
     '/usr/local/include',
     '-isystem',
-    '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1',
-    '-isystem',
-    '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include',
 ]
 database = None
 
 SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', '.m', '.mm' ]
 
+
 def DirectoryOfThisScript():
-  return os.path.dirname( os.path.abspath( __file__ ) )
+    return os.path.dirname(os.path.abspath(__file__))
 
 
 def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
