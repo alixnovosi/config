@@ -55,7 +55,7 @@ export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
 export TEXMFVAR="$XDG_RUNTIME_DIR/tex/mfvar"
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR/tmux"
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
-export XAUTHORITY="$XDG_RUNTIME_DIR/X11/xauthority"
+# export XAUTHORITY="$XDG_RUNTIME_DIR/X11/xauthority"
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 

@@ -38,6 +38,9 @@ if [ -n "$SEND_256_COLORS_TO_REMOTE" ]; then
     fi
 fi
 
+# Act as if we used 'time' for any command that lasted longer than five seconds.
+REPORTTIME=5
+
 # Better completion.
 # Tab completion from both ends, case-insensitive completion, better killall completion.
 fpath=($XDG_CONFIG_HOME/zsh/completion $fpath)
