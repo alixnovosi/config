@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim                                                               "
-" UPDATED: 2016-02-29                                                                             "
+" UPDATED: 2016-03-07                                                                             "
 " LICENSE: MIT                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Most of these are hopefully self-explanatory. Try :help <thing> for more info.
@@ -22,7 +22,7 @@ execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
 " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
 let base16colorspace=256
-colorscheme base16-solarized
+colorscheme base16-ocean
 set background=dark
 
 """ Airline preferences.
@@ -49,6 +49,17 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 """ Let C-s and C-q go to Vim instead of terminal. We'll later set commands using that.
 silent !stty -ixon > /dev/null 2>/dev/null
+
+set conceallevel=1
+let g:javascript_conceal_function   = "λ"
+let g:javascript_conceal_null       = "ø"
+let g:javascript_conceal_this       = "@"
+let g:javascript_conceal_return     = "⇚"
+let g:javascript_conceal_undefined  = "¿"
+let g:javascript_conceal_NaN        = "ℕ"
+let g:javascript_conceal_prototype  = "¶"
+let g:javascript_conceal_static     = "•"
+let g:javascript_conceal_super      = "Ω"
 
 """ 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
 let maplocalleader = "_"
