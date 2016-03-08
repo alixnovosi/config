@@ -1,9 +1,9 @@
 "-------------------------------------------------------------------------------------------------"
 " AUTHOR:  Andrew Michaud                                                                         "
-" FILE:    keybinds.vim                                                                           "
-" PURPOSE: Keybinds used in (neo)vim.                                                             "
-" UPDATED: 2016-02-29                                                                             "
-" LICENSE: MIT                                                                                    "
+" FILE:    mappings.vim                                                                           "
+" PURPOSE: Mappings used in (neo)vim.                                                             "
+" UPDATED: 2016-03-08                                                                             "
+" LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Use sudo after accessing file where sudo is needed, without having to reload.
 cnoremap w!! w !sudo tee % >/dev/null
