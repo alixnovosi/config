@@ -3,8 +3,8 @@
 #          https://andrewmichaud.com                                                              #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
-# UPDATED: 2016-01-20                                                                             #
-# LICENSE: MIT/BSD                                                                                #
+# UPDATED: 2016-03-09                                                                             #
+# LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 
 # Useful aliases.
@@ -28,12 +28,14 @@ alias rm="rm -i"
 alias git-yolo='git commit -am "$(curl -s http://whatthecommit.com/index.txt)"'
 alias starwars="telnet towel.blinkenlights.nl"
 alias whence="which"
+alias whom="who"
 
 # Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
 alias firefox="firefox --profile \${XDG_CONFIG_HOME}/firefox"
 alias gimp="gimp -g \${XDG_CONFIG_HOME}/gimp/config"
 alias gpg="gpg --homedir \${XDG_CONFIG_HOME}/gnupg"
 alias gpg2="gpg2 --homedir \${XDG_CONFIG_HOME}/gnupg"
+alias jshint="jshint --config \${XDG_CONFIG_HOME}/jshint/jshintrc"
 alias mpdscribble="mpdscribble --conf \${XDG_CONFIG_HOME}/mpdscribble/config \
 --log \${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log"
 alias ncmpcpp="ncmpcpp -c \${XDG_CONFIG_HOME}/ncmpcpp/config"
@@ -41,5 +43,6 @@ alias pip="pip --log-file \${XDG_CACHE_HOME}/pip/pip.log --cache-dir \${XDG_CACH
 alias startx="startx \${XDG_CONFIG_HOME}/X11/xinitrc"
 alias svn="svn --config-dir \${XDG_CONFIG_HOME}/subversion"
 alias tmux="tmux -2 -f \${XDG_CONFIG_HOME}/tmux/tmux.conf"
+
 # Neovim now defaults to init.vim, so I default to that.
 alias vim="vim -u \${XDG_CONFIG_HOME}/vim/init.vim"

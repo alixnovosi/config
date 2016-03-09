@@ -1,4 +1,4 @@
-#!/bin/sh  #--------------------------------------------------------------------------------------#
+#!/bin/sh  ---------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud                                                                         #
 #          https://andrewmichaud.com                                                              #
 # FILE:    env                                                                                    #
@@ -36,7 +36,7 @@ export GTK_RC_FILES="$XDG_CONFIG_HOME/gtk-1.0/gtkrc"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export HGRCPATH="$XDG_CONFIG_HOME/hg/config"
 export ICEAUTHORITY="$XDG_RUNTIME_HOME/ICEauthority"
-export LESSHISTFILE=-
+export LESSHISTFILE="-"
 export LESSKEY="$XDG_CONFIG_HOME/less/keys"
 export MOZBUILD_STATE_PATH="$XDG_CACHE_HOME/mozbuild"
 export MPV_HOME="$XDG_CONFIG_HOME/mpv"
@@ -53,6 +53,7 @@ export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:$TERMINFO_DIRS"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/tex/mfconfig"
 export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
 export TEXMFVAR="$XDG_RUNTIME_DIR/tex/mfvar"
+export TIGRC="$XDG_CONFIG_HOME/tig/tigrc"
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR/tmux"
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
 # export XAUTHORITY="$XDG_RUNTIME_DIR/X11/xauthority"

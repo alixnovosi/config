@@ -1,13 +1,11 @@
-#!/bin/zsh
-#-------------------------------------------------------------------------------------------------#
+#!/bin/zsh ---------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud                                                                         #
 #          https://andrewmichaud.com                                                              #
 # FILE:    .zshrc                                                                                 #
 # PURPOSE: zsh config file.                                                                       #
-# UPDATED: 2015-09-28                                                                             #
-# LICENSE: MIT/BSD                                                                                #
+# UPDATED: 2015-03-09                                                                             #
+# LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
-
 # Sketchy way of detecting multiuser machine (where users is interesting).
 if [[ "$(who | grep -c "$USER")" -ne "$(who | wc -l)" ]]; then
 
@@ -21,7 +19,7 @@ which fortune &> /dev/null && fortune -s
 [[ "$(uname -s)" == "Linux" ]] && source "$HOME/.config/shell/linux"
 
 # I could check if these exist, but I want zsh to let me know if I haven't created them.
-files=('env' 'aliases' 'func' 'host')
+files=('env' 'aliases' 'host')
 for file in $files; do source "$XDG_CONFIG_HOME/shell/$file"; done
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
