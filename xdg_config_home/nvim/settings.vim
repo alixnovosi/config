@@ -36,10 +36,16 @@ let g:airline_right_sep = ""
 let g:airline#extensions#tabline#left_sep = " "
 let g:airline#extensions#tabline#right_sep = " "
 let g:airline#extensions#tabline#buffer_min_count = 2
+let g:airline_extensions = ["hunks", "syntastic", "tagbar", "tabline", "ycm"]
 let g:airline_inactive_collapse = 1
 
 """ Attempt to get Eclim and Eclipse and Vim and YCM to play nicely.
 let g:EclimCompletionMethod = "omnifunc"
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 """ Make YCM and UltiSnips work together via supertab.
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
