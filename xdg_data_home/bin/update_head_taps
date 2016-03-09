@@ -1,9 +1,11 @@
-#!/bin/bash
+#!/bin/sh
+
+# Should be a newline-separated list of homebrew HEAD taps you'd like to update.
+list="$XDG_CONFIG_HOME/homebrew/head_taps"
+brew_command="brew reinstall --HEAD ${p} --with-ssl"
 
 # Simple script to update all --HEAD taps you have set up with Homebrew.
-# Assumes you've defined HEAD such taps in $XDG_CONFIG_HOME/homebrew/headTaps.
 while read p; do
-    reinstallCommand="brew reinstall --HEAD ${p} --with-ssl"
-    echo "$reinstallCommand"
-    $reinstallCommand || break
-done < "$XDG_CONFIG_HOME/homebrew/headTaps"
+    echo "Running $brew_command"
+    $brew_command || break
+done < "$list"

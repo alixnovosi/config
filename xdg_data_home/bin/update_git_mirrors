@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Should be a newline-separated list of repo names without ".git".
+list="$XDG_CONFIG_HOME/git/mirrored_repos"
+fetch_command="git remote update"
+git_dir="/home/git"
+
+# Simple script to update mirrored git repos.
+while read repo; do
+    echo "CD-ing"
+    cd "${git_dir}/${repo}.git"
+    echo "Running $fetch_command"
+    $fetch_command || break
+done < "$list"
