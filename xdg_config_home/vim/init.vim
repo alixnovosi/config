@@ -2,10 +2,9 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    init.vim                                                                               "
 " PURPOSE: vim configuration file                                                                 "
-" UPDATED: 2016-01-29                                                                             "
-" LICENSE: MIT/BSD                                                                                "
+" UPDATED: 2016-02-08                                                                             "
+" LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
-"
 """ Be vim, load reloaded file, make mouse work, make backspace nice, utf-8 is great.
 set nocompatible autoread mouse=a backspace=indent,eol,start encoding=utf-8
 syntax enable

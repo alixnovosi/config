@@ -6,7 +6,7 @@
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
-set fileformats=unix nobackup nomodeline spell spelllang=en undofile
+set fileformats=unix nobackup nomodeline spell spelllang=en_us undofile
 scriptencoding utf-8
 
 """ Use 4-wide spaces, no tabs.
