@@ -2,27 +2,32 @@
 " AUTHOR:  Andrew Michaud                                                                         "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim                                                               "
-" UPDATED: 2016-02-29                                                                             "
-" LICENSE: MIT                                                                                    "
+" UPDATED: 2016-03-08                                                                             "
+" LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
-""" Most of these are hopefully self-explanatory. Try :help <thing> for more info.
-""" File settings.
+""" Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
 set fileformats=unix nobackup nomodeline spell spelllang=en undofile
 scriptencoding utf-8
 
-""" Editing/editor settings.
-set expandtab lazyredraw shiftwidth=4 softtabstop=4 tabstop=4 textwidth=99 whichwrap=[,],h,l,b,s
-set foldenable foldlevelstart=10 foldnestmax=10 foldmethod=syntax
-set cursorline ignorecase laststatus=2 noshowmode showcmd smartcase
+""" Use 4-wide spaces, no tabs.
+set expandtab shiftwidth=4 softtabstop=4 tabstop=4
+
+""" Allow reasonable folding. Wrap text at 99 columns, let movement spill over into next line.
+set foldenable foldlevelstart=10 foldnestmax=5 foldmethod=syntax textwidth=99 whichwrap=[,],h,l,b,s
+
 """ Color columns past textwidth.
 """ Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns.
 execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
+
+""" Highlight current line, use 2-column status (for airline) that shows commands, but not mode.
+""" Ignore case in searching unless I use capital letters.
+set cursorline laststatus=2 noshowmode showcmd ignorecase smartcase
 
 """ One day I'll untangle the bugs this introduces.
 " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
 let base16colorspace=256
-colorscheme base16-solarized
+colorscheme base16-ocean
 set background=dark
 
 """ Airline preferences.
@@ -48,6 +53,9 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 """ Let C-s and C-q go to Vim instead of terminal. We'll later set commands using that.
 silent !stty -ixon > /dev/null 2>/dev/null
+
+""" Use concealing.
+set conceallevel=1
 
 """ 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
 let maplocalleader = "_"
