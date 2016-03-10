@@ -1,10 +1,9 @@
 #!/bin/sh
+pgrep -x Xorg || exit 1
 
-pgrep -x Xorg | exit
-
-# Assign a pictures dir if one doesn't exist.
 if [ -z "$XDG_PICTURES_DIR" ]; then
-    XDG_PICTURES_DIR="$HOME/pictures"
+    echo "[set_wallpaper] [ERROR] Must set \$XDG_PICTURES_DIR!"
+    exit 1
 fi
 
 # Pictures home and script data files home.

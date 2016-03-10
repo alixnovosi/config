@@ -1,17 +1,21 @@
-#!/bin/bash
-
-# Handles all the nonsense necessary to get bibtex and pdflatex to work
-# together.
-# No promises.
+#!/bin/sh
+# Handles all the nonsense necessary to get bibtex and pdflatex to work together. No promises.
 
 if [ "$#" -ne 1 ]; then
     echo "Not enough arguments supplied!"
     echo "Usage: handleTeX filename"
-    exit
+    echo "(Drop extension)"
+    exit 1
 fi
 
-# .bib file, run bibtex
-if [ -a "${1}.bib" ]; then
+if [ ! -r "${1}.tex" ]; then
+    echo "${1}.tex not readable, can do nothing."
+    exit 1
+fi
+
+# .bib file, run bibtex.
+# Yes, most or all of this is necessary.
+if [ -w "${1}.bib" ]; then
     pdflatex "${1}.tex"
     latex "${1}.tex"
     bibtex "${1}.bib"

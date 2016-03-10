@@ -1,52 +1,58 @@
-#!/bin/bash
-#-------------------------------------------------------------------------------------------------#
-# AUTHOR:  Andrew Michaud                                                                         #
-#          https://andrewmichaud.com                                                              #
+#!/bin/sh  #--------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    menu                                                                                   #
 # PURPOSE: File for choosing things with dmenu.                                                   #
-# UPDATED: 2015-08-27                                                                             #
-# LICENSE: MIT/BSD                                                                                #
+# UPDATED: 2015-03-09                                                                             #
+# LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
-
 # Choose something with dmenu.  Takes prefix and regex and type.
 choose () {
-
-    # I guess we can check errors.
     if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
         echo "[menu] [ERROR] Not enough parameters given to choose!"
         exit 1
     fi
+    echo "[menu] Mode $3"
 
     # Choose (wisely).
-    echo "[menu] Mode $3"
     choice=$(find "$1" -regex "$2" | sed "s|$1/||" | dmenu -o 0.9 -i)
     [ -n "$choice" ] || exit
-    echo "[menu] Selected $choice"
+    echo "[menu] Selected '$choice'."
 }
 
 # Passwords with pass password manager the standard UNIX password manager.
 if [ "$1" = "pass" ]; then
+    if [ -z "$PASSWORD_STORE_DIR" ]; then
+        echo "[menu] [ERROR] Must set \$PASSWORD_STORE_DIR!"
+        exit 1
+    fi
 
-    # I need this because of some XMonad weirdness.
-    [ -z "$PASSWORD_STORE_DIR" ] && source "$HOME/.zshrc"
     # Copy pass to clipboard.
     choose "${PASSWORD_STORE_DIR}" ".*\.\(gpg\)" "pass"
-    pass show -c "${choice/.gpg/}" 2>/dev/null
+    pass show -c "$(echo "$choice" | sed 's/.gpg$//')" 2>/dev/null
 
 # Videos with mpv.
 elif [ "$1" = "vid" ]; then
+    if [ -z "$XDG_VIDEOS_DIR" ]; then
+        echo "[menu] [ERROR] Must set \$XDG_VIDEOS_DIR!"
+        exit 1
+    fi
 
     # Play movie.
-    choose "$HOME/videos" ".*\.\(mkv\|mp4\|avi\|vob\)" "video"
-    mpv "$HOME/videos/$choice" & disown
+    choose "$XDG_VIDEOS_DIR" ".*\.\(mkv\|mp4\|avi\|vob\)" "video"
+    nohup mpv "$XDG_VIDEOS_DIR/$choice"
 
 # Music with mpd.
 elif [ "$1" = "music" ]; then
+    if [ -z "$XDG_MUSIC_DIR" ]; then
+        echo "[menu] [ERROR] Must set \$XDG_MUSIC_DIR!"
+        exit 1
+    fi
 
     # Clear mpd playlist and play this playlist instead.
-    choose "$HOME/music/playlists" ".*\.\(m3u\)" "music"
-    mpc clear && mpc load "${choice/.m3u}" && mpc play
+    choose "$XDG_MUSIC_DIR/playlists" ".*\.\(m3u\)" "music"
+    mpc clear && mpc load "$(echo "$choice" | sed 's/.m3u$//')" && mpc play
 
 else
     echo "[menu] Unsupported selection!"
+    exit 1
 fi

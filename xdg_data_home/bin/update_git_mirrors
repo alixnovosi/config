@@ -6,9 +6,9 @@ fetch_command="git remote update"
 git_dir="/home/git"
 
 # Simple script to update mirrored git repos.
-while read repo; do
-    echo "CD-ing"
-    cd "${git_dir}/${repo}.git"
+while read -r repo; do
+    echo "CD-ing to ${git_dir}/${repo}.git"
+    cd "${git_dir}/${repo}.git" || exit
     echo "Running $fetch_command"
     $fetch_command || break
 done < "$list"

@@ -1,19 +1,16 @@
 #!/bin/sh
-
-# from
+# Modified from:
 # http://www.minecraftforum.net/forums/archive/alpha/alpha-survival-multiplayer/823328-making-your-server-lag-less-by-tuning-java
 
 JAR="minecraft_server.jar"
 JAR_OPTIONS="nogui"
 MEMCAP="1580m"
 OPTIONS="-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=2
--XX:+AggressiveOpts"
-
-CMD="java -server $OPTIONS -jar $JAR $JAR_OPTIONS"
+-XX:+AggressiveOpts -Xmx $MEMCAP"
 
 TIME="$(date '+%Y-%m-%d %R%S')"
+echo "Starting server at ${TIME}."
 
-echo "Starting server at $TIME"
-echo "Running: $CMD"
-
+CMD="java -server $OPTIONS -jar $JAR $JAR_OPTIONS"
+echo "Running '$CMD'."
 $CMD
