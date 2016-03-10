@@ -1,19 +1,38 @@
-#!/bin/sh  ---------------------------------------------------------------------------------------#
-# AUTHOR:  Andrew Michaud                                                                         #
-#          https://andrewmichaud.com                                                              #
+#!/bin/sh  #--------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    env                                                                                    #
-# PURPOSE: Shell environment variables definition file                                            #
-# UPDATED: 2016-01-20                                                                             #
-# LICENSE: MIT/BSD                                                                                #
+# PURPOSE: Shell environment variables definition file.                                           #
+# UPDATED: 2016-03-09                                                                             #
+# LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
-
 # Colors.
 # shellcheck source=/dev/null
 . "$XDG_CONFIG_HOME/colors/colors.sh"
 
-# Extra XDG env variables.
+# Extra XDG env variables that aren't os-dependent.
 export XDG_CONFIG_DIRS="/etc/xdg"
 export XDG_DATA_DIRS="/usr/local/share/:/usr/share/"
+
+# POSIX sh doesn't define $UID.
+if [ -z "$UID" ]; then
+    UID="$(id -u)"
+fi
+
+# Set up XDG_RUNTIME_DIR, make if necessary.
+if [ -z "$XDG_RUNTIME_DIR" ]; then
+
+    if [ -d "/run/user" ] && [ -w "/run/user" ]; then
+
+        if [ ! -d "/run/user/$UID" ]; then
+            mkdir -p "/run/user/$UID"
+        fi
+
+        export XDG_RUNTIME_DIR="/run/user/$UID"
+
+    else
+        export XDG_RUNTIME_DIR="/tmp/$USER/"
+    fi
+fi
 
 # Useful stuff.
 export EDITOR="nvim"
@@ -61,4 +80,4 @@ export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # Include bin, cabal, gem path.
-PATH="$XDG_DATA_HOME/bin:$GEM_HOME/bin:$HOME/.cabal/bin:$GOPATH/bin:$PATH"
+PATH="$XDG_DATA_HOME/bin:$HOME/.cabal/bin:$GOPATH/bin:$PATH"

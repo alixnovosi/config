@@ -1,12 +1,10 @@
 #!/bin/sh  #--------------------------------------------------------------------------------------#
-# AUTHOR:  Andrew Michaud                                                                         #
-#          https://andrewmichaud.com                                                              #
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
 # UPDATED: 2016-03-09                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
-
 # Useful aliases.
 alias df="df -h"
 alias du="du -ch"

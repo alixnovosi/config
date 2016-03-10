@@ -1,25 +1,13 @@
-#!/bin/bash --------------------------------------------------------------------------------------#
-# AUTHOR:  Andrew Michaud                                                                         #
-#          https://andrewmichaud.com                                                              #
+#!/bin/sh  #--------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    linux                                                                                  #
 # PURPOSE: Linux-specific shell nonsense definition file.                                         #
 # UPDATED: 2016-03-09                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
-# XDG dirs.
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
-if [ -z "$XDG_RUNTIME_DIR" ]; then
-    if [ -d "/run/user" ] && [ -w "/run/user" ]; then
-        if [ ! -d "/run/user/$UID" ]; then
-            mkdir -p /run/user/$UID
-        fi
-        export XDG_RUNTIME_DIR="/run/user/$UID"
-    else
-        export XDG_RUNTIME_DIR="/tmp/$USER/"
-    fi
-fi
 
 # Enable color support of ls and also add handy aliases.
 eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
@@ -34,10 +22,13 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
+# Ensure ssh-agent is set up and will run.
 if ! pgrep ssh-agent > /dev/null; then
     ssh-agent > "$XDG_RUNTIME_DIR/ssh/agent"
 fi
-if [[ "$SSH_AGENT_PID" == "" ]]; then
-    eval "$(<"$XDG_RUNTIME_DIR"/ssh/agent)"
+
+if [ "$SSH_AGENT_PID" = "" ]; then
+    eval "$XDG_RUNTIME_DIR/ssh/agent"
 fi
+
 ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
