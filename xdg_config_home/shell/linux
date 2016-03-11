@@ -1,8 +1,9 @@
-#!/bin/sh  #--------------------------------------------------------------------------------------#
+#!/bin/sh
+#-------------------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    linux                                                                                  #
 # PURPOSE: Linux-specific shell nonsense definition file.                                         #
-# UPDATED: 2016-03-09                                                                             #
+# UPDATED: 2016-03-11                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 export XDG_CONFIG_HOME="$HOME/.config"

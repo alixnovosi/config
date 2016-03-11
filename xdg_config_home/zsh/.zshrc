@@ -1,9 +1,9 @@
-#!/bin/zsh ---------------------------------------------------------------------------------------#
-# AUTHOR:  Andrew Michaud                                                                         #
-#          https://andrewmichaud.com                                                              #
+#!/bin/zsh
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    .zshrc                                                                                 #
 # PURPOSE: zsh config file.                                                                       #
-# UPDATED: 2015-03-09                                                                             #
+# UPDATED: 2015-03-11                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Sketchy way of detecting multiuser machine (where users is interesting).
