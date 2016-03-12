@@ -1,10 +1,9 @@
 ---------------------------------------------------------------------------------------------------
--- AUTHOR:  Andrew Michaud                                                                       --
---          https://andrewmichaud.com                                                            --
+-- AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                           --
 -- FILE:    xmonad.hs                                                                            --
--- PURPOSE: XMonad configuration file                                                            --
--- UPDATED: 2015-08-30                                                                           --
--- LICENSE: MIT/BSD                                                                              --
+-- PURPOSE: XMonad configuration file.                                                           --
+-- UPDATED: 2015-03-11                                                                           --
+-- LICENSE: ISC                                                                                  --
 ---------------------------------------------------------------------------------------------------
 import qualified Data.Char as C                         (toUpper)
 import qualified Data.Maybe as M                        (fromMaybe)

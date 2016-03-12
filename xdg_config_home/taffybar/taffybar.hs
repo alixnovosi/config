@@ -1,9 +1,9 @@
 ---------------------------------------------------------------------------------------------------
--- AUTHOR:  Andrew Michaud                                                                       --
+-- AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                           --
 -- FILE:    taffybar.hs                                                                          --
--- PURPOSE: Taffybar configuration file                                                          --
--- UPDATED: 2015-08-26                                                                           --
--- LICENSE: MIT/BSD                                                                              --
+-- PURPOSE: Taffybar configuration file.                                                         --
+-- UPDATED: 2016-03-11                                                                           --
+-- LICENSE: ISC                                                                                  --
 ---------------------------------------------------------------------------------------------------
 import System.Taffybar
 import System.Taffybar.MPRIS2 (mpris2New)

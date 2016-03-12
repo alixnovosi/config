@@ -1,18 +1,17 @@
-#!/usr/bin/env python3 #--------------------------------------------------------------------------#
-# AUTHOR:  Andrew Michaud                                                                         #
-# FILE:    startup                                                                                #
-# PURPOSE: Python Startup File                                                                    #
-# UPDATED: 2016-02-22                                                                             #
-# LICENSE: BSD3                                                                                   #
+#!/usr/bin/env python3
 ###################################################################################################
-
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
+# FILE:    startup                                                                                #
+# PURPOSE: Python interpreter startup file.                                                       #
+# UPDATED: 2016-03-11                                                                             #
+# LICENSE: ISC                                                                                    #
+###################################################################################################
 import atexit
 import os
 import readline
 import rlcompleter
 
 history_path = os.path.expandvars("$XDG_DATA_HOME/python/history")
-
 readline.parse_and_bind("tab: complete")
 
 

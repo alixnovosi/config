@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud                                                                         "
+" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    init.vim                                                                               "
-" PURPOSE: vim configuration file                                                                 "
-" UPDATED: 2016-02-08                                                                             "
+" PURPOSE: vim configuration file.                                                                "
+" UPDATED: 2016-03-11                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Be vim, load reloaded file, make mouse work, make backspace nice, utf-8 is great.

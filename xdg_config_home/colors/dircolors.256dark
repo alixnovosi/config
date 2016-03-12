@@ -1,4 +1,4 @@
-
+# TODO need to make these base16-ocean
 # Dark 256 color solarized theme for the color GNU ls utility.
 # Used and tested with dircolors (GNU coreutils) 8.5
 #
@@ -289,5 +289,3 @@ EXEC 00;38;5;64
 .anx 00;38;5;166
 .ogv 00;38;5;166
 .ogx 00;38;5;166
-
-

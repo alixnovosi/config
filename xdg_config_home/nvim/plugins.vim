@@ -1,17 +1,15 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud                                                                         "
+" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
-" PURPOSE: Plugins used by (neo)vim                                                               "
-" UPDATED: 2016-03-08                                                                             "
+" PURPOSE: Plugins used by (neo)vim.                                                              "
+" UPDATED: 2016-03-11                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
 
 """ Language assistance.
-Plug 'calebsmith/vim-lambdify'
+" Plug 'calebsmith/vim-lambdify'
 Plug 'vim-scripts/a.vim',                      {'for': ['c', 'cpp']}
-Plug 'OmniSharp/omnisharp-vim',                {'for': 'csharp'}
-Plug 'OrangeT/vim-csharp',                     {'for': 'csharp'}
 Plug 'alecthomas/gometalinter',                {'for': 'go'}
 Plug 'fatih/vim-go',                           {'for': 'go'}
 Plug 'enomsg/vim-haskellConcealPlus',          {'for': 'haskell'}
@@ -20,7 +18,6 @@ Plug 'matthewsimo/angular-vim-snippets',       {'for': 'html'}
 Plug 'Valloric/MatchTagAlways',                {'for': 'html'}
 Plug 'pangloss/vim-javascript'
 Plug 'elzr/vim-json',                          {'for': 'json'}
-Plug 'rodjek/vim-puppet',                      {'for': 'puppet'}
 Plug 'davidhalter/jedi-vim',                   {'for': 'python'}
 Plug 'ehamberg/vim-cute-python',               {'for': 'python'}
 Plug 'nvie/vim-flake8',                        {'for': 'python'}

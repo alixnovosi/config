@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud                                                                         "
+" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
-" PURPOSE: Plugins used in (neo)vim                                                               "
-" UPDATED: 2016-03-08                                                                             "
+" PURPOSE: Plugins used in (neo)vim.                                                              "
+" UPDATED: 2016-03-11                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.

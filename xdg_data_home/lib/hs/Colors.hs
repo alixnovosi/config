@@ -1,13 +1,14 @@
 ---------------------------------------------------------------------------------------------------
--- AUTHOR:  Andrew Michaud                                                                       --
+-- AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                           --
 -- FILE:    colors.hs                                                                            --
--- PURPOSE: color-related haskell library.  almost too short to justify.                         --
--- UPDATED: 2015-08-27                                                                           --
--- LICENSE: MIT/BSD                                                                              --
+-- PURPOSE: Color-related haskell library. Almost too short to justify.                          --
+-- UPDATED: 2016-03-11                                                                           --
+-- LICENSE: ISC                                                                                  --
 ---------------------------------------------------------------------------------------------------
 module Colors where
 
 -- Solarized colors
+-- TODO redo in base16-ocean colors
 primary      = base0
 secondary    = base01
 background   = base03

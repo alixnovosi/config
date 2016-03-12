@@ -1,8 +1,9 @@
-#!/bin/sh  #--------------------------------------------------------------------------------------#
+#!/bin/sh
+#-------------------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    menu                                                                                   #
 # PURPOSE: File for choosing things with dmenu.                                                   #
-# UPDATED: 2015-03-09                                                                             #
+# UPDATED: 2015-03-11                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Choose something with dmenu.  Takes prefix and regex and type.

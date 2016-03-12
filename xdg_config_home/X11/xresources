@@ -1,23 +1,23 @@
 !-------------------------------------------------------------------------------------------------!
-! AUTHOR:  Andrew Michaud                                                                         !
+! AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             !
 ! FILE:    xresources                                                                             !
 ! PURPOSE: config file for shell styles                                                           !
-! UPDATED: 2016-02-17                                                                             !
-! LICENSE: MIT/BSD                                                                                !
+! UPDATED: 2016-03-11                                                                             !
+! LICENSE: ISC                                                                                    !
 !-------------------------------------------------------------------------------------------------!
-
+!
 !-------------------------------------------------------------------------------------------------!
 !---------------------------------------- SETTINGS -----------------------------------------------!
 !-------------------------------------------------------------------------------------------------!
 
 !------------------------------------------- Xft/fonts -------------------------------------------!
-*faceName:    xft:DejaVu Sans Mono:style=Regular:pixelsize=12
+*faceName:    xft:DejaVu Sans Mono:style=Regular:pixelsize=11
 *fading:      40
-*Font:        xft:DejaVu Sans Mono:style=Regular:pixelsize=12
-*.boldFont:   xft:DejaVu Sans Mono:style=Bold:pixelsize=12
-*.font:       xft:DejaVu Sans Mono:style=Regular:pixelsize=12
-*.imFont:     xft:DejaVu Sans Mono:style=Regular:pixelsize=12
-*.italicFont: xft:DejaVu Sans Mono:style=Italic:pixelsize=12
+*Font:        xft:DejaVu Sans Mono:style=Regular:pixelsize=11
+*.boldFont:   xft:DejaVu Sans Mono:style=Bold:pixelsize=11
+*.font:       xft:DejaVu Sans Mono:style=Regular:pixelsize=11
+*.imFont:     xft:DejaVu Sans Mono:style=Regular:pixelsize=11
+*.italicFont: xft:DejaVu Sans Mono:style=Italic:pixelsize=11
 
 Tk*font:      fixed
 
@@ -29,11 +29,11 @@ Xft.lcdfilter: lcddefault
 Xft.rgba:      rgb
 
 !----------------------------------------- XCALC -------------------------------------------------!
-xcalc*geometry:          200x275
-xcalc*Cursor:            hand2
-xcalc*ShapeStyle:        circle
+xcalc*geometry:                        200x275
+xcalc*Cursor:                          hand2
+xcalc*ShapeStyle:                      circle
 xcalc.ti.bevel.screen.LCD.shadowWidth: 0
-xcalc.ti.button20.label: /
+xcalc.ti.button20.label:               /
 
 !----------------------------------------- XCLOCK ------------------------------------------------!
 xclock*analog: true
@@ -49,7 +49,6 @@ xscreensaver.Dialog.shadowThickness:     0
 xscreensaver.passwd.thermometer.width:           4
 xscreensaver.passwd.thermometer.shadowThickness: 0
 
-!DATESTAMP FORMAT
 xscreensaver.dateFormat: %I:%M%P %a %b %d, %Y
 
 !LIGHTDM COMPATIBILITY
@@ -76,97 +75,94 @@ xterm*utf8:            2
 !-------------------------------------------------------------------------------------------------!
 
 !---------------------------------------- GENERAL ------------------------------------------------!
-! Base16 Solarized
-! Scheme: Ethan Schoonover (http://ethanschoonover.com/solarized)
+! From
+! https://github.com/chriskempson/base16-xresources/blob/master/base16-ocean.dark.256.xresources
 
-#define s_base03  #002b36
-#define s_base02  #073642
-#define s_base01  #586e75
-#define s_base00  #657b83
-#define s_base0   #839496
-#define s_base1   #93a1a1
-#define s_base2   #eee8d5
-#define s_base3   #fdf6e3
-#define s_red     #dc322f
-#define s_orange  #cb4b16
-#define s_yellow  #b58900
-#define s_green   #859900
-#define s_cyan    #2aa198
-#define s_blue    #268bd2
-#define s_violet  #6c71c4
-#define s_magenta #d33682
+#define base00 #2b303b
+#define base01 #343d46
+#define base02 #4f5b66
+#define base03 #65737e
+#define base04 #a7adba
+#define base05 #c0c5ce
+#define base06 #dfe1e8
+#define base07 #eff1f5
+#define base08 #bf616a
+#define base09 #d08770
+#define base0A #ebcb8b
+#define base0B #a3be8c
+#define base0C #96b5b4
+#define base0D #8fa1b3
+#define base0E #b48ead
+#define base0F #ab7967
 
-*.background:  s_base03
-*.cursorColor: s_base1
-*.foreground:  s_base1
+*.foreground:   base05
+*.background:   base00
+*.cursorColor:  base05
 
-*.color0: s_base03
-*.color1: s_red
-*.color2: s_green
-*.color3: s_yellow
-*.color4: s_blue
-*.color5: s_violet
-*.color6: s_cyan
-*.color7: s_base1
+*.color0:       base00
+*.color1:       base08
+*.color2:       base0B
+*.color3:       base0A
+*.color4:       base0D
+*.color5:       base0E
+*.color6:       base0C
+*.color7:       base05
 
-*.color8:  s_base00
-*.color9:  s_red
-*.color10: s_green
-*.color11: s_yellow
-*.color12: s_blue
-*.color13: s_violet
-*.color14: s_cyan
-*.color15: s_base3
+*.color8:       base03
+*.color9:       base08
+*.color10:      base0B
+*.color11:      base0A
+*.color12:      base0D
+*.color13:      base0E
+*.color14:      base0C
+*.color15:      base07
 
 ! Note: colors beyond 15 might not be loaded (e.g., xterm, urxvt),
 ! use 'shell' template to set these if necessary
-*.color16: s_orange
-*.color17: s_magenta
-*.color18: s_base02
-*.color19: s_base01
-*.color20: s_base0
-*.color21: s_base2
+*.color16:      base09
+*.color17:      base0F
+*.color18:      base01
+*.color19:      base02
+*.color20:      base04
+*.color21:      base06
 
 !----------------------------------------- DMENU -------------------------------------------------!
-dmenu.selforeground: s_base03
-dmenu.selbackground: s_orange
+dmenu.selforeground: base03
+dmenu.selbackground: base07
 
 !----------------------------------------- XCALC -------------------------------------------------!
-xcalc.ti.bevel.background:             s_base1
-xcalc.ti.bevel.screen.DEG.foreground:  s_green
-xcalc.ti.bevel.screen.GRAD.foreground: s_green
-xcalc.ti.bevel.screen.RAD.foreground:  s_green
-xcalc.ti.bevel.screen.INV.foreground:  s_red
-xcalc.ti.bevel.screen.LCD.foreground:  s_green
-xcalc.ti.bevel.screen.M.foreground:    s_green
-xcalc.ti.bevel.screen.P.foreground:    s_yellow
+xcalc.ti.bevel.background:             base03
+xcalc.ti.bevel.screen.DEG.foreground:  base0B
+xcalc.ti.bevel.screen.GRAD.foreground: base0B
+xcalc.ti.bevel.screen.RAD.foreground:  base0B
+xcalc.ti.bevel.screen.INV.foreground:  base08
+xcalc.ti.bevel.screen.LCD.foreground:  base0B
+xcalc.ti.bevel.screen.M.foreground:    base0B
+xcalc.ti.bevel.screen.P.foreground:    base0A
 
-xcalc.ti.Command.foreground: s_base1
-xcalc.ti.Command.background: s_base03
-
-xcalc.ti.button5.background:  s_orange
-! TODO make these solarized colors.
-xcalc.ti.button19.background: #611161
-xcalc.ti.button18.background: #611161
-xcalc.ti.button20.background: #611111
-xcalc.ti.button25.background: #722222
-xcalc.ti.button30.background: #833333
-xcalc.ti.button35.background: #944444
-xcalc.ti.button40.background: #a55555
-xcalc.ti.button22.background: #222262
-xcalc.ti.button23.background: #222262
-xcalc.ti.button24.background: #222272
-xcalc.ti.button27.background: #333373
-xcalc.ti.button28.background: #333373
-xcalc.ti.button29.background: #333373
-xcalc.ti.button32.background: #444484
-xcalc.ti.button33.background: #444484
-xcalc.ti.button34.background: #444484
-xcalc.ti.button37.background: #555595
-xcalc.ti.button38.background: #555595
-xcalc.ti.button39.background: #555595
+! TODO redo these when you have a Linux machine to test with.
+! xcalc.ti.button5.background:  s_orange
+! xcalc.ti.button19.background: #611161
+! xcalc.ti.button18.background: #611161
+! xcalc.ti.button20.background: #611111
+! xcalc.ti.button25.background: #722222
+! xcalc.ti.button30.background: #833333
+! xcalc.ti.button35.background: #944444
+! xcalc.ti.button40.background: #a55555
+! xcalc.ti.button22.background: #222262
+! xcalc.ti.button23.background: #222262
+! xcalc.ti.button24.background: #222272
+! xcalc.ti.button27.background: #333373
+! xcalc.ti.button28.background: #333373
+! xcalc.ti.button29.background: #333373
+! xcalc.ti.button32.background: #444484
+! xcalc.ti.button33.background: #444484
+! xcalc.ti.button34.background: #444484
+! xcalc.ti.button37.background: #555595
+! xcalc.ti.button38.background: #555595
+! xcalc.ti.button39.background: #555595
 
 !----------------------------------------- XSCREENSAVER ------------------------------------------!
-xscreensaver.Dialog.bottomShadowColor: s_base02
-xscreensaver.Dialog.topShadowColor:    s_base02
-xscreensaver.Dialog.Button.background: s_base02
+! xscreensaver.Dialog.bottomShadowColor: base03
+! xscreensaver.Dialog.topShadowColor:    base03
+! xscreensaver.Dialog.Button.background: base03

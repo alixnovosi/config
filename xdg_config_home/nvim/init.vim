@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud                                                                         "
+" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    init.vim                                                                               "
-" PURPOSE: (neo)vim configuration file                                                            "
-" UPDATED: 2016-03-08                                                                             "
+" PURPOSE: (neo)vim configuration file.                                                           "
+" UPDATED: 2016-03-11                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 source $XDG_CONFIG_HOME/nvim/plugins.vim

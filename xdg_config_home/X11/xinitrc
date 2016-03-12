@@ -3,11 +3,11 @@
 # AUTHOR:  Andrew Michaud                                                                         #
 # FILE:    xinitrc                                                                                #
 # PURPOSE: System login configuration file                                                        #
-# UPDATED: 2015-08-27                                                                             #
-# LICENSE: MIT/BSD                                                                                #
+# UPDATED: 2016-03-11                                                                             #
+# LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
-
 # Set XDG vars, anything else important.
+# shellcheck source=/dev/null
 . "$HOME/.config/shell/linux"
 
 # Update xresources, run scripts.
