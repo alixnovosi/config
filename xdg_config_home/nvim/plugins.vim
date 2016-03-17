@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim.                                                              "
-" UPDATED: 2016-03-11                                                                             "
+" UPDATED: 2016-03-17                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
@@ -11,18 +11,16 @@ call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
 " Plug 'calebsmith/vim-lambdify'
 Plug 'vim-scripts/a.vim',                      {'for': ['c', 'cpp']}
 Plug 'alecthomas/gometalinter',                {'for': 'go'}
-Plug 'fatih/vim-go',                           {'for': 'go'}
 Plug 'enomsg/vim-haskellConcealPlus',          {'for': 'haskell'}
 Plug 'burnettk/vim-angular',                   {'for': 'html'}
 Plug 'matthewsimo/angular-vim-snippets',       {'for': 'html'}
 Plug 'Valloric/MatchTagAlways',                {'for': 'html'}
 Plug 'pangloss/vim-javascript'
+Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'elzr/vim-json',                          {'for': 'json'}
-Plug 'davidhalter/jedi-vim',                   {'for': 'python'}
 Plug 'ehamberg/vim-cute-python',               {'for': 'python'}
 Plug 'nvie/vim-flake8',                        {'for': 'python'}
-Plug 'derekwyatt/vim-scala',                   {'for': 'scala'}
-Plug 'keith/tmux.vim'
+Plug 'sheerun/vim-polyglot'
 
 """ General programming support.
 Plug 'bronson/vim-trailing-whitespace'
