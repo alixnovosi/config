@@ -42,9 +42,6 @@ let g:airline_inactive_collapse = 1
 """ Attempt to get Eclim and Eclipse and Vim and YCM to play nicely.
 let g:EclimCompletionMethod = "omnifunc"
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 """ Make YCM and UltiSnips work together via supertab.
