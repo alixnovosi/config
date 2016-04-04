@@ -1,11 +1,13 @@
 #!/bin/sh
 
-# Should be a newline-separated list of homebrew HEAD taps you'd like to update.
-list="$XDG_CONFIG_HOME/homebrew/head_taps"
+if [ -z "$1" ]; then
+    echo "Please provide location of taps list file!"
+    exit 1
+fi
 
 # Simple script to update all --HEAD taps you have set up with Homebrew.
 while read -r tap; do
     echo "Running $brew_command"
     brew_command="brew reinstall --HEAD ${tap} --with-ssl"
     $brew_command || break
-done < "$list"
+done < "$1"
