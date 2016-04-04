@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim.                                                              "
-" UPDATED: 2016-03-17                                                                             "
+" UPDATED: 2016-04-04                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
@@ -30,6 +30,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'honza/vim-snippets'
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree'
+Plug 'rking/ag.vim'
 Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
 Plug 'tomtom/tcomment_vim'
