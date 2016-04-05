@@ -1,29 +1,45 @@
 #!/bin/sh
-pgrep -x Xorg || exit 1
-
-if [ -z "$XDG_PICTURES_DIR" ]; then
-    echo "[set_wallpaper] [ERROR] Must set \$XDG_PICTURES_DIR!"
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
+# FILE:    set_wallpaper                                                                          #
+# PURPOSE: Script to set wallpaper with feh with some randomness.                                 #
+# UPDATED: 2015-04-04                                                                             #
+# LICENSE: ISC                                                                                    #
+#-------------------------------------------------------------------------------------------------#
+if [ "$(pgrep -c Xorg)" = 0 ]; then
+    echo "Need X!"
     exit 1
 fi
 
-# Pictures home and script data files home.
-WALLS="$XDG_PICTURES_DIR/wallpapers"
-LAST="$XDG_PICTURES_DIR/wscript/lst"
-TEMP="$XDG_PICTURES_DIR/wscript/tmp"
-USNG="$XDG_PICTURES_DIR/wscript/usng"
+if [ -z "$1" ]; then
+    echo "Must provide directory!"
+    echo "usage: set_wallpaer [wallpaper_directory] [shuf]"
+    echo "shuf as second argument is optional and regenerates wallpaper list."
+    exit 1
+fi
 
-# Set wallpapers based on last generated list.
-DISPLAY=:0.0 feh --no-fehbg --bg-max --filelist "$USNG"
+if [ -z "$XDG_CONFIG_HOME" ]; then
+    XDG_CONFIG_HOME="$HOME/.config"
+fi
+PAPER_HOME="$XDG_CONFIG_HOME/wallpaper"
 
-# Produce list of wallpapers to use.
-# These will be used on next run of script.
-# Using --randomize, --recursive, and list.
-CURR=$(feh -zrl --magick-timeout 5 "$WALLS" | sed "s_[^/]*/_/_" | sed 1d)
+if [ ! -d "$PAPER_HOME" ]; then
+    echo "Creating wallpaper script dir $PAPER_HOME"
+    mkdir -p "$PAPER_HOME"
+fi
 
-# Remove last 10 seen wallpapers from that list.
-echo "$CURR" | grep -v -x -F "$LAST" > "$USNG"
+if [ ! -f "$XDG_CONFIG_HOME/wallpaper/list" ] || [ "$2" = "shuf" ]; then
+    echo "Updating wallpaper script wallpaper list file at $PAPER_HOME/list"
+    find "$1" -type f | shuf > "$PAPER_HOME/list"
+fi
 
-# Update lst with last used wallpapers.
-head -n 6 < "$LAST" > "$TEMP"
-head -n 4 < "$USNG" > "$LAST"
-cat "$TEMP" >> "$LAST"
+# Set first listed wallpaper as current wallpaper, then put it at the back of the list.
+FIRST=$(head -n1 "$PAPER_HOME/list")
+
+echo "Setting wallpaper to $FIRST"
+feh --no-fehbg --bg-max "$FIRST"
+
+echo "Updating list of papers to push $FIRST to end."
+tail -n +2 "$PAPER_HOME/list" > "$PAPER_HOME/tmp"
+cat "$PAPER_HOME/tmp" > "$PAPER_HOME/list"
+echo "$FIRST" >> "$PAPER_HOME/list"

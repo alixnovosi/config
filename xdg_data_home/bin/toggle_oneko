@@ -1,12 +1,14 @@
 #!/bin/sh
 # Toggle whether oneko is running or not.
 
-if [ "$(pgrep 'oneko')" -gt 0 ]; then
-    # Oneko process detected, kill and restore cursor and exit.
+oneko_cmd="oneko -tofocus -speed 32"
+
+if [ "$(pgrep -fc "$oneko_cmd")" -gt 0 ]; then
+    echo "killing oneko..."
     killall -9 oneko
     xsetroot -cursor_name left_ptr
 
 else
-    # Oneko process not detected, launch with preferred settings in background.
-    oneko -tofocus &
+    echo "starting oneko!"
+    $oneko_cmd &
 fi
