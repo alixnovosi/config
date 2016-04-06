@@ -37,6 +37,8 @@ alias gpg2="gpg2 --homedir \${XDG_CONFIG_HOME}/gnupg"
 alias jshint="jshint --config \${XDG_CONFIG_HOME}/jshint/jshintrc"
 alias mpdscribble="mpdscribble --conf \${XDG_CONFIG_HOME}/mpdscribble/config \
 --log \${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log"
+alias mutt="mutt -F \${XDG_CONFIG_HOME}/mutt/muttrc"
+alias offlineimap="offlineimap -c \${XDG_CONFIG_HOME}/offlineimap/config"
 alias ncmpcpp="ncmpcpp -c \${XDG_CONFIG_HOME}/ncmpcpp/config"
 alias pip="pip --log-file \${XDG_CACHE_HOME}/pip/pip.log --cache-dir \${XDG_CACHE_HOME}/pip"
 alias startx="startx \${XDG_CONFIG_HOME}/X11/xinitrc"
