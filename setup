@@ -1,78 +1,187 @@
-#!/bin/bash
+#!/bin/sh
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
+# FILE:    setup                                                                                  #
+# PURPOSE: script to deploy config files and scripts in this repo.                                #
+# UPDATED: 2016-04-05                                                                             #
+# LICENSE: ISC                                                                                    #
+#-------------------------------------------------------------------------------------------------#
 
-# Bash script to deploy config files from this git repo.
+# TODO This isn't quite rigorous enough in checking to be sure it's not trying to symlink files
+# that already exist.
+# Fix that.
 
-# Check if config home is set.
-if [ -z "$XDG_CONFIG_HOME" ]; then
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-        export XDG_CONFIG_HOME="$HOME/Library/Preferences"
+#-------------------------------------------------------------------------------------------------#
+###################################### GET XDG VARS ###############################################
+#-------------------------------------------------------------------------------------------------#
+echo "Determining necessary XDG env vars..."
+echo
 
-    elif [[ "$(uname -s)" == "Linux" ]]; then
-        export XDG_CONFIG_HOME="$HOME/.config"
-    fi
+# Ensure vars are set.
+OS="$(uname -s)"
+if [ "$OS" = "Darwin" ]; then
+    DEFAULT_CONFIG="$HOME/Library/Preferences"
+    DEFAULT_CACHE="$HOME/Library/Caches"
+    DEFAULT_DATA="$HOME/Library"
+
+elif [ "$OS" = "Linux" ]; then
+    DEFAULT_CONFIG="$HOME/.config"
+    DEFAULT_CACHE="$HOME/.cache"
+    DEFAULT_DATA="$HOME/.local/share"
+
+else
+    echo "OS $OS currently unsupported!"
+    exit 1
 fi
-echo "XDG_CONFIG_HOME set to $XDG_CONFIG_HOME"
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME-${DEFAULT_CONFIG}}
+echo "XDG_CONFIG_HOME is $XDG_CONFIG_HOME"
 
-# Check if cache home is set.
-if [ -z "$XDG_CACHE_HOME" ]; then
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-        export XDG_CACHE_HOME="$HOME/Library/Caches"
-
-    elif [[ "$(uname -s)" == "Linux" ]]; then
-        export XDG_CACHE_HOME="$HOME/.cache"
-    fi
-fi
+XDG_CACHE_HOME=${XDG_CACHE_HOME-${DEFAULT_CACHE}}
 echo "XDG_CACHE_HOME set to $XDG_CACHE_HOME."
 
-# Set script directory.
-if [ -z "$XDG_DATA_HOME" ]; then
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-        export XDG_DATA_HOME="$HOME/Library"
-
-    elif [[ "$(uname -s)" == "Linux" ]]; then
-        export XDG_DATA_HOME="$HOME/.local/share"
-    fi
-fi
-SCRIPT_HOME="$XDG_DATA_HOME/bin"
-mkdir "$XDG_DATA_HOME/bin"
+XDG_DATA_HOME=${XDG_DATA_HOME-${DEFAULT_DATA}}
 echo "XDG_DATA_HOME set to $XDG_DATA_HOME"
-echo "SCRIPT_HOME set to $SCRIPT_HOME"
+
+# Create all directories.
+if [ -d "$XDG_CONFIG_HOME" ]; then
+    if [ -L "$XDG_CONFIG_HOME" ]; then
+        echo "Config DIR $XDG_CONFIG_HOME exists as a symlink."
+    else
+        echo "Config DIR $XDG_CONFIG_HOME exists as a directory."
+    fi
+
+else
+    echo "Config DIR $XDG_CONFIG_HOME does not exist, creating."
+    mkdir -p "$XDG_CONFIG_HOME"
+fi
+
+if [ -d "$XDG_CACHE_HOME" ]; then
+    if [ -L "$XDG_CACHE_HOME" ]; then
+        echo "Cache DIR $XDG_CACHE_HOME exists as a symlink."
+    else
+        echo "Cache DIR $XDG_CACHE_HOME exists as a directory."
+    fi
+
+else
+    echo "Cache DIR $XDG_CACHE_HOME does not exist, creating."
+    mkdir -p "$XDG_CACHE_HOME"
+fi
+
+if [ -d "$XDG_DATA_HOME" ]; then
+    if [ -L "$XDG_DATA_HOME" ]; then
+        echo "Data DIR $XDG_DATA_HOME exists as a symlink."
+    else
+        echo "Data DIR $XDG_DATA_HOME exists as a directory."
+    fi
+
+else
+    echo "Data DIR $XDG_DATA_HOME does not exist, creating."
+    mkdir -p "$XDG_DATA_HOME"
+fi
+
+#-------------------------------------------------------------------------------------------------#
+#################################### GET OTHER VARS ###############################################
+#-------------------------------------------------------------------------------------------------#
+echo
+echo "Determining other necessary env vars..."
+echo
+
+# Get script/binary directory.
+BIN_HOME="$XDG_DATA_HOME/bin"
+echo "BIN_HOME set to $BIN_HOME"
+
+# Ensure it exists.
+if [ -d "$BIN_HOME" ]; then
+    if [ -L "$BIN_HOME" ]; then
+        echo "Bin DIR $BIN_HOME exists as a symlink."
+    else
+        echo "Bin DIR $BIN_HOME exists as a directory."
+    fi
+
+else
+    echo "Bin DIR $BIN_HOME does not exist, creating."
+    mkdir -p "$BIN_HOME"
+fi
 
 # Grab directory of git repo.
-GIT_DIR="."
+GIT_DIR="$(pwd -P)"
 echo "GIT_DIR is $GIT_DIR"
 
-# Deploy scripts.
-echo "Copying all files in $GIT_DIR/bin to $XDG_DATA_HOME/bin."
-ln -s "$GIT_DIR/bin/* $XDG_DATA_HOME/bin/"
+# Grab places we'll put scripts and config files.
+GIT_BIN_HOME="$GIT_DIR/xdg_data_home/bin"
+GIT_CONFIG_HOME="$GIT_DIR/xdg_config_home"
+
+#-------------------------------------------------------------------------------------------------#
+##################################### DEPLOY SCRIPTS ##############################################
+#-------------------------------------------------------------------------------------------------#
+echo
+echo "Deploying scripts..."
+echo
+
+# Deploy SCRIPTS.
+echo "Linking all scripts in $GIT_BIN_HOME into $BIN_HOME"
+SCRIPTS="$(find "$GIT_BIN_HOME" -type f)"
+for SCRIPT in $SCRIPTS; do
+    SCRIPT_NAME="$(basename "$SCRIPT")"
+    echo "On script $SCRIPT_NAME"
+    if [ ! -L "$BIN_HOME/$SCRIPT_NAME" ]; then
+        echo "Linking $SCRIPT into $BIN_HOME"
+        ln -s "$SCRIPT" "$BIN_HOME"
+    else
+        echo "Found script $SCRIPT_NAME in $BIN_HOME already."
+    fi
+done
+
+#-------------------------------------------------------------------------------------------------#
+################################### DEPLOY CONFIG FILES ###########################################
+#-------------------------------------------------------------------------------------------------#
+echo
+echo "Deploying config files..."
+echo
 
 # Deploy config files.
-echo "Making directories $XDG_CONFIG_HOME/vim and $XDG_CONFIG_HOME/shell."
-mkdir -p "$XDG_CONFIG_HOME/mpd"
-mkdir -p "$XDG_CONFIG_HOME/shell"
-mkdir -p "$XDG_CONFIG_HOME/vim"
-mkdir -p "$XDG_CONFIG_HOME/zsh"
+echo "Linking all config files in each directory in $GIT_CONFIG_HOME into $XDG_CONFIG_HOME"
+DIRS="$(find "$GIT_CONFIG_HOME" -type d -maxdepth 1 -mindepth 1)"
+for DIR in $DIRS; do
+    DIR_NAME="$(basename "$DIR")"
+    echo "On config dir $DIR"
 
-shopt -s dotglob
-echo "Linking files to those directories."
-ln -s "$GIT_DIR/xdg_config_home/mpd/*" "$XDG_CONFIG_HOME/mpd/"
-ln -s "$GIT_DIR/xdg_config_home/shell/*" "$XDG_CONFIG_HOME/vim/"
-ln -s "$GIT_DIR/xdg_config_home/vim/*" "$XDG_CONFIG_HOME/vim/"
-ln -s "$GIT_DIR/xdg_config_home/zsh/*" "$XDG_CONFIG_HOME/mpd/"
+    if [ ! -d "$XDG_CONFIG_HOME/$DIR_NAME" ]; then
+        echo "Creating config directory $DIR_NAME"
+        mkdir "$XDG_CONFIG_HOME/$DIR_NAME"
+    elif [ -f "$XDG_CONFIG_HOME/$DIR_NAME" ]; then
+        echo "Found $DIR_NAME as file in $XDG_CONFIG_HOME already."
+    elif [ -d "$XDG_CONFIG_HOME/$DIR_NAME" ]; then
+        echo "Found $DIR_NAME as directory in $XDG_CONFIG_HOME already."
+    else
+        echo "Found $DIR_NAME as symlink in $XDG_CONFIG_HOME already."
+    fi
 
-echo "Deploying all other config files."
-ln -s "$GIT_DIR/xdg_config_home/*" "$XDG_CONFIG_HOME/"
+    files="$(find "$DIR" -maxdepth 1 -mindepth 1)"
+    for file in $files; do
+        FILE_NAME="$(basename "$file")"
+        if [ ! -L "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME" ]; then
+            echo "Linking $file into $XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME"
+            ln -s "$file" "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME"
+        elif [ -f "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME" ]; then
+            echo "$FILE_NAME already exists as a file in $XDG_CONFIG_HOME/$DIR_NAME"
+        else
+            echo "$FILE_NAME already exists as a symlink in $XDG_CONFIG_HOME/$DIR_NAME"
+        fi
+    done
+done
 
-# Deploy some other stuff.
-ln -s "$GIT_DIR/.Xresources" "$HOME"
-ln -s "$XDG_CONFIG_HOME/zsh/.zshrc" "$HOME"
+#-------------------------------------------------------------------------------------------------#
+############################################# OTHER ###############################################
+#-------------------------------------------------------------------------------------------------#
 
-# Make expected, but not necessarily existing folders/files.
-mkdir -p "$XDG_CACHE_HOME/zsh/"
-touch "$XDG_CACHE_HOME/zsh/history"
+# Make folders/files expected by the configs we just created.
+# TODO clean this up to use arrays somehow.
 mkdir -p "$XDG_CACHE_HOME/less"
-touch "$XDG_CACHE_HOME/less/hist"
 mkdir -p "$XDG_CACHE_HOME/tex/mfvar"
 mkdir -p "$XDG_CACHE_HOME/vim/backup"
 mkdir -p "$XDG_CACHE_HOME/vim/swap"
-touch "$XDG_CACHE_HOME/vim/viminfo"
+mkdir -p "$XDG_CACHE_HOME/zsh/"
+
+touch "$XDG_CACHE_HOME/less/hist"
+touch "$XDG_CACHE_HOME/zsh/history"
