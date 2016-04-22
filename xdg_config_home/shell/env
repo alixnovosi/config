@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    env                                                                                    #
 # PURPOSE: Shell environment variables definition file.                                           #
-# UPDATED: 2016-03-30                                                                             #
+# UPDATED: 2016-04-22                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Colors.
@@ -34,6 +34,9 @@ if [ -z "$XDG_RUNTIME_DIR" ]; then
         export XDG_RUNTIME_DIR="/tmp/$USER/"
     fi
 fi
+
+# Set LS_COLORS.
+eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
 
 # Useful stuff.
 export EDITOR="nvim"

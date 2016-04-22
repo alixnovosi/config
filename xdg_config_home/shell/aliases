@@ -3,19 +3,23 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
-# UPDATED: 2016-03-11                                                                             #
+# UPDATED: 2016-04-22                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Useful aliases.
 alias df="df -h"
+alias dir="ls -Cb"
 alias du="du -ch"
+alias egrep="egrep --color=auto"
+alias fgrep="fgrep --color=auto"
 alias feh="feh --no-fehbg"
 alias grep="grep --color=auto"
-alias l="ls -CFh"
-alias la="ls -Ah"
-alias ll="ls -alh"
-alias lt="ls -alht"
+alias l="ls -CFh --color=auto"
+alias la="ls -Ah --color=auto"
+alias ll="ls -alh --color=auto"
+alias lt="ls -alht --color=auto"
 alias nview="nvim -R"
+alias vdir="ls -Cb"
 alias view="nvim -R"
 
 # Safety aliases.
