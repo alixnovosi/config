@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-03-11                                                                             "
+" UPDATED: 2016-05-19                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -23,12 +23,14 @@ execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
 """ Ignore case in searching unless I use capital letters.
 set cursorline laststatus=2 noshowmode showcmd ignorecase smartcase
 
-""" One day I'll untangle the bugs this introduces.
-" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+""" Color settings/colorscheme settings incl. 24bit colors.
+set termguicolors
 let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
-let base16colorspace=256
 colorscheme base16-ocean
 set background=dark
+
+""" Don't let eclim manage JavaScript validation.
+let g:EclimJavascriptValidate = 0
 
 """ Airline preferences.
 let g:airline_left_sep = ""
