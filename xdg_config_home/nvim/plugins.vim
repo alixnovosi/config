@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim.                                                              "
-" UPDATED: 2016-04-04                                                                             "
+" UPDATED: 2016-06-01                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
@@ -49,6 +49,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 """ File stuff/ things outside vim.
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'Tejr/noplaintext.vim'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
