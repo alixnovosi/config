@@ -11,6 +11,9 @@ export XDG_CONFIG_HOME="$HOME/Library/Preferences"
 export XDG_CACHE_HOME="$HOME/Library/Caches"
 export XDG_DATA_HOME="$HOME/Library"
 
+# Homebrew nonsense.
+HOMEBREW_NO_INSECURE_REDIRECT="1"
+
 export PATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"

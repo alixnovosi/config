@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    .zshrc                                                                                 #
 # PURPOSE: zsh config file.                                                                       #
-# UPDATED: 2015-03-11                                                                             #
+# UPDATED: 2015-06-01                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Sketchy way of detecting multiuser machine (where users is interesting).
@@ -15,7 +15,11 @@ fi
 which fortune &> /dev/null && fortune -s
 
 # Load any os-specific stuff.
-[[ "$(uname -s)" == "Darwin" ]] && source "$HOME/Library/Preferences/shell/osx"
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    source "$HOME/Library/Preferences/shell/osx"
+    fpath=(/usr/local/share/zsh-completions $fpath)
+fi
+
 [[ "$(uname -s)" == "Linux" ]] && source "$HOME/.config/shell/linux"
 
 # I could check if these exist, but I want zsh to let me know if I haven't created them.
