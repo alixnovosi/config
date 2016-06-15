@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-03-11                                                                             "
+" UPDATED: 2016-06-15                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -24,7 +24,7 @@ execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
 set cursorline laststatus=2 noshowmode showcmd ignorecase smartcase
 
 """ One day I'll untangle the bugs this introduces.
-" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
 let base16colorspace=256
 colorscheme base16-ocean
