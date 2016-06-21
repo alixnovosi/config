@@ -8,18 +8,14 @@
 call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
 
 """ Language assistance.
-" Plug 'calebsmith/vim-lambdify'
-Plug 'vim-scripts/a.vim',                      {'for': ['c', 'cpp']}
-Plug 'alecthomas/gometalinter',                {'for': 'go'}
-Plug 'enomsg/vim-haskellConcealPlus',          {'for': 'haskell'}
-Plug 'burnettk/vim-angular',                   {'for': 'html'}
-Plug 'matthewsimo/angular-vim-snippets',       {'for': 'html'}
-Plug 'Valloric/MatchTagAlways',                {'for': 'html'}
-Plug 'pangloss/vim-javascript'
+Plug 'vim-scripts/a.vim',                {'for': ['c', 'cpp']}
+Plug 'burnettk/vim-angular',             {'for': 'html'}
+Plug 'matthewsimo/angular-vim-snippets', {'for': 'html'}
+Plug 'Valloric/MatchTagAlways',          {'for': 'html'}
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'elzr/vim-json',                          {'for': 'json'}
-Plug 'ehamberg/vim-cute-python',               {'for': 'python'}
-Plug 'nvie/vim-flake8',                        {'for': 'python'}
+Plug 'elzr/vim-json',            {'for': 'json'}
+Plug 'ehamberg/vim-cute-python', {'for': 'python'}
+Plug 'nvie/vim-flake8',          {'for': 'python'}
 Plug 'sheerun/vim-polyglot'
 
 """ General programming support.
