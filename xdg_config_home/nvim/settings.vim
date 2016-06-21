@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-06-15                                                                             "
+" UPDATED: 2016-06-21                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -56,6 +56,13 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+""" Make ack ag.
+let g:ackprg = 'ag --vimgrep --smart-case'
+cnoreabbrev ag Ack
+cnoreabbrev aG Ack
+cnoreabbrev Ag Ack
+cnoreabbrev AG Ack
 
 """ Let C-s and C-q go to Vim instead of terminal. We'll later set commands using that.
 silent !stty -ixon > /dev/null 2>/dev/null
