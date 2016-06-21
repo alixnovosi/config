@@ -1,2 +1,2 @@
-""" Force spellcheck and textwidth for git commit messages.
-set textwidth=72
+""" Force textwidth for git commit messages.
+setlocal textwidth=72
