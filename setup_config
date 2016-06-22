@@ -91,7 +91,7 @@ GIT_DIR="$(pwd -P)"
 echo "GIT_DIR is $GIT_DIR"
 
 # Grab places we'll put scripts and config files.
-GIT_CONFIG_HOME="$GIT_DIR"
+GIT_CONFIG_HOME="$GIT_DIR/config"
 
 #-------------------------------------------------------------------------------------------------#
 ################################### DEPLOY CONFIG FILES ###########################################
