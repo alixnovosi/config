@@ -11,6 +11,8 @@
 # that already exist.
 # Fix that.
 
+# FORCE=1
+
 #-------------------------------------------------------------------------------------------------#
 ###################################### GET XDG VARS ###############################################
 #-------------------------------------------------------------------------------------------------#
@@ -128,6 +130,12 @@ for DIR in $DIRS; do
             echo "$FILE_NAME already exists as a file in $XDG_CONFIG_HOME/$DIR_NAME"
         else
             echo "$FILE_NAME already exists as a symlink in $XDG_CONFIG_HOME/$DIR_NAME"
+
+            if [ ! -z "$FORCE" ]; then
+                echo "FORCE is set, removing symlink and re-symlinking."
+                rm "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME"
+                ln -s "$file" "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME"
+            fi
         fi
     done
 done
