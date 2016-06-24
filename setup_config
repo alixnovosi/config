@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    setup                                                                                  #
 # PURPOSE: script to deploy config files and scripts in this repo.                                #
-# UPDATED: 2016-06-22                                                                             #
+# UPDATED: 2016-06-24                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 
@@ -150,7 +150,11 @@ mkdir -p "$XDG_CACHE_HOME/less"
 mkdir -p "$XDG_CACHE_HOME/tex/mfvar"
 mkdir -p "$XDG_CACHE_HOME/vim/backup"
 mkdir -p "$XDG_CACHE_HOME/vim/swap"
+mkdir -p "$XDG_CACHE_HOME/nvim/swap"
+mkdir -p "$XDG_CACHE_HOME/nvim/backup"
+mkdir -p "$XDG_CACHE_HOME/nvim/log"
 mkdir -p "$XDG_CACHE_HOME/zsh/"
 
 touch "$XDG_CACHE_HOME/less/hist"
 touch "$XDG_CACHE_HOME/zsh/history"
+touch "$XDG_CACHE_HOME/nvim/log/nvimlog"
