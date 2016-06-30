@@ -14,7 +14,6 @@ import rlcompleter
 history_path = os.path.expandvars("$XDG_DATA_HOME/python/history")
 readline.parse_and_bind("tab: complete")
 
-
 def save_history(history_path=history_path):
     import readline
     readline.write_history_file(history_path)

@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-06-21                                                                             "
+" UPDATED: 2016-06-30                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -23,22 +23,26 @@ execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
 """ Ignore case in searching unless I use capital letters.
 set cursorline laststatus=2 noshowmode showcmd ignorecase smartcase
 
-""" One day I'll untangle the bugs this introduces.
+""" True color!.
+""" Colorscheme stuff.
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
 let base16colorspace=256
 colorscheme base16-ocean
 set background=dark
 
+""" Use pipe cursor in insert mode.
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
 let g:EclimJavascriptValidate = 0
 
 """ Airline preferences.
 let g:airline_left_sep = ""
 let g:airline_right_sep = ""
+let g:airline_extensions = ["branch", "hunks", "syntastic", "tagbar", "tabline", "ycm"]
 let g:airline#extensions#tabline#left_sep = " "
 let g:airline#extensions#tabline#right_sep = " "
 let g:airline#extensions#tabline#buffer_min_count = 2
-let g:airline_extensions = ["hunks", "syntastic", "tagbar", "tabline", "ycm"]
 let g:airline_inactive_collapse = 1
 
 """ Attempt to get Eclim and Eclipse and Vim and YCM to play nicely.
