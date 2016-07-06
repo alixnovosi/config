@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud                                                                         #
 # FILE:    xinitrc                                                                                #
 # PURPOSE: System login configuration file                                                        #
-# UPDATED: 2016-03-11                                                                             #
+# UPDATED: 2016-05-08                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Set XDG vars, anything else important.
@@ -22,11 +22,12 @@ pgrep -x pidgin | pidgin &
 pgrep -x mpd | mpd &
 pgrep -x mate-power-manager | mate-power-manager &
 pgrep -x dunst | dunst &
-unclutter &
-xsetroot -cursor_name left_ptr
+pgrep -x gtk-redshift | gtk-redshift &
+pgrep -x pasystray | pasystray &
+# unclutter &
+# xsetroot -cursor_name left_ptr
+fixmouse
 
+export XINITRC_RUN="1"
 # dbus, which taffybar/XMonad use, as well as other things.
 eval "$(dbus-launch --auto-syntax)"
-
-# Launch Taffybar.
-taffybar &

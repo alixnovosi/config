@@ -1,13 +1,13 @@
 #
-ncmpcpp_directory = "$XDG_CONFIG_HOME/ncmpcpp"
+ncmpcpp_directory = "~/.config/ncmpcpp"
 #
-lyrics_directory = "$XDG_CACHE_HOME/ncmpcpp/lyrics"
+lyrics_directory = "~/.cache//ncmpcpp/lyrics"
 #
 mpd_host = "localhost"
 #
 mpd_port = "6600"
 #
-mpd_music_dir = "$XDG_MUSIC_DIR"
+mpd_music_dir = "~/music"
 #
 playlist_display_mode = "columns" (classic/columns)
 #
@@ -36,11 +36,9 @@ fetch_lyrics_for_current_song_in_background = "no"
 ##
 #lastfm_preferred_language = ""
 #
-startup_screen = "2"
+# startup_screen = "2"
 #
 jump_to_now_playing_song_at_start = "yes"
-#
-ask_before_clearing_main_playlist = "yes"
 #
 clock_display_seconds = "yes"
 #
