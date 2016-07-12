@@ -71,8 +71,9 @@ cnoreabbrev AG Ack
 """ Let C-s and C-q go to Vim instead of terminal. We'll later set commands using that.
 silent !stty -ixon > /dev/null 2>/dev/null
 
-""" Use concealing.
+""" Fun with concealing.
 set conceallevel=1
+let hsoptions="+"
 
 """ 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
 let maplocalleader = "_"

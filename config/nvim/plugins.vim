@@ -35,6 +35,9 @@ Plug 'tpope/vim-unimpaired'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 
+""" Additional functionality.
+Plug 'felipec/notmuch-vim'
+
 """ Version control nonsense.
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
