@@ -16,6 +16,7 @@ Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'elzr/vim-json',            {'for': 'json'}
 Plug 'ehamberg/vim-cute-python', {'for': 'python'}
 Plug 'nvie/vim-flake8',          {'for': 'python'}
+Plug 'ejholmes/vim-forcedotcom'
 Plug 'sheerun/vim-polyglot'
 
 """ General programming support.
