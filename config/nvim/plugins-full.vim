@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
-" PURPOSE: Plugins used by (neo)vim.                                                              "
-" UPDATED: 2016-06-23                                                                             "
+" PURPOSE: Plugins used by (neo)vim (all).                                                        "
+" UPDATED: 2016-07-11                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
