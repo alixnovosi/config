@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (all).                                                        "
-" UPDATED: 2016-07-11                                                                             "
+" UPDATED: 2016-07-26                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
@@ -13,7 +13,6 @@ Plug 'burnettk/vim-angular',             {'for': 'html'}
 Plug 'matthewsimo/angular-vim-snippets', {'for': 'html'}
 Plug 'Valloric/MatchTagAlways',          {'for': 'html'}
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'elzr/vim-json',            {'for': 'json'}
 Plug 'ehamberg/vim-cute-python', {'for': 'python'}
 Plug 'nvie/vim-flake8',          {'for': 'python'}
 Plug 'ejholmes/vim-forcedotcom'

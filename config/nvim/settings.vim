@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-06-30                                                                             "
+" UPDATED: 2016-07-26                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -35,6 +35,9 @@ set background=dark
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 let g:EclimJavascriptValidate = 0
+
+""" JSON conceal.
+let g:vim_json_syntax_conceal = 1
 
 """ Airline preferences.
 let g:airline_left_sep = ""
