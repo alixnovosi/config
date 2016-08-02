@@ -6,7 +6,6 @@
 # UPDATED: 2015-08-02                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
-
 # Sketchy way of detecting multiuser machine (where users is interesting).
 if [[ "$(who | grep -c "$USER")" -ne "$(who | wc -l)" ]]; then
 
