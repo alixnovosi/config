@@ -10,7 +10,7 @@
 if [[ "$(who | grep -c "$USER")" -ne "$(who | wc -l)" ]]; then
 
     # Display who else is logged in.
-    users|tr ' ' '\n'|uniq|tr '\n' ' '|awk '{print $0} END {print ""}'
+    users | tr ' ' '\n' | uniq | tr '\n' ' ' | awk '{print $0} END {print ""}'
 fi
 which fortune &> /dev/null && fortune -s
 
