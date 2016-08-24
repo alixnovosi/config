@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-07-26                                                                             "
+" UPDATED: 2016-08-24                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -25,7 +25,7 @@ set cursorline laststatus=2 noshowmode showcmd ignorecase smartcase
 
 """ True color!.
 """ Colorscheme stuff.
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" set termguicolors
 let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
 let base16colorspace=256
 colorscheme base16-ocean
@@ -53,6 +53,9 @@ let g:EclimCompletionMethod = "omnifunc"
 let g:syntastic_javascript_checkers = ['jshint']
 
 let g:syntastic_check_on_wq = 0
+
+let g:syntastic_sass_checkers=["sass_lint"]
+let g:syntastic_scss_checkers=["sass_lint"]
 
 """ Make YCM and UltiSnips work together via supertab.
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
