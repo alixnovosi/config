@@ -2,7 +2,7 @@
 -- AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                           --
 -- FILE:    xmonad.hs                                                                            --
 -- PURPOSE: XMonad configuration file.                                                           --
--- UPDATED: 2015-04-04                                                                           --
+-- UPDATED: 2016-09-01                                                                           --
 -- LICENSE: ISC                                                                                  --
 ---------------------------------------------------------------------------------------------------
 import qualified Data.Char as C                    (toUpper)
@@ -136,7 +136,7 @@ keybinds env mask =
 --------------------------------------------  OTHER  ----------------------------------------------
 ---------------------------------------------------------------------------------------------------
 -- Terminal commands.
-term  = "TERM=xterm-256color; xfce4-terminal --hide-menubar --show-borders"
+term  = "TERM=xterm-256color; mate-terminal"
 cmd c = term ++ " --title=" ++ name ++ " --command='" ++ c ++ "'"
     where name = "__" ++ map C.toUpper (head (words c))
 
