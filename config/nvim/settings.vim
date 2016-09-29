@@ -50,12 +50,17 @@ let g:airline_inactive_collapse = 1
 
 """ Attempt to get Eclim and Eclipse and Vim and YCM to play nicely.
 let g:EclimCompletionMethod = "omnifunc"
+
+""" Syntastic alterations.
 let g:syntastic_javascript_checkers = ['jshint']
 
 let g:syntastic_check_on_wq = 0
 
 let g:syntastic_sass_checkers=["sass_lint"]
 let g:syntastic_scss_checkers=["sass_lint"]
+
+""" Disable two blank lines between functions. I don't see a reason for this check.
+let g:syntastic_python_flake8_args='--ignore=E302'
 
 """ Make YCM and UltiSnips work together via supertab.
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
