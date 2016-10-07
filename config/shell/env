@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    env                                                                                    #
 # PURPOSE: Shell environment variables definition file.                                           #
-# UPDATED: 2016-06-06                                                                             #
+# UPDATED: 2016-10-07                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Colors.
@@ -87,4 +87,4 @@ export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # Include bin, gem path.
-PATH="$XDG_DATA_HOME/bin:$PATH"
+PATH="$XDG_DATA_HOME/bin:$XDG_DATA_HOME/gems/bin:$PATH"
