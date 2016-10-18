@@ -31,6 +31,10 @@ nnoremap <C-k> <C-y>
 """ Faster commands.
 nnoremap ; :
 
+""" Stop mouse clicks from being inserted as text in edit mode.
+inoremap <LeftMouse> <Nop>
+inoremap <RightMouse> <Nop>
+
 """ 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
 """ Move line downward/upward with one keystroke.
 noremap - ddp

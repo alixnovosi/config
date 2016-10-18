@@ -2,10 +2,10 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (most important).                                             "
-" UPDATED: 2016-07-11                                                                             "
+" UPDATED: 2016-10-18                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
-call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
+call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
 
 """ Language assistance.
 Plug 'sheerun/vim-polyglot'

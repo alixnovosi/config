@@ -2,10 +2,10 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (all).                                                        "
-" UPDATED: 2016-08-24                                                                             "
+" UPDATED: 2016-10-18                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
-call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
+call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
 
 """ Language assistance.
 Plug 'vim-scripts/a.vim',                {'for': ['c', 'cpp']}
