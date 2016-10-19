@@ -26,15 +26,11 @@ set cursorline laststatus=2 noshowmode showcmd ignorecase smartcase
 """ True color!.
 """ Colorscheme stuff.
 set termguicolors
-let g:base16_shell_path='$XDG_DATA_HOME/bin/base16-shell'
-let g:base16colorspace=256
-colorscheme base16-ocean
 set background=dark
+colorscheme gruvbox
 
 """ Use pipe cursor in insert mode.
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
-let g:EclimJavascriptValidate = 0
 
 """ JSON conceal.
 let g:vim_json_syntax_conceal = 1
@@ -54,9 +50,6 @@ let g:airline_inactive_collapse = 1
 "
 " let g:syntastic_sass_checkers=["sass_lint"]
 " let g:syntastic_scss_checkers=["sass_lint"]
-
-""" Disable two blank lines between functions. I don't see a reason for this check.
-" let g:syntastic_python_flake8_args='--ignore=E302'
 
 """ Make YCM and UltiSnips work together via supertab.
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
