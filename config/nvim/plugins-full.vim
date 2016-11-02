@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (all).                                                        "
-" UPDATED: 2016-10-19                                                                             "
+" UPDATED: 2016-11-02                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
@@ -16,6 +16,7 @@ Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'ehamberg/vim-cute-python', {'for': 'python'}
 Plug 'nvie/vim-flake8',          {'for': 'python'}
 Plug 'gcorne/vim-sass-lint', {'for': 'sass'}
+Plug 'hashivim/vim-terraform'
 Plug 'ejholmes/vim-forcedotcom'
 Plug 'sheerun/vim-polyglot'
 
