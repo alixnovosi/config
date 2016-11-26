@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-10-18                                                                             "
+" UPDATED: 2016-11-26                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -43,13 +43,6 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#right_sep = ' '
 let g:airline#extensions#tabline#buffer_min_count = 2
 let g:airline_inactive_collapse = 1
-
-" let g:syntastic_javascript_checkers = ['jshint']
-"
-" let g:syntastic_check_on_wq = 0
-"
-" let g:syntastic_sass_checkers=["sass_lint"]
-" let g:syntastic_scss_checkers=["sass_lint"]
 
 """ Make YCM and UltiSnips work together via supertab.
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
