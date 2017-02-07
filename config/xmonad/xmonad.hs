@@ -2,7 +2,7 @@
 -- AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                           --
 -- FILE:    xmonad.hs                                                                            --
 -- PURPOSE: XMonad configuration file.                                                           --
--- UPDATED: 2016-09-01                                                                           --
+-- UPDATED: 2016-11-26                                                                           --
 -- LICENSE: ISC                                                                                  --
 ---------------------------------------------------------------------------------------------------
 import qualified Data.Char as C                    (toUpper)
@@ -38,14 +38,14 @@ main = do
     let dzenRightSize = fullWidth - dzenLeftSize - trayerWidth
 
     dzenL <- spawnPipe $ dzenLeft dzenLeftSize
-    dzenR <- spawnPipe $ dzenRight dzenLeftSize dzenRightSize "/home/amichaud/.config"
+    dzenR <- spawnPipe $ dzenRight dzenLeftSize dzenRightSize (home ++ "/.config")
     trayr <- spawnPipe $ trayerCmd (dzenLeftSize + dzenRightSize) trayerWidth
 
     -- Config xmonad.
     xmonad $ ED.ewmh def
         { manageHook      = mHook <+> manageHook def
         , layoutHook      = MD.avoidStruts $ NB.smartBorders $ layoutHook def
-        , startupHook     = SWMN.setWMName "LG3D" -- Handles Java.
+        , startupHook     = SWMN.setWMName "LG3D" -- Prevents Java apps being grey blobs.
         , logHook         = loHook dzenL
         , handleEventHook = ED.fullscreenEventHook <+> handleEventHook def
 
@@ -119,11 +119,11 @@ keybinds env mask =
         where wsKeys  = xK_grave : [xK_1..xK_9] ++ [xK_0, xK_minus, xK_equal]
 
               -- Determine where various things are stored.
-              picHome   = M.fromMaybe "$HOME/pictures" (lookup "XDG_PICTURES_DIR" env)
-              vidHome   = M.fromMaybe "$HOME/videos"   (lookup "XDG_VIDEOS_DIR" env)
-              musicHome = M.fromMaybe "$HOME/music"    (lookup "XDG_MUSIC_DIR" env)
+              picHome   = M.fromMaybe (home ++ "/pictures") (lookup "XDG_PICTURES_DIR" env)
+              vidHome   = M.fromMaybe (home ++ "/videos")   (lookup "XDG_VIDEOS_DIR" env)
+              musicHome = M.fromMaybe (home ++ "/music")    (lookup "XDG_MUSIC_DIR" env)
 
-              dataHome = M.fromMaybe "$HOME/.local/share" (lookup "XDG_DATA_HOME" env)
+              dataHome = M.fromMaybe (home ++ "/.local/share") (lookup "XDG_DATA_HOME" env)
 
               binHome  = dataHome ++ "/bin/"
               passHome = dataHome ++ "/password-store"
@@ -157,7 +157,7 @@ audioKeys = [ ((shiftMask, X.xF86XK_AudioMute),        spawn "mpc toggle")
 
 -- Previously mentioned screenshotting nonsense.
 scrot :: String -> String -> String
-scrot picHome cmd = unwords ["scrot", destination, cmdArg]
+scrot picHome cmd = unwords ["sleep", "0.2;", "scrot", destination, cmdArg]
     where format      = "%FT%TZ%z.png" -- ISO 8601
           destination = picHome ++ "/screenshots/" ++ format
           cmdArg      = if cmd == "" then "" else "--" ++ cmd
@@ -166,6 +166,10 @@ scrot picHome cmd = unwords ["scrot", destination, cmdArg]
 menuer :: String -> (String -> String -> String)
 menuer binHome thing home = unwords [binHome ++ "menu", thing, home, dmenuCmd]
     where dmenuCmd = "\"dmenu -i -fn " ++ font 32 ++ "\""
+
+-- For some reason, xmonad has trouble getting the "$HOME" var. So, set a home var manually.
+home :: String
+home = "/home/amichaud"
 
 ---------------------------------------------------------------------------------------------------
 -----------------------------------  STATUS BAR STUFF ---------------------------------------------
@@ -221,7 +225,7 @@ dmenuRunStylized = "dmenu_run -h " ++ show statusHeight ++
                    "' -sb '" ++ currentBG ++ "' -sf '" ++ currentFG ++ "'"
 
 ---------------------------------------------------------------------------------------------------
------------------------------CUSTOM HOOKS----------------------------------------------------------
+---------------------------------------------CUSTOM HOOKS------------------------------------------
 ---------------------------------------------------------------------------------------------------
 -- Manage docks, custom layout nonsense.
 -- TODO make a general rule somehow
