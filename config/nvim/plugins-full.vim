@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
+" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (all).                                                        "
-" UPDATED: 2017-02-07                                                                             "
+" UPDATED: 2017-03-23                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
@@ -13,9 +13,9 @@ Plug 'burnettk/vim-angular',             {'for': 'html'}
 Plug 'matthewsimo/angular-vim-snippets', {'for': 'html'}
 Plug 'Valloric/MatchTagAlways',          {'for': 'html'}
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'ehamberg/vim-cute-python', {'for': 'python'}
-Plug 'nvie/vim-flake8',          {'for': 'python'}
-Plug 'gcorne/vim-sass-lint', {'for': 'sass'}
+Plug 'ehamberg/vim-cute-python',         {'for': 'python'}
+Plug 'nvie/vim-flake8',                  {'for': 'python'}
+Plug 'gcorne/vim-sass-lint',             {'for': 'sass'}
 Plug 'ejholmes/vim-forcedotcom'
 Plug 'sheerun/vim-polyglot'
 
@@ -43,7 +43,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'morhetz/gruvbox'
 
 """ File stuff/ things outside vim.
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}

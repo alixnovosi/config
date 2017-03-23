@@ -1,11 +1,10 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
+" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    init.vim                                                                               "
 " PURPOSE: vim configuration file.                                                                "
-" UPDATED: 2016-10-18                                                                             "
+" UPDATED: 2017-03-23                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
-
 """ Load defaults.vim file (requires vim > 8.0).
 source $VIMRUNTIME/defaults.vim
 
@@ -13,7 +12,13 @@ source $VIMRUNTIME/defaults.vim
 set autoread encoding=utf-8
 
 """ Format text automatically in a nice way, use largest history, use smarttab.
-set formatoptions+=tcqj history=10000 smarttab
+""" Use 2-high status line (for airline).
+set formatoptions+=tcqj history=10000 smarttab laststatus=2
+
+""" Set vim-specific sequences for RGB colors, to prevent truecolor breaking in vim.
+""" https://github.com/vim/vim/issues/993#issuecomment-255651605
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 """ Make opening files not suck, make search better, be faster, indent.
 set wildmode=list:longest,full ttyfast autoindent

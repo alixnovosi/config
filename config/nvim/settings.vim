@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
-" FILE:    plugins.vim                                                                            "
-" PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-11-26                                                                             "
+" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
+" FILE:    settings.vim                                                                           "
+" PURPOSE: Settings used in (neo)vim.                                                             "
+" UPDATED: 2017-03-23                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -19,14 +19,12 @@ set foldenable foldlevelstart=10 foldnestmax=5 foldmethod=syntax textwidth=99 wh
 """ Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns.
 execute 'set colorcolumn=' . join(map(range(1,259,2), '"+" . v:val'), ',')
 
-""" Highlight current line, use 2-column status (for airline) that shows commands, but not mode.
+""" Highlight current line, no mode in status.
 """ Ignore case in searching unless I use capital letters.
-set cursorline laststatus=2 noshowmode showcmd ignorecase smartcase
+set cursorline noshowmode ignorecase smartcase
 
-""" True color!.
-""" Colorscheme stuff.
-set termguicolors
-set background=dark
+""" Use true color, set colorscheme.
+set termguicolors background=dark
 colorscheme gruvbox
 
 """ Use pipe cursor in insert mode.
