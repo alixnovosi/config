@@ -9,10 +9,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
 
 """ Language assistance.
 Plug 'vim-scripts/a.vim',                {'for': ['c', 'cpp']}
-Plug 'burnettk/vim-angular',             {'for': 'html'}
-Plug 'matthewsimo/angular-vim-snippets', {'for': 'html'}
 Plug 'Valloric/MatchTagAlways',          {'for': 'html'}
-Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'ehamberg/vim-cute-python',         {'for': 'python'}
 Plug 'nvie/vim-flake8',                  {'for': 'python'}
 Plug 'gcorne/vim-sass-lint',             {'for': 'sass'}
