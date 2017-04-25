@@ -27,8 +27,17 @@ set cursorline noshowmode ignorecase smartcase
 set termguicolors background=dark
 colorscheme gruvbox
 
+set mouse=a
+
 """ Use pipe cursor in insert mode.
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+
+" Figure out the system Python for Neovim.
+if exists('$VIRTUAL_ENV')
+    let g:python3_host_prog=substitute(system('which -a python3 | head -n2 | tail -n1'), '\n', '', 'g')
+else
+    let g:python3_host_prog=substitute(system('which python3'), '\n', '', 'g')
+endif
 
 """ JSON conceal.
 let g:vim_json_syntax_conceal = 1
