@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2017-03-23                                                                             "
+" UPDATED: 2017-04-27                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -18,6 +18,9 @@ set foldenable foldlevelstart=10 foldnestmax=5 foldmethod=syntax textwidth=99 wh
 """ Color columns past textwidth.
 """ Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns.
 execute 'set colorcolumn=' . join(map(range(1,259,2), '"+" . v:val'), ',')
+
+""" Make YCM use python3.
+let g:ycm_python_binary_path = '/usr/bin/python3'
 
 """ Highlight current line, no mode in status.
 """ Ignore case in searching unless I use capital letters.
