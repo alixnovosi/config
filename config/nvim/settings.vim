@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2017-04-27                                                                             "
+" UPDATED: 2017-05-05                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -19,9 +19,6 @@ set foldenable foldlevelstart=10 foldnestmax=5 foldmethod=syntax textwidth=99 wh
 """ Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns.
 execute 'set colorcolumn=' . join(map(range(1,259,2), '"+" . v:val'), ',')
 
-""" Make YCM use python3.
-let g:ycm_python_binary_path = '/usr/bin/python3'
-
 """ Highlight current line, no mode in status.
 """ Ignore case in searching unless I use capital letters.
 set cursorline noshowmode ignorecase smartcase
@@ -35,12 +32,11 @@ set mouse=a
 """ Use pipe cursor in insert mode.
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 
-" Figure out the system Python for Neovim.
-if exists('$VIRTUAL_ENV')
-    let g:python3_host_prog=substitute(system('which -a python3 | head -n2 | tail -n1'), '\n', '', 'g')
-else
-    let g:python3_host_prog=substitute(system('which python3'), '\n', '', 'g')
-endif
+""" Aggressively force python 3 on everything, using a virtualenv for neovim.
+let g:python = '/Users/amichaud/.virtualenvs/neovim/bin/python3'
+let g:python3_host_prog = g:python
+let g:ycm_python_binary_path = g:python
+let g:ycm_server_python_interpreter = g:python
 
 """ JSON conceal.
 let g:vim_json_syntax_conceal = 1
