@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    env                                                                                    #
 # PURPOSE: Shell environment variables definition file.                                           #
-# UPDATED: 2017-05-09                                                                             #
+# UPDATED: 2017-05-23                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Colors.
@@ -39,6 +39,8 @@ fi
 
 # Set LS_COLORS.
 eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
+
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # Useful stuff.
 export EDITOR="nvim"
