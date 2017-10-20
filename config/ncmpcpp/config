@@ -1,97 +1,63 @@
-#
-ncmpcpp_directory = "~/.config/ncmpcpp"
-#
-lyrics_directory = "~/.cache//ncmpcpp/lyrics"
-#
-mpd_host = "localhost"
-#
-mpd_port = "6600"
-#
+#-------------------------------------------------------------------------------------------------#
+# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
+# FILE:    config                                                                                 #
+# PURPOSE: ncmpcpp config file                                                                    #
+# UPDATED: 2017-10-19                                                                             #
+# LICENSE: ISC                                                                                    #
+#-------------------------------------------------------------------------------------------------#
 mpd_music_dir = "~/music"
-#
-playlist_display_mode = "columns" (classic/columns)
-#
-browser_display_mode = "columns" (classic/columns)
-#
-search_engine_display_mode = "columns" (classic/columns)
-#
-playlist_editor_display_mode = "columns" (classic/columns)
-#
-## Note: You can specify third character which will
-## be used to build 'empty' part of progressbar.
-##
-progressbar_look = "=>"
-#
+
 user_interface = "alternative" (classic/alternative)
-#
-fetch_lyrics_for_current_song_in_background = "no"
-#
-##
-## Note: If you set this variable, ncmpcpp will try to
-## get info from last.fm in language you set and if it
-## fails, it will fall back to english. Otherwise it will
-## use english the first time.
-##
-## Note: Language has to be expressed as an ISO 639 alpha-2 code.
-##
-#lastfm_preferred_language = ""
-#
-# startup_screen = "2"
-#
-jump_to_now_playing_song_at_start = "yes"
-#
-clock_display_seconds = "yes"
-#
-display_volume_level = "yes"
-#
-display_remaining_time = "yes"
-#
-##
-## Note: If below is enabled, ncmpcpp will ignore leading
-## "The" word while sorting items in browser, tags in
-## media library, etc.
-##
+playlist_display_mode = "columns" (classic/columns)
+browser_display_mode = "columns" (classic/columns)
+search_engine_display_mode = "columns" (classic/columns)
+playlist_editor_display_mode = "columns" (classic/columns)
+
+# Note: You can specify third character which will  be used to build 'empty' part of progressbar.
+progressbar_look = "=>"
+
 ignore_leading_the = "yes"
-#
-mouse_support = "yes"
-#
-mouse_list_scroll_whole_page = "yes"
-#
+allow_for_physical_item_deletion = "yes"
+fetch_lyrics_for_current_song_in_background = "no"
+jump_to_now_playing_song_at_start = "yes"
+
 enable_window_title = "yes"
-#
-##### colors definitions #####
-#
-colors_enabled = "yes"
+clock_display_seconds = "yes"
+display_volume_level = "yes"
+display_remaining_time = "yes"
 
-empty_tag_color = "cyan"
+mouse_support = "yes"
+mouse_list_scroll_whole_page = "yes"
 
+######################################  COLORS  ###################################################
 header_window_color = "default"
+main_window_color = "yellow"
+window_border_color = "green"
+active_window_border = "red"
 
 volume_color = "default"
 
 state_line_color = "default"
-
 state_flags_color = "default"
 
-main_window_color = "yellow"
+empty_tag_color = "cyan"
 
-color1 = "white"
-
-color2 = "green"
-
-main_window_highlight_color = "yellow"
+current_item_prefix = "$(yellow)$r"
+current_item_suffix = "$/r$(end)"
 
 progressbar_color = "default"
-
 statusbar_color = "default"
 
 alternative_ui_separator_color = "black"
 
-active_column_color = "red"
+current_item_inactive_column_prefix = "$(red)$r"
+current_item_inactive_column_suffix = "$/r$(end)"
 
+########################################## VISUALIZER #############################################
 visualizer_color = "yellow"
-
-window_border_color = "green"
-
-active_window_border = "red"
-
+visualizer_fifo_path = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+visualizer_sync_interval = "30"
+visualizer_type = "wave" (spectrum/wave)
+visualizer_look = "∙▋"
+visualizer_in_stereo = "yes"
