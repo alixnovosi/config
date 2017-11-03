@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    mappings.vim                                                                           "
 " PURPOSE: Mappings used in (neo)vim.                                                             "
-" UPDATED: 2017-05-23                                                                             "
+" UPDATED: 2017-11-03                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Use sudo after accessing file where sudo is needed, without having to reload.
@@ -46,5 +46,3 @@ onoremap il( :<c-u>normal! F)vi(<cr>
 """ Quote word.
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-
-""" 'Become a better person' section

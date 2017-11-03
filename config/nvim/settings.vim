@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2017-05-05                                                                             "
+" UPDATED: 2017-11-03                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -28,9 +28,6 @@ set termguicolors background=dark
 colorscheme gruvbox
 
 set mouse=a
-
-""" Use pipe cursor in insert mode.
-set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 
 """ Aggressively force python 3 on everything, using a virtualenv for neovim.
 let g:python = '/Users/amichaud/.virtualenvs/neovim/bin/python3'
