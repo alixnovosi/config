@@ -4,9 +4,7 @@
 title="${filename}"
 
 # Disable sreensaver.
-heartbeat-cmd="xscreensaver-command -deactivate >&- 2>&- &"
 stop-screensaver="yes"
-vo=opengl-hq:interpolation
 hwdec=vaapi
 hwdec-codecs=h264,vc1,wmv3,mpeg2video
 cache=128000
