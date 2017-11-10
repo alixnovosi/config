@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    osx                                                                                    #
 # PURPOSE: OSX-specific shell nonsense definition file.                                           #
-# UPDATED: 2016-06-01                                                                             #
+# UPDATED: 2017-05-23                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # XDG dirs.
@@ -11,8 +11,20 @@ export XDG_CONFIG_HOME="$HOME/Library/Preferences"
 export XDG_CACHE_HOME="$HOME/Library/Caches"
 export XDG_DATA_HOME="$HOME/Library"
 
-# Homebrew nonsense.
-HOMEBREW_NO_INSECURE_REDIRECT="1"
+# Set XDG media dirs.
+export XDG_DESKTOP_DIR="$HOME/desktop"
+export XDG_DOCUMENTS_DIR="$HOME/documents"
+export XDG_DOWNLOAD_DIR="$HOME/downloads"
+export XDG_MUSIC_DIR="$HOME/music"
+export XDG_PICTURES_DIR="$HOME/pictures"
+export XDG_PUBLICSHARE_DIR="$HOME/public"
+export XDG_TEMPLATES_DIR="$HOME/templates"
+export XDG_VIDEOS_DIR="$HOME/videos"
+
+# Homebrew nonsense - don't allow redirect from https to http in downloading.
+# May break some packages.
+export HOMEBREW_NO_INSECURE_REDIRECT="1"
+export HOMEBREW_LIVECHECK_WATCHLIST="$XDG_CACHE_HOME/homebrew/livecheck_watchlist"
 
 export PATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 

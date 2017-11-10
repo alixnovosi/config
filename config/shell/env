@@ -3,12 +3,14 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    env                                                                                    #
 # PURPOSE: Shell environment variables definition file.                                           #
-# UPDATED: 2016-10-07                                                                             #
+# UPDATED: 2017-05-23                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Colors.
 # shellcheck source=/dev/null
 . "$XDG_CONFIG_HOME/colors/colors.sh"
+
+set -o emacs
 
 # Extra XDG env variables that aren't os-dependent.
 export XDG_CONFIG_DIRS="/etc/xdg"
@@ -38,14 +40,13 @@ fi
 # Set LS_COLORS.
 eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
 
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # Useful stuff.
 export EDITOR="nvim"
 export PAGER="less"
 export MANPAGER="$PAGER"
 export VISUAL="$EDITOR"
-
-# Stuff.
-export GOPATH="$XDG_DATA_HOME/bin"
 
 # Forcing more xdg spec compliance.
 export ECLIPSE_HOME="$XDG_DATA_HOME/eclipse"
@@ -54,9 +55,11 @@ export GEM_PATH="$XDG_DATA_HOME/bin:$XDG_DATA_HOME/gems"
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/gimp2"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export GOPATH="$XDG_DATA_HOME/bin"
 export GTK_RC_FILES="$XDG_CONFIG_HOME/gtk-1.0/gtkrc"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export HGRCPATH="$XDG_CONFIG_HOME/hg/config"
+export HTOPRC="$XDG_CONFIG_HOME/htop/htoprc"
 export ICEAUTHORITY="$XDG_RUNTIME_DIR/ICEauthority"
 export LESSHISTFILE="-"
 export LESSKEY="$XDG_CONFIG_HOME/less/keys"

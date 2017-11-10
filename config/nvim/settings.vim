@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
-" FILE:    plugins.vim                                                                            "
-" PURPOSE: Plugins used in (neo)vim.                                                              "
-" UPDATED: 2016-08-24                                                                             "
+" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
+" FILE:    settings.vim                                                                           "
+" PURPOSE: Settings used in (neo)vim.                                                             "
+" UPDATED: 2017-11-03                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -17,50 +17,35 @@ set foldenable foldlevelstart=10 foldnestmax=5 foldmethod=syntax textwidth=99 wh
 
 """ Color columns past textwidth.
 """ Credit http://blog.hanschen.org/2012/10/24/different-background-color-in-vim-past-80-columns.
-execute "set colorcolumn=" . join(map(range(1,259,2), '"+" . v:val'), ',')
+execute 'set colorcolumn=' . join(map(range(1,259,2), '"+" . v:val'), ',')
 
-""" Highlight current line, use 2-column status (for airline) that shows commands, but not mode.
+""" Highlight current line, no mode in status.
 """ Ignore case in searching unless I use capital letters.
-set cursorline laststatus=2 noshowmode showcmd ignorecase smartcase
+set cursorline noshowmode ignorecase smartcase
 
-""" True color!.
-""" Colorscheme stuff.
-" set termguicolors
-let g:base16_shell_path="$XDG_DATA_HOME/bin/base16-shell"
-let base16colorspace=256
-colorscheme base16-ocean
-set background=dark
+""" Use true color, set colorscheme.
+set termguicolors background=dark
+colorscheme gruvbox
 
-""" Use pipe cursor in insert mode.
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+set mouse=a
 
-let g:EclimJavascriptValidate = 0
+""" Aggressively force python 3 on everything, using a virtualenv for neovim.
+let g:python = '/Users/amichaud/.virtualenvs/neovim/bin/python3'
+let g:python3_host_prog = g:python
+let g:ycm_python_binary_path = g:python
+let g:ycm_server_python_interpreter = g:python
 
 """ JSON conceal.
 let g:vim_json_syntax_conceal = 1
 
 """ Airline preferences.
-let g:airline_left_sep = ""
-let g:airline_right_sep = ""
-let g:airline_extensions = ["branch", "hunks", "syntastic", "tagbar", "tabline", "ycm"]
-let g:airline#extensions#tabline#left_sep = " "
-let g:airline#extensions#tabline#right_sep = " "
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline_extensions = ['branch', 'hunks', 'ale', 'tagbar', 'tabline', 'ycm']
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#right_sep = ' '
 let g:airline#extensions#tabline#buffer_min_count = 2
 let g:airline_inactive_collapse = 1
-
-""" Attempt to get Eclim and Eclipse and Vim and YCM to play nicely.
-let g:EclimCompletionMethod = "omnifunc"
-
-""" Syntastic alterations.
-let g:syntastic_javascript_checkers = ['jshint']
-
-let g:syntastic_check_on_wq = 0
-
-let g:syntastic_sass_checkers=["sass_lint"]
-let g:syntastic_scss_checkers=["sass_lint"]
-
-""" Disable two blank lines between functions. I don't see a reason for this check.
-let g:syntastic_python_flake8_args='--ignore=E302'
 
 """ Make YCM and UltiSnips work together via supertab.
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -68,9 +53,9 @@ let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 """ Better key bindings for UltiSnipsExpandTrigger.
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 """ Make ack ag.
 let g:ackprg = 'ag --vimgrep --smart-case'
@@ -84,7 +69,7 @@ silent !stty -ixon > /dev/null 2>/dev/null
 
 """ Fun with concealing.
 set conceallevel=1
-let hsoptions="+"
+let g:hsoptions='+'
 
 """ 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
-let maplocalleader = "_"
+let g:maplocalleader = '_'

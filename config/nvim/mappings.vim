@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
+" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    mappings.vim                                                                           "
 " PURPOSE: Mappings used in (neo)vim.                                                             "
-" UPDATED: 2016-03-11                                                                             "
+" UPDATED: 2017-11-03                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Use sudo after accessing file where sudo is needed, without having to reload.
@@ -31,6 +31,10 @@ nnoremap <C-k> <C-y>
 """ Faster commands.
 nnoremap ; :
 
+""" Stop mouse clicks from being inserted as text in edit mode.
+inoremap <LeftMouse> <Nop>
+inoremap <RightMouse> <Nop>
+
 """ 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
 """ Move line downward/upward with one keystroke.
 noremap - ddp
@@ -42,6 +46,3 @@ onoremap il( :<c-u>normal! F)vi(<cr>
 """ Quote word.
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-
-""" 'Become a better person' section
-inoremap <esc> <nop>

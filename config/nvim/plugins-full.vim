@@ -1,21 +1,18 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             "
+" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (all).                                                        "
-" UPDATED: 2016-08-24                                                                             "
+" UPDATED: 2017-11-03                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
-call plug#begin("$XDG_DATA_HOME/nvim/site/plugins")
+call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
 
 """ Language assistance.
 Plug 'vim-scripts/a.vim',                {'for': ['c', 'cpp']}
-Plug 'burnettk/vim-angular',             {'for': 'html'}
-Plug 'matthewsimo/angular-vim-snippets', {'for': 'html'}
 Plug 'Valloric/MatchTagAlways',          {'for': 'html'}
-Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'ehamberg/vim-cute-python', {'for': 'python'}
-Plug 'nvie/vim-flake8',          {'for': 'python'}
-Plug 'gcorne/vim-sass-lint', {'for': 'sass'}
+Plug 'ehamberg/vim-cute-python',         {'for': 'python'}
+Plug 'nvie/vim-flake8',                  {'for': 'python'}
+Plug 'gcorne/vim-sass-lint',             {'for': 'sass'}
 Plug 'ejholmes/vim-forcedotcom'
 Plug 'sheerun/vim-polyglot'
 
@@ -23,30 +20,28 @@ Plug 'sheerun/vim-polyglot'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'embear/vim-localvimrc'
 Plug 'ervandew/supertab'
+Plug 'fatih/vim-go'
 Plug 'junegunn/vim-easy-align'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree'
 Plug 'mileszs/ack.vim'
-Plug 'scrooloose/syntastic'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-
-""" Additional functionality.
-Plug 'felipec/notmuch-vim'
+Plug 'w0rp/ale'
 
 """ Version control nonsense.
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 """ Appearance.
-Plug 'chriskempson/base16-vim'
+Plug 'morhetz/gruvbox'
 
 """ File stuff/ things outside vim.
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}

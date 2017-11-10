@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
-# UPDATED: 2016-08-10                                                                             #
+# UPDATED: 2016-11-02                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Useful aliases.
@@ -29,6 +29,7 @@ alias mv="mv -i"
 alias rm="rm -i"
 
 # Silly aliases.
+alias justice="wget -qO- 'https://andrewmichaud.com/justice.ogg' | mpv --really-quiet -"
 alias git-yolo='git commit -am "$(curl -s http://whatthecommit.com/index.txt)"'
 alias starwars="telnet towel.blinkenlights.nl"
 alias whence="which"
@@ -40,15 +41,12 @@ alias gimp="gimp -g \${XDG_CONFIG_HOME}/gimp/config"
 alias gpg="gpg --homedir \${XDG_CONFIG_HOME}/gnupg"
 alias gpg2="gpg2 --homedir \${XDG_CONFIG_HOME}/gnupg"
 alias jshint="jshint --config \${XDG_CONFIG_HOME}/jshint/jshintrc"
-alias mpdscribble="mpdscribble --conf \${XDG_CONFIG_HOME}/mpdscribble/config \
---log \${XDG_CACHE_HOME}/mpdscribble/mpdscribble.log"
 alias mutt="mutt -F \${XDG_CONFIG_HOME}/mutt/muttrc"
 alias offlineimap="offlineimap -c \${XDG_CONFIG_HOME}/offlineimap/config"
-alias ncmpcpp="ncmpcpp -c \${XDG_CONFIG_HOME}/ncmpcpp/config"
-alias pip="pip --log-file \${XDG_CACHE_HOME}/pip/pip.log --cache-dir \${XDG_CACHE_HOME}/pip"
 alias startx="startx \${XDG_CONFIG_HOME}/X11/xinitrc"
 alias svn="svn --config-dir \${XDG_CONFIG_HOME}/subversion"
-alias tmux="tmux -2 -f \${XDG_CONFIG_HOME}/tmux/tmux.conf"
+alias tmux="tmux -2 -u -f \${XDG_CONFIG_HOME}/tmux/tmux.conf"
+alias wget="wget --hsts-file=\${XDG_CACHE_HOME}/wget/hstsdb"
 
 # Neovim now defaults to init.vim, so I default to that.
 alias vim="vim -u \${XDG_CONFIG_HOME}/vim/init.vim"
