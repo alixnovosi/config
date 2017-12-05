@@ -2,12 +2,14 @@
 " AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2017-11-03                                                                             "
+" UPDATED: 2017-11-10                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
 set fileformats=unix nobackup nomodeline spell spelllang=en_us undofile
 scriptencoding utf-8
+
+set mouse=a
 
 """ Use 4-wide spaces, no tabs.
 set expandtab shiftwidth=4 softtabstop=4 tabstop=4
