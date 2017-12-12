@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    env                                                                                    #
 # PURPOSE: Shell environment variables definition file.                                           #
-# UPDATED: 2017-11-10                                                                             #
+# UPDATED: 2017-12-12                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Colors.
@@ -83,9 +83,12 @@ export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
 export TEXMFVAR="$XDG_RUNTIME_DIR/tex/mfvar"
 export TIGRC="$XDG_CONFIG_HOME/tig/tigrc"
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
-export VIRTUALENV_PYTHON=/usr/bin/python3
+VIRTUALENV_PYTHON="$(which python3)"
+export VIRTUALENV_PYTHON
+
 # This has problems that can break X forwarding that I haven't figured out.
 # export XAUTHORITY="$XDG_RUNTIME_DIR/X11/xauthority"
+
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
