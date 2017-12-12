@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2017-11-10                                                                             "
+" UPDATED: 2017-12-12                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -30,12 +30,6 @@ set termguicolors background=dark
 colorscheme gruvbox
 
 set mouse=a
-
-""" Aggressively force python 3 on everything, using a virtualenv for neovim.
-let g:python = '/Users/amichaud/.virtualenvs/neovim/bin/python3'
-let g:python3_host_prog = g:python
-let g:ycm_python_binary_path = g:python
-let g:ycm_server_python_interpreter = g:python
 
 """ JSON conceal.
 let g:vim_json_syntax_conceal = 1
