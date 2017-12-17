@@ -27,6 +27,8 @@ if ! pgrep ssh-agent > /dev/null; then
 fi
 
 if [ "$SSH_AGENT_PID" = "" ]; then
+    mkdir -p "$XDG_RUNTIME_DIR/ssh"
+    ssh-agent > "$XDG_RUNTIME_DIR/ssh/agent"
     eval "$(cat "$XDG_RUNTIME_DIR/ssh/agent")"
 fi
 
