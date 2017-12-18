@@ -2,7 +2,7 @@
 -- AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                           --
 -- FILE:    xmonad.hs                                                                            --
 -- PURPOSE: XMonad configuration file.                                                           --
--- UPDATED: 2016-11-26                                                                           --
+-- UPDATED: 2017-12-17                                                                           --
 -- LICENSE: ISC                                                                                  --
 ---------------------------------------------------------------------------------------------------
 import qualified Data.Char as C                    (toUpper)
@@ -32,8 +32,8 @@ main = do
     -- Get environment to pull some XDG vars.
     env <- E.getEnvironment
 
-    let dzenLeftSize = 1000
-    let trayerWidth = 200
+    let dzenLeftSize = 700
+    let trayerWidth = 180
     let fullWidth = 1920
     let dzenRightSize = fullWidth - dzenLeftSize - trayerWidth
 
@@ -45,7 +45,7 @@ main = do
     xmonad $ ED.ewmh def
         { manageHook      = mHook <+> manageHook def
         , layoutHook      = MD.avoidStruts $ NB.smartBorders $ layoutHook def
-        , startupHook     = SWMN.setWMName "LG3D" -- Prevents Java apps being grey blobs.
+        -- , startupHook     = SWMN.setWMName "LG3D" -- Prevents Java apps being grey blobs.
         , logHook         = loHook dzenL
         , handleEventHook = ED.fullscreenEventHook <+> MD.docksEventHook <+> handleEventHook def
 
@@ -145,10 +145,7 @@ spaces :: [String]
 spaces = zipWith (++) ("`" : map show [1..9] ++ ["0", "-", "="])
                       (" term" : concatMap (replicate 3) [" socl", " play", " work", " etc."])
 
-audioKeys = [ ((shiftMask, X.xF86XK_AudioMute),        spawn "mpc toggle")
-            , ((shiftMask, X.xF86XK_AudioRaiseVolume), spawn "mpc next")
-            , ((shiftMask, X.xF86XK_AudioLowerVolume), spawn "mpc prev")
-            , ((0,         X.xF86XK_AudioPlay),        spawn "mpc toggle")
+audioKeys = [ ((0,         X.xF86XK_AudioPlay),        spawn "mpc toggle")
             , ((0,         X.xF86XK_AudioNext),        spawn "mpc next")
             , ((0,         X.xF86XK_AudioPrev),        spawn "mpc prev")
             , ((0,         X.xF86XK_AudioMute),        spawn "/usr/bin/pulseaudio-ctl mute")
@@ -185,7 +182,7 @@ dzenRight start width config = conkyCmd ++ " | dzen2 " ++ style
           style    = "-x '" ++ show start ++ "' -w '" ++ show width ++ "' -ta 'r'" ++ dzenStyle
 
 -- Dzen style
-dzenStyle = " -fn " ++ font 16 ++ " -h '" ++ show statusHeight ++ "' -y '0' -bg '" ++
+dzenStyle = " -fn " ++ font 14 ++ " -h '" ++ show statusHeight ++ "' -y '0' -bg '" ++
             normalBG ++ "' -fg '" ++ normalFG ++ "'"
 
 trayerCmd start width = "trayer --widthtype pixel --width " ++ show width ++
