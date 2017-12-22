@@ -1,12 +1,12 @@
 #-------------------------------------------------------------------------------------------------#
 # author:  andrew michaud - https://andrewmichaud.com                                             #
 # file:    config                                                                                 #
-# purpose: ncmpcpp config file                                                                    #
+# purpose: osx ncmpcpp config file                                                                #
 # updated: 2017-12-22                                                                             #
 # license: isc                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 mpd_music_dir = "~/music"
-ncmpcpp_directory = "~/.config/ncmpcpp"
+ncmpcpp_directory = "~/Library/Preferences/ncmpcpp"
 
 user_interface = "alternative" (classic/alternative)
 playlist_display_mode = "columns" (classic/columns)
