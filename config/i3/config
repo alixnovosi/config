@@ -2,11 +2,13 @@
 ## author:  andrew michaud - https://andrewmichaud.com                                           ##
 ## file:    config                                                                               ##
 ## purpose: i3 configuration file (v4)                                                           ##
-## updated: 2017-12-21                                                                           ##
+## updated: 2017-12-22                                                                           ##
 ## license: isc                                                                                  ##
 ###################################################################################################
 
+###################################################################################################
 ####################################### vars/settings #############################################
+###################################################################################################
 set $up    l
 set $down  k
 set $left  j
@@ -32,16 +34,13 @@ bar {
 }
 
 set $mod Mod4
+set $local $HOME/.local/share/bin
 
-######################################### keybinds ################################################
-# terminal
-bindsym $mod+Shift+Return exec mate-terminal
-
+###################################################################################################
+####################################### keybinds ##################################################
+###################################################################################################
 # kill focused window
 bindsym $mod+Shift+c kill
-
-# start dmenu (a program launcher)
-bindsym $mod+p exec dmenu_run
 
 # change focus, move focused window.
 bindsym $mod+$left  focus left
@@ -68,8 +67,6 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
-
-bindsym $mod+Shift+s exec xscreensaver-command -lock
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -112,16 +109,52 @@ bindsym $mod+q reload
 # restart i3 in place (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
+# resize window (you can also use the mouse)
+bindsym $mod+r mode "resize"
+
 # exit i3 (logs you out of your x session)
 bindsym $mod+Shift+q exec i3-nagbar -t warning -m "Log off?" -b "Yes" "i3-msg exit"
 
-# resize window (you can also use the mouse)
-bindsym $mod+r mode "resize"
+# start dmenu (a program launcher)
+bindsym $mod+p exec dmenu_run
+
+# terminal
+bindsym $mod+Shift+Return exec mate-terminal
 
 # media controls
 bindsym XF86AudioPlay        exec playerctl play-pause
 bindsym XF86AudioNext        exec playerctl next
 bindsym XF86AudioPrev        exec playerctl previous
-bindsym XF86AudioMute        exec /usr/bin/pulseaudio-ctl mute
-bindsym XF86AudioLowerVolume exec /usr/bin/pulseaudio-ctl down
-bindsym XF86AudioRaiseVolume exec /usr/bin/pulseaudio-ctl up
+bindsym XF86AudioMute        exec pulseaudio-ctl mute
+bindsym XF86AudioLowerVolume exec pulseaudio-ctl down
+bindsym XF86AudioRaiseVolume exec pulseaudio-ctl up
+
+# screenshots
+bindsym Print         exec $local/screenshot
+bindsym Control+Print exec $local/screenshot select
+bindsym Shift+Print   exec $local/screenshot delay
+
+# lock, set wallpaper
+bindsym $mod+Shift+s exec xscreensaver-command -lock
+bindsym $mod+Shift+w exec $local/set_wallpaper pictures/wallpapers
+
+# cat friend
+bindsym $mod+n exec $local/toggle_oneko
+
+# menu commands with dmenu
+bindsym $mod+o       exec $local/menu music
+# bindsym $mod+Shift+p exec $local/menu pass
+bindsym $mod+Shift+v exec $local/menu vid
+
+###################################################################################################
+######################################### autostart ###############################################
+###################################################################################################
+exec -no-startup-id compton -b
+
+exec -no-startup-id xscreensaver -no-splash &
+
+exec -no-startup-id mpDris2 &
+
+exec -no-startup-id blueman-applet &
+exec -no-startup-id nm-applet &
+exec -no-startup-id pasystray &
