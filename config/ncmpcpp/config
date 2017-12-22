@@ -6,6 +6,7 @@
 # license: isc                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 mpd_music_dir = "~/music"
+lyrics_directory = "~/music/lyrics"
 ncmpcpp_directory = "~/.config/ncmpcpp"
 
 user_interface = "alternative" (classic/alternative)
@@ -14,7 +15,6 @@ browser_display_mode = "columns" (classic/columns)
 search_engine_display_mode = "columns" (classic/columns)
 playlist_editor_display_mode = "columns" (classic/columns)
 
-# Note: You can specify third character which will be used to build 'empty' part of progressbar.
 progressbar_look = "=>"
 
 ignore_leading_the = "yes"
