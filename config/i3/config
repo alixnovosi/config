@@ -2,7 +2,7 @@
 ## author:  andrew michaud - https://andrewmichaud.com                                           ##
 ## file:    config                                                                               ##
 ## purpose: i3 configuration file (v4)                                                           ##
-## updated: 2017-12-22                                                                           ##
+## updated: 2017-12-23                                                                           ##
 ## license: isc                                                                                  ##
 ###################################################################################################
 
@@ -15,6 +15,21 @@ set $left  j
 set $right semicolon
 
 font pango:DejaVu Sans Mono 9
+
+set $blue #8fa1b3
+set $yellow #b58900
+set $orange #cb4b16
+set $red #bf616a
+set $magenta #d33682
+set $violet #b48ead
+set $cyan #2aa198
+set $green #859900
+
+# class                 border  backgr. text    indicator
+client.focused          #4c7899 $blue   #eff1f5 #2e9ef4
+client.focused_inactive #333333 $violet #eff1f5 #484e50
+client.unfocused        #333333 #2b303b #888888 #292d2e
+client.urgent           #2f343a $red    #eff1f5 #900000
 
 # drag floating windows to their wanted position
 floating_modifier Mod4
@@ -30,7 +45,19 @@ mode "resize" {
 }
 
 bar {
+    position top
     status_command i3blocks
+    font pango: DejaVu Sans Mono 9
+            colors {
+                  background #2b303b
+                  statusline #65737e
+                  separator  #303030
+
+                  focused_workspace  #ebcb8b #ebcb8b #303030
+                  active_workspace   #303030 #303030 #303030
+                  inactive_workspace #073642 #303030 #65737e
+                  urgent_workspace   #dc322f #dc322f #fdf6e3
+    }
 }
 
 set $mod Mod4
