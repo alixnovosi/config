@@ -2,7 +2,7 @@
 -- AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                           --
 -- FILE:    xmonad.hs                                                                            --
 -- PURPOSE: XMonad configuration file.                                                           --
--- UPDATED: 2016-11-26                                                                           --
+-- UPDATED: 2017-12-17                                                                           --
 -- LICENSE: ISC                                                                                  --
 ---------------------------------------------------------------------------------------------------
 import qualified Data.Char as C                    (toUpper)
@@ -16,7 +16,7 @@ import qualified XMonad.Actions.CycleWS as CWS    (prevWS, nextWS, shiftToPrev, 
 import qualified XMonad.Actions.GridSelect as GS  (defaultGSConfig, goToSelected)
 import qualified XMonad.Hooks.DynamicLog as DL
 import qualified XMonad.Hooks.EwmhDesktops as ED  (ewmh, fullscreenEventHook)
-import qualified XMonad.Hooks.ManageDocks as MD   (manageDocks, avoidStruts)
+import qualified XMonad.Hooks.ManageDocks as MD   (manageDocks, avoidStruts, docksEventHook)
 import qualified XMonad.Hooks.ManageHelpers as MH (doCenterFloat, doFullFloat)
 import qualified XMonad.Hooks.SetWMName as SWMN   (setWMName)      -- Java is bullshit.
 import qualified XMonad.Layout.NoBorders as NB    (smartBorders)
@@ -32,9 +32,9 @@ main = do
     -- Get environment to pull some XDG vars.
     env <- E.getEnvironment
 
-    let dzenLeftSize = 1440
-    let trayerWidth = 200
-    let fullWidth = 2880
+    let dzenLeftSize = 700
+    let trayerWidth = 180
+    let fullWidth = 1920
     let dzenRightSize = fullWidth - dzenLeftSize - trayerWidth
 
     dzenL <- spawnPipe $ dzenLeft dzenLeftSize
@@ -45,9 +45,9 @@ main = do
     xmonad $ ED.ewmh def
         { manageHook      = mHook <+> manageHook def
         , layoutHook      = MD.avoidStruts $ NB.smartBorders $ layoutHook def
-        , startupHook     = SWMN.setWMName "LG3D" -- Prevents Java apps being grey blobs.
+        -- , startupHook     = SWMN.setWMName "LG3D" -- Prevents Java apps being grey blobs.
         , logHook         = loHook dzenL
-        , handleEventHook = ED.fullscreenEventHook <+> handleEventHook def
+        , handleEventHook = ED.fullscreenEventHook <+> MD.docksEventHook <+> handleEventHook def
 
         , modMask    = mod4Mask
         , workspaces = spaces
@@ -145,10 +145,7 @@ spaces :: [String]
 spaces = zipWith (++) ("`" : map show [1..9] ++ ["0", "-", "="])
                       (" term" : concatMap (replicate 3) [" socl", " play", " work", " etc."])
 
-audioKeys = [ ((shiftMask, X.xF86XK_AudioMute),        spawn "mpc toggle")
-            , ((shiftMask, X.xF86XK_AudioRaiseVolume), spawn "mpc next")
-            , ((shiftMask, X.xF86XK_AudioLowerVolume), spawn "mpc prev")
-            , ((0,         X.xF86XK_AudioPlay),        spawn "mpc toggle")
+audioKeys = [ ((0,         X.xF86XK_AudioPlay),        spawn "mpc toggle")
             , ((0,         X.xF86XK_AudioNext),        spawn "mpc next")
             , ((0,         X.xF86XK_AudioPrev),        spawn "mpc prev")
             , ((0,         X.xF86XK_AudioMute),        spawn "/usr/bin/pulseaudio-ctl mute")
@@ -176,7 +173,7 @@ home = "/home/amichaud"
 ---------------------------------------------------------------------------------------------------
 -- Left Dzen - xmonad info and window title.
 dzenLeft :: Int -> String
-dzenLeft width = "dzen2 -x '0' -w '" ++ show width ++ "' -ta 'l'" ++ dzenStyle
+dzenLeft width = "dzen2 -dock -x '0' -w '" ++ show width ++ "' -ta 'l'" ++ dzenStyle
 
 -- Right Dzen - Runs conky config.
 dzenRight :: Int -> Int -> String -> String
@@ -185,14 +182,14 @@ dzenRight start width config = conkyCmd ++ " | dzen2 " ++ style
           style    = "-x '" ++ show start ++ "' -w '" ++ show width ++ "' -ta 'r'" ++ dzenStyle
 
 -- Dzen style
-dzenStyle = " -fn " ++ font 16 ++ " -h '" ++ show statusHeight ++ "' -y '0' -bg '" ++
+dzenStyle = " -fn " ++ font 14 ++ " -h '" ++ show statusHeight ++ "' -y '0' -bg '" ++
             normalBG ++ "' -fg '" ++ normalFG ++ "'"
 
 trayerCmd start width = "trayer --widthtype pixel --width " ++ show width ++
                         " --edge top --SetDockType true" ++
                         " --heighttype pixel --height " ++ show statusHeight ++
                         " --distance " ++ show start ++ " --distancefrom left" ++
-                        " --align left --alpha 0"
+                        " --align left"
 
 -- Fonts
 font size = "DejaVuSansMono:" ++ show size
@@ -219,7 +216,7 @@ myDzenPP handle = DL.dzenPP
     , DL.ppTitle   = DL.dzenColor normalFG normalBG . DL.pad
     , DL.ppLayout  = take 1}
 
-dmenuRunStylized = "dmenu_run -h " ++ show statusHeight ++
+dmenuRunStylized = "dmenu_run " ++
                    " -fn " ++ font 16 ++
                    " -nb '" ++ normalBG ++ "' -nf '" ++ normalFG ++
                    "' -sb '" ++ currentBG ++ "' -sf '" ++ currentFG ++ "'"

@@ -1,0 +1,45 @@
+###################################################################################################
+## author:  andrew michaud - https://andrewmichaud.com                                           ##
+## file:    config                                                                               ##
+## purpose: i3blocks configuration file                                                          ##
+## updated: 2017-12-21                                                                           ##
+## license: isc                                                                                  ##
+###################################################################################################
+# The global properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+command=/usr/share/i3blocks/$BLOCK_NAME
+separator_block_width=15
+markup=none
+
+# displays "artist - song" if mpd is unpaused
+[mediaplayer]
+interval=5
+signal=10
+separator=true
+
+[cpu_usage]
+label=c
+interval=10
+min_width=C 100.00%
+interval=1
+separator=false
+
+[memory]
+label=m
+interval=30
+separator=false
+
+[temperature]
+label=t
+interval=10
+separator=false
+
+[battery]
+label=b
+interval=30
+separator=true
+
+[time]
+command=date "+%d %b %Y %H:%M"
+min_width=
+interval=5
