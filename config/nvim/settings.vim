@@ -2,14 +2,12 @@
 " AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2017-12-12                                                                             "
+" UPDATED: 2018-02-07                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
 set fileformats=unix nobackup nomodeline spell spelllang=en_us undofile
 scriptencoding utf-8
-
-set mouse=a
 
 """ Use 4-wide spaces, no tabs.
 set expandtab shiftwidth=4 softtabstop=4 tabstop=4
@@ -22,24 +20,17 @@ set foldenable foldlevelstart=10 foldnestmax=5 foldmethod=syntax textwidth=99 wh
 execute 'set colorcolumn=' . join(map(range(1,259,2), '"+" . v:val'), ',')
 
 """ Highlight current line, no mode in status.
-""" Ignore case in searching unless I use capital letters.
-set cursorline noshowmode ignorecase smartcase
-
+""" Ignore case in searching unless I use capital letters. Mouse.
 """ Use true color, set colorscheme.
+set cursorline noshowmode ignorecase smartcase mouse=a
 set termguicolors background=dark
 colorscheme gruvbox
-
-set mouse=a
 
 """ JSON conceal.
 let g:vim_json_syntax_conceal = 1
 
 """ Airline preferences.
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
 let g:airline_extensions = ['branch', 'hunks', 'ale', 'tagbar', 'tabline', 'ycm']
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#right_sep = ' '
 let g:airline#extensions#tabline#buffer_min_count = 2
 let g:airline_inactive_collapse = 1
 
