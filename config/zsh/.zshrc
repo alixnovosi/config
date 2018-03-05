@@ -61,3 +61,10 @@ setopt sharehistory extendedhistory
 setopt extendedglob nocaseglob auto_cd
 
 bindkey '^R' history-incremental-search-backward
+
+export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+eval "$(pyenv virtualenv-init -)"
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
