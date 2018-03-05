@@ -85,6 +85,7 @@ export TIGRC="$XDG_CONFIG_HOME/tig/tigrc"
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
 VIRTUALENV_PYTHON="$(which python3)"
 export VIRTUALENV_PYTHON
+export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 
 # This has problems that can break X forwarding that I haven't figured out.
 # export XAUTHORITY="$XDG_RUNTIME_DIR/X11/xauthority"
