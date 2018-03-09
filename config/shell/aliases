@@ -36,7 +36,6 @@ alias whence="which"
 alias whom="who"
 
 # Force XDG_BASE_DIRECTORY_SPEC conformation on various apps.
-alias firefox="firefox --profile \${XDG_CONFIG_HOME}/firefox"
 alias gimp="gimp -g \${XDG_CONFIG_HOME}/gimp/config"
 alias gpg="gpg --homedir \${XDG_CONFIG_HOME}/gnupg"
 alias gpg2="gpg2 --homedir \${XDG_CONFIG_HOME}/gnupg"
@@ -45,7 +44,7 @@ alias mutt="mutt -F \${XDG_CONFIG_HOME}/mutt/muttrc"
 alias offlineimap="offlineimap -c \${XDG_CONFIG_HOME}/offlineimap/config"
 alias startx="startx \${XDG_CONFIG_HOME}/X11/xinitrc"
 alias svn="svn --config-dir \${XDG_CONFIG_HOME}/subversion"
-alias tmux="tmux -2 -u -f \${XDG_CONFIG_HOME}/tmux/tmux.conf"
+alias tmux="tmux -2 -f \${XDG_CONFIG_HOME}/tmux/tmux.conf"
 alias wget="wget --hsts-file=\${XDG_CACHE_HOME}/wget/hstsdb"
 
 # Neovim now defaults to init.vim, so I default to that.
