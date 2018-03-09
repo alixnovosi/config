@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    .zshrc                                                                                 #
 # PURPOSE: zsh config file.                                                                       #
-# UPDATED: 2015-08-02                                                                             #
+# UPDATED: 2015-08-08                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 #
@@ -19,9 +19,9 @@ which fortune &> /dev/null && fortune -s
 if [[ "$(uname -s)" == "Darwin" ]]; then
     source "$HOME/Library/Preferences/shell/osx"
     fpath=(/usr/local/share/zsh-completions $fpath)
+else
+    source "$HOME/.config/shell/posix"
 fi
-
-[[ "$(uname -s)" == "Linux" ]] && source "$HOME/.config/shell/linux"
 
 # I could check if these exist, but I want zsh to let me know if I haven't created them.
 files=('env' 'aliases' 'host')

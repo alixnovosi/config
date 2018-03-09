@@ -1,9 +1,9 @@
 #!/bin/sh
 #-------------------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
-# FILE:    linux                                                                                  #
-# PURPOSE: Linux-specific shell nonsense definition file.                                         #
-# UPDATED: 2016-07-06                                                                             #
+# FILE:    posic                                                                                  #
+# PURPOSE: POSIX-specific (not counting OS X for Reasons) shell nonsense definition file.         #
+# UPDATED: 2018-03-08                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # XDG dirs.
@@ -11,6 +11,23 @@
 [ -z "$XDG_CACHE_HOME" ] && export XDG_CACHE_HOME="$HOME/.cache"
 [ -z "$XDG_DATA_HOME" ] && export XDG_DATA_HOME="$HOME/.local/share"
 [ -z "$XDG_RUNTIME_DIR" ] && export XDG_RUNTIME_DIR="/run/user/1000"
+
+# GNU/Linux specific.
+if [ "$(uname -s)" = "Linux" ]; then
+    alias l="ls -CFh --color=auto"
+    alias la="ls -Ah --color=auto"
+    alias ll="ls -alh --color=auto"
+    alias lt="ls -alht --color=auto"
+
+    # Set LS_COLORS.
+    eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
+# BSD specific.
+else
+    alias l="ls -CFhG"
+    alias la="ls -AhG"
+    alias ll="ls -alhG"
+    alias lt="ls -alhtG"
+fi
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then

@@ -36,10 +36,6 @@ if [ -z "$XDG_RUNTIME_DIR" ]; then
         export XDG_RUNTIME_DIR="/tmp/$USER/"
     fi
 fi
-
-# Set LS_COLORS.
-eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
-
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # Useful stuff.

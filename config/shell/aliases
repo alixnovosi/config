@@ -3,7 +3,7 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
-# UPDATED: 2016-11-02                                                                             #
+# UPDATED: 2018-03-08                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Useful aliases.
@@ -11,22 +11,15 @@ alias betrsync="rsync -azvh --progress --partial"
 alias df="df -h"
 alias dir="ls -Cb"
 alias du="du -ch"
-alias egrep="egrep --color=auto"
-alias fgrep="fgrep --color=auto"
 alias feh="feh --no-fehbg"
-alias grep="grep --color=auto"
-alias l="ls -CFh --color=auto"
-alias la="ls -Ah --color=auto"
-alias ll="ls -alh --color=auto"
-alias lt="ls -alht --color=auto"
 alias nview="nvim -R"
 alias vdir="ls -Cb"
 alias view="nvim -R"
 
 # Safety aliases.
-alias cp="cp -i"
-alias mv="mv -i"
-alias rm="rm -i"
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -iv"
 
 # Silly aliases.
 alias justice="wget -qO- 'https://andrewmichaud.com/justice.ogg' | mpv --really-quiet -"
