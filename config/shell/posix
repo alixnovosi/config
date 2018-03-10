@@ -3,16 +3,16 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    posic                                                                                  #
 # PURPOSE: POSIX-specific (not counting OS X for Reasons) shell nonsense definition file.         #
-# UPDATED: 2018-03-08                                                                             #
+# UPDATED: 2018-03-10                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # XDG dirs.
 [ -z "$XDG_CONFIG_HOME" ] && export XDG_CONFIG_HOME="$HOME/.config"
 [ -z "$XDG_CACHE_HOME" ] && export XDG_CACHE_HOME="$HOME/.cache"
 [ -z "$XDG_DATA_HOME" ] && export XDG_DATA_HOME="$HOME/.local/share"
-[ -z "$XDG_RUNTIME_DIR" ] && export XDG_RUNTIME_DIR="/run/user/1000"
 
 # GNU/Linux specific.
+# TODO should add some check for RUNTIME specifically - it's not just a Linux/BSD thing.
 if [ "$(uname -s)" = "Linux" ]; then
     alias l="ls -CFh --color=auto"
     alias la="ls -Ah --color=auto"
@@ -21,12 +21,18 @@ if [ "$(uname -s)" = "Linux" ]; then
 
     # Set LS_COLORS.
     eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
+
+    export XDG_RUNTIME_DIR="/run/user/1000"
+
 # BSD specific.
 else
     alias l="ls -CFhG"
     alias la="ls -AhG"
     alias ll="ls -alhG"
     alias lt="ls -alhtG"
+
+    mkdir -p "/tmp/$UID"
+    export XDG_RUNTIME_DIR="/tmp/$UID"
 fi
 
 # set variable identifying the chroot you work in (used in the prompt below)
@@ -39,12 +45,12 @@ alias pbcopy="xclip -selection clipboard"
 alias pbpaste="xclip -selection clipboard -o"
 
 # Ensure ssh-agent is set up and will run.
+mkdir -p "$XDG_RUNTIME_DIR/ssh"
 if ! pgrep ssh-agent > /dev/null; then
     ssh-agent > "$XDG_RUNTIME_DIR/ssh/agent"
 fi
 
 if [ "$SSH_AGENT_PID" = "" ]; then
-    mkdir -p "$XDG_RUNTIME_DIR/ssh"
     ssh-agent > "$XDG_RUNTIME_DIR/ssh/agent"
     eval "$(cat "$XDG_RUNTIME_DIR/ssh/agent")"
 fi
