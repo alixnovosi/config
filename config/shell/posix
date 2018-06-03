@@ -1,9 +1,9 @@
 #!/bin/sh
 #-------------------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
-# FILE:    posic                                                                                  #
+# FILE:    posix                                                                                  #
 # PURPOSE: POSIX-specific (not counting OS X for Reasons) shell nonsense definition file.         #
-# UPDATED: 2018-03-10                                                                             #
+# UPDATED: 2018-06-03                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # XDG dirs.
@@ -12,7 +12,7 @@
 [ -z "$XDG_DATA_HOME" ] && export XDG_DATA_HOME="$HOME/.local/share"
 
 # Order of preference for XDG_RUNTIME_DIR.
-uid=$(id -u $USER)
+uid=$(id -u)
 if [ -w "/run/user/$uid" ]; then
     export XDG_RUNTIME_DIR="/run/user/$uid"
 elif [ -w "/tmp" ]; then
