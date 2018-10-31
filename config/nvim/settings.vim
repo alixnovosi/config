@@ -58,7 +58,7 @@ silent !stty -ixon > /dev/null 2>/dev/null
 set conceallevel=1
 let g:hsoptions='+'
 
-let g:python_host_prog = expand('$XDG_DATA_HOME/virtualenvs/neovim2/bin/python')
+let g:python_host_prog = expand('$XDG_DATA_HOME/virtualenvs/neovim3/bin/python')
 let g:python3_host_prog = expand('$XDG_DATA_HOME/virtualenvs/neovim3/bin/python')
 
 """ 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
