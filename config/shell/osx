@@ -28,4 +28,6 @@ export HOMEBREW_LIVECHECK_WATCHLIST="$XDG_CACHE_HOME/homebrew/livecheck_watchlis
 
 export PATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
+alias ll="ls -alr --color=auto"
+
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"

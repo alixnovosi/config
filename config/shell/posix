@@ -1,15 +1,27 @@
 #!/bin/sh
 #-------------------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
-# FILE:    posic                                                                                  #
+# FILE:    posix                                                                                  #
 # PURPOSE: POSIX-specific (not counting OS X for Reasons) shell nonsense definition file.         #
-# UPDATED: 2018-03-10                                                                             #
+# UPDATED: 2018-06-03                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # XDG dirs.
 [ -z "$XDG_CONFIG_HOME" ] && export XDG_CONFIG_HOME="$HOME/.config"
 [ -z "$XDG_CACHE_HOME" ] && export XDG_CACHE_HOME="$HOME/.cache"
 [ -z "$XDG_DATA_HOME" ] && export XDG_DATA_HOME="$HOME/.local/share"
+
+# Order of preference for XDG_RUNTIME_DIR.
+uid=$(id -u)
+if [ -w "/run/user/$uid" ]; then
+    export XDG_RUNTIME_DIR="/run/user/$uid"
+elif [ -w "/tmp" ]; then
+    mkdir -p /tmp/$uid
+    export XDG_RUNTIME_DIR="/tmp/$uid"
+else
+    mkdir -p "$HOME/tmp"
+    export XDG_RUNTIME_DIR="$HOME/tmp"
+fi
 
 # GNU/Linux specific.
 # TODO should add some check for RUNTIME specifically - it's not just a Linux/BSD thing.
@@ -22,7 +34,10 @@ if [ "$(uname -s)" = "Linux" ]; then
     # Set LS_COLORS.
     eval "$(dircolors "$XDG_CONFIG_HOME"/colors/dircolors.256dark)"
 
-    export XDG_RUNTIME_DIR="/run/user/1000"
+    # set variable identifying the chroot you work in (used in the prompt below)
+    if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+        debian_chroot=$(cat /etc/debian_chroot)
+    fi
 
 # BSD specific.
 else
@@ -30,14 +45,6 @@ else
     alias la="ls -AhG"
     alias ll="ls -alhG"
     alias lt="ls -alhtG"
-
-    mkdir -p "/tmp/$UID"
-    export XDG_RUNTIME_DIR="/tmp/$UID"
-fi
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # pbcopy/pbpaste > xclip
