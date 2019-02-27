@@ -9,6 +9,15 @@
 set fileformats=unix nobackup nomodeline spell spelllang=en_us undofile
 scriptencoding utf-8
 
+set mouse=a
+if has("termguicolors")     " set true colors
+    set t_8f=\[[38;2;%lu;%lu;%lum
+    set t_8b=\[[48;2;%lu;%lu;%lum
+    set termguicolors
+endif
+
+set incsearch
+
 """ Use 4-wide spaces, no tabs.
 set expandtab shiftwidth=4 softtabstop=4 tabstop=4
 

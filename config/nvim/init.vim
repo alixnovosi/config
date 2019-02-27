@@ -11,3 +11,8 @@ source $XDG_CONFIG_HOME/nvim/mappings.vim
 if filereadable(expand('$XDG_CONFIG_HOME/nvim/host.vim'))
     source $XDG_CONFIG_HOME/nvim/host.vim
 endif
+
+augroup FiletypeGroup
+    autocmd!
+    au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+augroup END
