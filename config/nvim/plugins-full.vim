@@ -15,6 +15,8 @@ Plug 'nvie/vim-flake8',                  {'for': 'python'}
 Plug 'gcorne/vim-sass-lint',             {'for': 'sass'}
 Plug 'ejholmes/vim-forcedotcom'
 Plug 'sheerun/vim-polyglot'
+Plug 'evanrelf/vim-pico8-color'
+Plug 'ssteinbach/vim-pico8-syntax'
 
 """ General programming support.
 Plug 'bronson/vim-trailing-whitespace'
