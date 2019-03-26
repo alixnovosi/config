@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (all).                                                        "
-" UPDATED: 2017-12-05                                                                             "
+" UPDATED: 2019-02-26                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
@@ -15,6 +15,9 @@ Plug 'nvie/vim-flake8',                  {'for': 'python'}
 Plug 'gcorne/vim-sass-lint',             {'for': 'sass'}
 Plug 'ejholmes/vim-forcedotcom'
 Plug 'sheerun/vim-polyglot'
+Plug 'justinj/vim-pico8-syntax'
+Plug 'evanrelf/vim-pico8-color'
+Plug 'editorconfig/editorconfig-vim'
 
 """ General programming support.
 Plug 'bronson/vim-trailing-whitespace'

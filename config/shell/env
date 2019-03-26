@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #-------------------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    env                                                                                    #
 # PURPOSE: Shell environment variables definition file.                                           #
-# UPDATED: 2017-12-12                                                                             #
+# UPDATED: 2019-02-26                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 # Colors.
@@ -36,7 +36,6 @@ if [ -z "$XDG_RUNTIME_DIR" ]; then
         export XDG_RUNTIME_DIR="/tmp/$USER/"
     fi
 fi
-export PATH="$HOME/.cargo/bin:$PATH"
 
 # Useful stuff.
 export EDITOR="$(which nvim)"
@@ -62,6 +61,9 @@ export LESSKEY="$XDG_CONFIG_HOME/less/keys"
 export MOZBUILD_STATE_PATH="$XDG_CACHE_HOME/mozbuild"
 export MPV_HOME="$XDG_CONFIG_HOME/mpv"
 export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch/config"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/config"
+export NPM_CONFIG_PREFIX="$XDG_DATA_HOME/npm"
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
 export NVIM_LOG_FILE="$XDG_CACHE_HOME/nvim/log/nvimlog"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql/history"
@@ -89,5 +91,11 @@ export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
-# Include bin, gem path.
+PATH="$HOME/.cargo/bin:$PATH"
 PATH="$XDG_DATA_HOME/bin:$XDG_DATA_HOME/gems/bin:$PATH"
+PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+export PATH
+
+export NODE_PATH="$NPM_CONFIG_PREFIX/lib/node_modules"
+
+export MANPATH="$NPM_CONFIG_PREFIX/share/man:$MANPATH"

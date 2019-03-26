@@ -9,6 +9,15 @@
 set fileformats=unix nobackup nomodeline spell spelllang=en_us undofile
 scriptencoding utf-8
 
+set mouse=a
+if has("termguicolors")     " set true colors
+    set t_8f=\[[38;2;%lu;%lu;%lum
+    set t_8b=\[[48;2;%lu;%lu;%lum
+    set termguicolors
+endif
+
+set incsearch
+
 """ Use 4-wide spaces, no tabs.
 set expandtab shiftwidth=4 softtabstop=4 tabstop=4
 
@@ -58,7 +67,7 @@ silent !stty -ixon > /dev/null 2>/dev/null
 set conceallevel=1
 let g:hsoptions='+'
 
-let g:python_host_prog = expand('$XDG_DATA_HOME/virtualenvs/neovim2/bin/python')
+let g:python_host_prog = expand('$XDG_DATA_HOME/virtualenvs/neovim3/bin/python')
 let g:python3_host_prog = expand('$XDG_DATA_HOME/virtualenvs/neovim3/bin/python')
 
 """ 'Learn vimscript the hard way' testbed - http://learnvimscripthehardway.stevelosh.com.
