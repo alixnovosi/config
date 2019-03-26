@@ -39,8 +39,8 @@ fi
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # Useful stuff.
-export EDITOR="nvim"
-export PAGER="less"
+export EDITOR="$(which nvim)"
+export PAGER="$(which less)"
 export MANPAGER="$PAGER"
 export VISUAL="$EDITOR"
 
