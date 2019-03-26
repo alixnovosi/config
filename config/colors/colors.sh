@@ -60,7 +60,7 @@ fi
 # Do this in any case.
 # ugh
 if [ "$OS" = "FreeBSD" ]; then
-    export P_RESET && P_RESET="$(print '\E[m')"
+    export P_RESET && P_RESET="$(tput me)"
 else
     export P_RESET && P_RESET="$(tput sgr0)"
 fi
