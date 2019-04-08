@@ -1,11 +1,11 @@
-#!/bin/bash
-#-------------------------------------------------------------------------------------------------#
-# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
+#!/usr/bin/env bash
+###################################################################################################
+# AUTHOR:  Andrew Michaud - drew.life                                                             #
 # FILE:    env                                                                                    #
 # PURPOSE: Shell environment variables definition file.                                           #
-# UPDATED: 2019-02-26                                                                             #
+# UPDATED: 2019-04-08                                                                             #
 # LICENSE: ISC                                                                                    #
-#-------------------------------------------------------------------------------------------------#
+###################################################################################################
 # Colors.
 # shellcheck source=/dev/null
 . "$XDG_CONFIG_HOME/colors/colors.sh"
@@ -38,8 +38,10 @@ if [ -z "$XDG_RUNTIME_DIR" ]; then
 fi
 
 # Useful stuff.
-export EDITOR="$(which nvim)"
-export PAGER="$(which less)"
+export EDITOR
+EDITOR="$(command -v nvim)"
+export PAGER
+PAGER="$(command -v less)"
 export MANPAGER="$PAGER"
 export VISUAL="$EDITOR"
 
@@ -81,7 +83,7 @@ export TEXMFHOME="$XDG_CONFIG_HOME/tex/mfhome"
 export TEXMFVAR="$XDG_RUNTIME_DIR/tex/mfvar"
 export TIGRC="$XDG_CONFIG_HOME/tig/tigrc"
 export WINEPREFIX="$XDG_CONFIG_HOME/wine"
-VIRTUALENV_PYTHON="$(which python3)"
+VIRTUALENV_PYTHON="$(command -v python3)"
 export VIRTUALENV_PYTHON
 export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 
