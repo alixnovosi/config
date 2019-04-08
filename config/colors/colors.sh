@@ -10,45 +10,57 @@ BASE16_SHELL="$XDG_DATA_HOME/bin/base16-shell/base16-ocean.dark.sh"
 # shellcheck source=/dev/null
 [ -s "$BASE16_SHELL" ] && source "$BASE16_SHELL"
 
+OS=$(uname -s)
+if [ "$OS" = "FreeBSD" ]; then
+    TPUT_ARGS="AF"
+else
+    TPUT_ARGS="setaf"
+fi
+
 # tput color nonsense. Use 256 colors, if we have them.
 # Technically the assignment could error out or something, so we export then assign.
-if [ "$(tput colors)" = "256" ]; then
-    export P_BASE03 && P_BASE03="$(tput setaf 234)"
-    export P_BASE02 && P_BASE02="$(tput setaf 235)"
-    export P_BASE01 && P_BASE01="$(tput setaf 240)"
-    export P_BASE00 && P_BASE00="$(tput setaf 241)"
-    export P_BASE0 && P_BASE0="$(tput setaf 244)"
-    export P_BASE1 && P_BASE1="$(tput setaf 245)"
-    export P_BASE2 && P_BASE2="$(tput setaf 254)"
-    export P_BASE3 && P_BASE3="$(tput setaf 230)"
-    export P_YELLOW && P_YELLOW="$(tput setaf 136)"
-    export P_ORANGE && P_ORANGE="$(tput setaf 166)"
-    export P_RED && P_RED="$(tput setaf 160)"
-    export P_MAGENTA && P_MAGENTA="$(tput setaf 125)"
-    export P_VIOLET && P_VIOLET="$(tput setaf 61)"
-    export P_BLUE && P_BLUE="$(tput setaf 33)"
-    export P_CYAN && P_CYAN="$(tput setaf 37)"
-    export P_GREEN && P_GREEN="$(tput setaf 64)"
+if [ "$(tput colors)" = "256" ] || [ "$OS" = "FreeBSD" ]; then
+    export P_BASE03 && P_BASE03="$(tput $TPUT_ARGS 234)"
+    export P_BASE02 && P_BASE02="$(tput $TPUT_ARGS 235)"
+    export P_BASE01 && P_BASE01="$(tput $TPUT_ARGS 240)"
+    export P_BASE00 && P_BASE00="$(tput $TPUT_ARGS 241)"
+    export P_BASE0 && P_BASE0="$(tput $TPUT_ARGS 244)"
+    export P_BASE1 && P_BASE1="$(tput $TPUT_ARGS 245)"
+    export P_BASE2 && P_BASE2="$(tput $TPUT_ARGS 254)"
+    export P_BASE3 && P_BASE3="$(tput $TPUT_ARGS 230)"
+    export P_YELLOW && P_YELLOW="$(tput $TPUT_ARGS 136)"
+    export P_ORANGE && P_ORANGE="$(tput $TPUT_ARGS 166)"
+    export P_RED && P_RED="$(tput $TPUT_ARGS 160)"
+    export P_MAGENTA && P_MAGENTA="$(tput $TPUT_ARGS 125)"
+    export P_VIOLET && P_VIOLET="$(tput $TPUT_ARGS 61)"
+    export P_BLUE && P_BLUE="$(tput $TPUT_ARGS 33)"
+    export P_CYAN && P_CYAN="$(tput $TPUT_ARGS 37)"
+    export P_GREEN && P_GREEN="$(tput $TPUT_ARGS 64)"
 
 # Fine, only 16 colors.
 else
-    export P_BASE03 && P_BASE03="$(tput setaf 8)"
-    export P_BASE02 && P_BASE02="$(tput setaf 0)"
-    export P_BASE01 && P_BASE01="$(tput setaf 10)"
-    export P_BASE00 && P_BASE00="$(tput setaf 11)"
-    export P_BASE0 && P_BASE0="$(tput setaf 12)"
-    export P_BASE1 && P_BASE1="$(tput setaf 14)"
-    export P_BASE2 && P_BASE2="$(tput setaf 7)"
-    export P_BASE3 && P_BASE3="$(tput setaf 15)"
-    export P_YELLOW && P_YELLOW="$(tput setaf 3)"
-    export P_ORANGE && P_ORANGE="$(tput setaf 9)"
-    export P_RED && P_RED="$(tput setaf 1)"
-    export P_MAGENTA && P_MAGENTA="$(tput setaf 5)"
-    export P_VIOLET && P_VIOLET="$(tput setaf 13)"
-    export P_BLUE && P_BLUE="$(tput setaf 4)"
-    export P_CYAN && P_CYAN="$(tput setaf 6)"
-    export P_GREEN && P_GREEN="$(tput setaf 2)"
+    export P_BASE03 && P_BASE03="$(tput $TPUT_ARGS 8)"
+    export P_BASE02 && P_BASE02="$(tput $TPUT_ARGS 0)"
+    export P_BASE01 && P_BASE01="$(tput $TPUT_ARGS 10)"
+    export P_BASE00 && P_BASE00="$(tput $TPUT_ARGS 11)"
+    export P_BASE0 && P_BASE0="$(tput $TPUT_ARGS 12)"
+    export P_BASE1 && P_BASE1="$(tput $TPUT_ARGS 14)"
+    export P_BASE2 && P_BASE2="$(tput $TPUT_ARGS 7)"
+    export P_BASE3 && P_BASE3="$(tput $TPUT_ARGS 15)"
+    export P_YELLOW && P_YELLOW="$(tput $TPUT_ARGS 3)"
+    export P_ORANGE && P_ORANGE="$(tput $TPUT_ARGS 9)"
+    export P_RED && P_RED="$(tput $TPUT_ARGS 1)"
+    export P_MAGENTA && P_MAGENTA="$(tput $TPUT_ARGS 5)"
+    export P_VIOLET && P_VIOLET="$(tput $TPUT_ARGS 13)"
+    export P_BLUE && P_BLUE="$(tput $TPUT_ARGS 4)"
+    export P_CYAN && P_CYAN="$(tput $TPUT_ARGS 6)"
+    export P_GREEN && P_GREEN="$(tput $TPUT_ARGS 2)"
 fi
 
 # Do this in any case.
-export P_RESET && P_RESET="$(tput sgr0)"
+# ugh
+if [ "$OS" = "FreeBSD" ]; then
+    export P_RESET && P_RESET="$(tput me)"
+else
+    export P_RESET && P_RESET="$(tput sgr0)"
+fi
