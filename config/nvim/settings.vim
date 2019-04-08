@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
+" AUTHOR:  Andrew Michaud - drew.life                                                             "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2018-02-07                                                                             "
+" UPDATED: 2019-04-08                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -10,7 +10,7 @@ set fileformats=unix nobackup nomodeline spell spelllang=en_us undofile
 scriptencoding utf-8
 
 set mouse=a
-if has("termguicolors")     " set true colors
+if has("termguicolors")  " set true colors
     set t_8f=\[[38;2;%lu;%lu;%lum
     set t_8b=\[[48;2;%lu;%lu;%lum
     set termguicolors
@@ -33,9 +33,8 @@ execute 'set colorcolumn=' . join(map(range(1,259,2), '"+" . v:val'), ',')
 """ Use true color, set colorscheme.
 set cursorline noshowmode ignorecase smartcase mouse=a
 set termguicolors background=dark
-colorscheme gruvbox
+colorscheme base16-phd
 
-""" JSON conceal.
 let g:vim_json_syntax_conceal = 1
 
 """ Airline preferences.

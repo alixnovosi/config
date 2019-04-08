@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
+" AUTHOR:  Andrew Michaud - drew.life                                                             "
 " FILE:    mappings.vim                                                                           "
 " PURPOSE: Mappings used in (neo)vim.                                                             "
-" UPDATED: 2017-11-03                                                                             "
+" UPDATED: 2019-04-08                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Use sudo after accessing file where sudo is needed, without having to reload.

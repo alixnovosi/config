@@ -1,8 +1,8 @@
 "-------------------------------------------------------------------------------------------------"
-" AUTHOR:  Andrew Michaud - andrewmichaud.com                                                     "
+" AUTHOR:  Andrew Michaud - drew.life                                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (all).                                                        "
-" UPDATED: 2019-02-26                                                                             "
+" UPDATED: 2019-04-08                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
@@ -13,7 +13,6 @@ Plug 'Valloric/MatchTagAlways',          {'for': 'html'}
 Plug 'ehamberg/vim-cute-python',         {'for': 'python'}
 Plug 'nvie/vim-flake8',                  {'for': 'python'}
 Plug 'gcorne/vim-sass-lint',             {'for': 'sass'}
-Plug 'ejholmes/vim-forcedotcom'
 Plug 'sheerun/vim-polyglot'
 Plug 'justinj/vim-pico8-syntax'
 Plug 'evanrelf/vim-pico8-color'
@@ -39,7 +38,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 """ Appearance.
-Plug 'morhetz/gruvbox'
+Plug 'chriskempson/base16-vim'
 
 """ File stuff/ things outside vim.
 Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
