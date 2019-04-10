@@ -3,11 +3,11 @@
 # AUTHOR:  Andrew Michaud - drew.life                                                             #
 # FILE:    aliases                                                                                #
 # PURPOSE: Shell aliases definition file.                                                         #
-# UPDATED: 2019-04-08                                                                             #
+# UPDATED: 2019-04-10                                                                             #
 # LICENSE: ISC                                                                                    #
 ###################################################################################################
 # Useful aliases.
-alias betrsync="rsync -azvh --progress --partial"
+alias betrsync="rsync -azvhi --progress --partial"
 alias df="df -h"
 alias dir="ls -Cb"
 alias du="du -ch"
