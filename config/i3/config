@@ -1,8 +1,8 @@
 ###################################################################################################
-## author:  andrew michaud - https://andrewmichaud.com                                           ##
+## author:  andrew michaud - drew.life                                                           ##
 ## file:    config                                                                               ##
 ## purpose: i3 configuration file (v4)                                                           ##
-## updated: 2017-12-23                                                                           ##
+## updated: 2019-04-10                                                                           ##
 ## license: isc                                                                                  ##
 ###################################################################################################
 
@@ -14,22 +14,13 @@ set $down  k
 set $left  j
 set $right semicolon
 
-font pango:DejaVu Sans Mono 9
-
-set $blue #8fa1b3
-set $yellow #b58900
-set $orange #cb4b16
-set $red #bf616a
-set $magenta #d33682
-set $violet #b48ead
-set $cyan #2aa198
-set $green #859900
+font pango:DejaVu Sans Mono 12
 
 # class                 border  backgr. text    indicator
-client.focused          #4c7899 $blue   #eff1f5 #2e9ef4
-client.focused_inactive #333333 $violet #eff1f5 #484e50
-client.unfocused        #333333 #2b303b #888888 #292d2e
-client.urgent           #2f343a $red    #eff1f5 #900000
+client.focused          $base05 $base02 $base05 $base09
+client.focused_inactive $base03 $base01 $base03 $base09
+client.unfocused        $base03 $base01 $base03 $base09
+client.urgent           $base08 $base08 $base04 $base08
 
 # drag floating windows to their wanted position
 floating_modifier Mod4
@@ -47,16 +38,17 @@ mode "resize" {
 bar {
     position top
     status_command i3blocks
-    font pango: DejaVu Sans Mono 9
-            colors {
-                  background #2b303b
-                  statusline #65737e
-                  separator  #303030
+    font pango: DejaVu Sans Mono 10
+    colors {
+          background $base01
+          statusline $base05
+          separator  $base01
 
-                  focused_workspace  #ebcb8b #ebcb8b #303030
-                  active_workspace   #303030 #303030 #303030
-                  inactive_workspace #073642 #303030 #65737e
-                  urgent_workspace   #dc322f #dc322f #fdf6e3
+#         class              border  backgr. forgr.
+          focused_workspace  $base06 $base06 $base01
+          active_workspace   $base01 $base01 $base05
+          inactive_workspace $base01 $base01 $base05
+          urgent_workspace   $base08 $base08 $base04
     }
 }
 
@@ -140,7 +132,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+r mode "resize"
 
 # exit i3 (logs you out of your x session)
-bindsym $mod+Shift+q exec i3-nagbar -t warning -m "Log off?" -b "Yes" "i3-msg exit"
+bindsym $mod+Shift+q exec i3-nagbar -t warning -m "log off?" -b "yes" "i3-msg exit"
 
 # start dmenu (a program launcher)
 bindsym $mod+p exec dmenu_run
@@ -176,12 +168,26 @@ bindsym $mod+Shift+v exec $local/menu vid
 ###################################################################################################
 ######################################### autostart ###############################################
 ###################################################################################################
-exec -no-startup-id compton -b
+exec -no-startup-id $local/startup_scripts
 
-exec -no-startup-id xscreensaver -no-splash &
+## Base16 PhD
+# Author: Hennig Hasemann (http://leetless.de/vim.html)
+#
+# You can use these variables anywhere in the i3 configuration file.
 
-exec -no-startup-id mpDris2 &
-
-exec -no-startup-id blueman-applet &
-exec -no-startup-id nm-applet &
-exec -no-startup-id pasystray &
+set $base00 #061229
+set $base01 #2a3448
+set $base02 #4d5666
+set $base03 #717885
+set $base04 #9a99a3
+set $base05 #b8bbc2
+set $base06 #dbdde0
+set $base07 #ffffff
+set $base08 #d07346
+set $base09 #f0a000
+set $base0A #fbd461
+set $base0B #99bf52
+set $base0C #72b9bf
+set $base0D #5299bf
+set $base0E #9989cc
+set $base0F #b08060
