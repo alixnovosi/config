@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - drew.life                                                             "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2019-04-08                                                                             "
+" UPDATED: 2019-04-13                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -30,10 +30,9 @@ execute 'set colorcolumn=' . join(map(range(1,259,2), '"+" . v:val'), ',')
 
 """ Highlight current line, no mode in status.
 """ Ignore case in searching unless I use capital letters. Mouse.
-""" Use true color, set colorscheme.
+""" Use true color.
 set cursorline noshowmode ignorecase smartcase mouse=a
 set termguicolors background=dark
-colorscheme base16-phd
 
 let g:vim_json_syntax_conceal = 1
 
