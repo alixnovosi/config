@@ -1,14 +1,15 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #-------------------------------------------------------------------------------------------------#
 # AUTHOR:  Andrew Michaud                                                                         #
 # FILE:    colors.sh                                                                              #
 # PURPOSE: color-related environment variable generator                                           #
-# UPDATED: 2016-03-11                                                                             #
+# UPDATED: 2019-04-13                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
-BASE16_SHELL="$XDG_DATA_HOME/bin/base16-shell/base16-ocean.dark.sh"
+# TODO I don't know if this should live here.
+# Base16 Shell
 # shellcheck source=/dev/null
-[ -s "$BASE16_SHELL" ] && source "$BASE16_SHELL"
+source "$XDG_CONFIG_HOME/base16-shell/shell-current.sh"
 
 OS=$(uname -s)
 if [ "$OS" = "FreeBSD" ]; then
