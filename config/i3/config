@@ -42,7 +42,7 @@ bar {
     colors {
           background $color0
           statusline $color15
-          separator  $color0
+          separator  $color15
 
 #         class              border   backgr.  forgr.
           focused_workspace  $color15 $color15 $color0

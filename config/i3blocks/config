@@ -1,18 +1,26 @@
 ###################################################################################################
-## author:  andrew michaud - https://andrewmichaud.com                                           ##
+## author:  drew - https://drew.life                                                             ##
 ## file:    config                                                                               ##
 ## purpose: i3blocks configuration file                                                          ##
-## updated: 2017-12-21                                                                           ##
+## updated: 2019-04-26                                                                           ##
 ## license: isc                                                                                  ##
 ###################################################################################################
 # The global properties below are applied to every block, but can be overridden.
 # Each block command defaults to the script name to avoid boilerplate.
-command=/usr/share/i3blocks/$BLOCK_NAME
+command=/home/amichaud/src/git/i3blocks-contrib/$BLOCK_NAME/$BLOCK_NAME
 separator_block_width=15
 markup=none
 
-# displays "artist - song" if mpd is unpaused
 [mediaplayer]
+label=♪:
+instance=spotify
+interval=5
+signal=10
+separator=true
+
+[mediaplayer]
+label=♪mpd♪:
+instance=mpd
 interval=5
 signal=10
 separator=true
@@ -40,6 +48,6 @@ interval=30
 separator=true
 
 [time]
-command=date "+%d %b %Y %H:%M"
+command=date "+%A, %d %b %Y %H:%M"
 min_width=
 interval=5
