@@ -2,7 +2,7 @@
 ## author:  andrew michaud - drew.life                                                           ##
 ## file:    config                                                                               ##
 ## purpose: i3 configuration file                                                                ##
-## updated: 2019-04-13                                                                           ##
+## updated: 2019-06-06                                                                           ##
 ## license: isc                                                                                  ##
 ###################################################################################################
 
@@ -150,8 +150,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pulseaudio-ctl up
 
 # screenshots
 bindsym Print         exec $local/screenshot
-bindsym Control+Print exec $local/screenshot select
-bindsym Shift+Print   exec $local/screenshot delay
+bindsym Control+Print exec $local/screenshot --subcommand select
+bindsym Shift+Print   exec $local/screenshot --subcommand delay
 
 # lock, set wallpaper
 bindsym $mod+Shift+s exec xscreensaver-command -lock
