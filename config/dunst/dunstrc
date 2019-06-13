@@ -2,23 +2,35 @@
 # AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
 # FILE:    dunstrc                                                                                #
 # PURPOSE: config file for dunst notification app                                                 #
-# UPDATED: 2016-03-26                                                                             #
+# UPDATED: 2019-06-12                                                                             #
 # LICENSE: ISC                                                                                    #
 #-------------------------------------------------------------------------------------------------#
 [global]
     font = DejaVu Sans Mono 16
 
-    # Allow a small subset of html markup:
-    #   <b>bold</b>
-    #   <i>italic</i>
-    #   <s>strikethrough</s>
-    #   <u>underline</u>
+    # Possible values are:
+    # full: Allow a small subset of html markup in notifications:
+    #        <b>bold</b>
+    #        <i>italic</i>
+    #        <s>strikethrough</s>
+    #        <u>underline</u>
     #
-    # For a complete reference see
-    # <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
-    # If markup is not allowed, those tags will be stripped out of the
-    # message.
-    allow_markup = yes
+    #        For a complete reference see
+    #        <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
+    #
+    # strip: This setting is provided for compatibility with some broken
+    #        clients that send markup even though it's not enabled on the
+    #        server. Dunst will try to strip the markup but the parsing is
+    #        simplistic so using this option outside of matching rules for
+    #        specific applications *IS GREATLY DISCOURAGED*.
+    #
+    # no:    Disable markup parsing, incoming notifications will be treated as
+    #        plain text. Dunst will not advertise that it has the body-markup
+    #        capability if this is set as a global setting.
+    #
+    # It's important to note that markup inside the format option will be parsed
+    # regardless of what this is set to.
+    markup = full
 
     # The format of the message.  Possible variables are:
     #   %a  appname
@@ -132,8 +144,8 @@
     # automatically after a crash.
     startup_notification = false
 
-    # dmenu path.
-    dmenu = /usr/local/bin/dmenu -p dunst:
+    # dmenu (rofi) path.
+    dmenu = /usr/bin/rofi -dmenu
 
     # Browser for opening urls in context menu.
     browser = /usr/bin/firefox -new-tab
@@ -142,14 +154,16 @@
     icon_position = off
 
     # Paths to default icons.
-    icon_folders = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
 
-[frame]
-    width = 1
-    color = "#c0c5ce"
+    # Defines width in pixels of frame around the notification window.
+    # Set to 0 to disable.
+    frame_width = 1
+
+    # Defines color of the frame around the notification window.
+    frame_color = "#c0c5ce"
 
 [shortcuts]
-
     # Shortcuts are specified as [modifier+][modifier+]...key
     # Available modifiers are "ctrl", "mod1" (the alt-key), "mod2",
     # "mod3" and "mod4" (windows-key).
