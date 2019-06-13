@@ -157,7 +157,49 @@ def run(*, force):
                 print(f"{proposed_link_name} exists as a file already. skipping.")
                 continue
 
-    print("done!")
+    print(
+        "\n"
+        "creating needed directories"
+        "\n"
+    )
+    for dire in NEEDED_DIRS:
+
+        print(f"working on needed directory {dire}")
+        joined = os.path.join(xdg_cache_home, dire)
+        if os.path.isfile(joined) or os.path.islink(joined):
+            print(f"expected {joined} to not exist, but it's a file or a link. skipping.")
+            continue
+
+        elif os.path.isdir(joined):
+            print(f"{joined} exists as a directory. skipping.")
+            continue
+
+        elif not os.path.isdir(joined):
+            os.mkdir(joined)
+            print(f"created directory {joined}")
+
+    print(
+        "\n"
+        "creating needed files"
+        "\n"
+    )
+    for file in NEEDED_FILES:
+
+        print(f"working on needed file {file}")
+        joined = os.path.join(xdg_cache_home, file)
+        if os.path.isdir(joined) or os.path.islink(joined):
+            print(f"expected {joined} to not exist, but it's a directory or a link. skipping.")
+            continue
+
+        elif os.path.isfile(joined):
+            print(f"{joined} exists as a file. skipping.")
+            continue
+
+        elif not os.path.isdir(joined):
+            open(joined, "a").close()
+            print(f"created file {joined}")
+
+    print("\ndone!")
 
 
 def main():
