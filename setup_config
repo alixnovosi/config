@@ -1,160 +1,226 @@
-#!/bin/sh
-#-------------------------------------------------------------------------------------------------#
-# AUTHOR:  Andrew Michaud - https://andrewmichaud.com                                             #
-# FILE:    setup                                                                                  #
-# PURPOSE: script to deploy config files and scripts in this repo.                                #
-# UPDATED: 2016-06-24                                                                             #
-# LICENSE: ISC                                                                                    #
-#-------------------------------------------------------------------------------------------------#
+#!/usr/bin/env python3
 
-# TODO This isn't quite rigorous enough in checking to be sure it's not trying to symlink files
-# that already exist.
-# Fix that.
-
-# FORCE=1
-
-#-------------------------------------------------------------------------------------------------#
-###################################### GET XDG VARS ###############################################
-#-------------------------------------------------------------------------------------------------#
-echo "Determining necessary XDG env vars..."
-echo
-
-# Ensure vars are set.
-OS="$(uname -s)"
-if [ "$OS" = "Darwin" ]; then
-    DEFAULT_CONFIG="$HOME/Library/Preferences"
-    DEFAULT_CACHE="$HOME/Library/Caches"
-    DEFAULT_DATA="$HOME/Library"
-
-elif [ "$OS" = "Linux" ]; then
-    DEFAULT_CONFIG="$HOME/.config"
-    DEFAULT_CACHE="$HOME/.cache"
-    DEFAULT_DATA="$HOME/.local/share"
-
-else
-    echo "OS $OS currently unsupported!"
-    exit 1
-fi
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME-${DEFAULT_CONFIG}}
-echo "XDG_CONFIG_HOME is $XDG_CONFIG_HOME"
-
-XDG_CACHE_HOME=${XDG_CACHE_HOME-${DEFAULT_CACHE}}
-echo "XDG_CACHE_HOME set to $XDG_CACHE_HOME."
-
-XDG_DATA_HOME=${XDG_DATA_HOME-${DEFAULT_DATA}}
-echo "XDG_DATA_HOME set to $XDG_DATA_HOME"
-
-# Create all directories.
-if [ -d "$XDG_CONFIG_HOME" ]; then
-    if [ -L "$XDG_CONFIG_HOME" ]; then
-        echo "Config DIR $XDG_CONFIG_HOME exists as a symlink."
-    else
-        echo "Config DIR $XDG_CONFIG_HOME exists as a directory."
-    fi
-
-else
-    echo "Config DIR $XDG_CONFIG_HOME does not exist, creating."
-    mkdir -p "$XDG_CONFIG_HOME"
-fi
-
-if [ -d "$XDG_CACHE_HOME" ]; then
-    if [ -L "$XDG_CACHE_HOME" ]; then
-        echo "Cache DIR $XDG_CACHE_HOME exists as a symlink."
-    else
-        echo "Cache DIR $XDG_CACHE_HOME exists as a directory."
-    fi
-
-else
-    echo "Cache DIR $XDG_CACHE_HOME does not exist, creating."
-    mkdir -p "$XDG_CACHE_HOME"
-fi
-
-if [ -d "$XDG_DATA_HOME" ]; then
-    if [ -L "$XDG_DATA_HOME" ]; then
-        echo "Data DIR $XDG_DATA_HOME exists as a symlink."
-    else
-        echo "Data DIR $XDG_DATA_HOME exists as a directory."
-    fi
-
-else
-    echo "Data DIR $XDG_DATA_HOME does not exist, creating."
-    mkdir -p "$XDG_DATA_HOME"
-fi
-
-#-------------------------------------------------------------------------------------------------#
-#################################### GET OTHER VARS ###############################################
-#-------------------------------------------------------------------------------------------------#
-echo
-echo "Determining other necessary env vars..."
-echo
-
-# Grab directory of git repo.
-GIT_DIR="$(pwd -P)"
-echo "GIT_DIR is $GIT_DIR"
-
-# Grab places we'll put scripts and config files.
-GIT_CONFIG_HOME="$GIT_DIR/config"
-
-#-------------------------------------------------------------------------------------------------#
-################################### DEPLOY CONFIG FILES ###########################################
-#-------------------------------------------------------------------------------------------------#
-echo
-echo "Deploying config files..."
-echo
-
-# Deploy config files.
-echo "Linking all config files in each directory in $GIT_CONFIG_HOME into $XDG_CONFIG_HOME"
-DIRS="$(find "$GIT_CONFIG_HOME" -type d -maxdepth 1 -mindepth 1)"
-for DIR in $DIRS; do
-    DIR_NAME="$(basename "$DIR")"
-    echo "On config dir $DIR"
-
-    if [ ! -d "$XDG_CONFIG_HOME/$DIR_NAME" ]; then
-        echo "Creating config directory $DIR_NAME"
-        mkdir "$XDG_CONFIG_HOME/$DIR_NAME"
-    elif [ -f "$XDG_CONFIG_HOME/$DIR_NAME" ]; then
-        echo "Found $DIR_NAME as file in $XDG_CONFIG_HOME already."
-    elif [ -d "$XDG_CONFIG_HOME/$DIR_NAME" ]; then
-        echo "Found $DIR_NAME as directory in $XDG_CONFIG_HOME already."
-    else
-        echo "Found $DIR_NAME as symlink in $XDG_CONFIG_HOME already."
-    fi
-
-    files="$(find "$DIR" -maxdepth 1 -mindepth 1)"
-    for file in $files; do
-        FILE_NAME="$(basename "$file")"
-        if [ ! -L "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME" ]; then
-            echo "Linking $file into $XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME"
-            ln -s "$file" "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME"
-        elif [ -f "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME" ]; then
-            echo "$FILE_NAME already exists as a file in $XDG_CONFIG_HOME/$DIR_NAME"
-        else
-            echo "$FILE_NAME already exists as a symlink in $XDG_CONFIG_HOME/$DIR_NAME"
-
-            if [ ! -z "$FORCE" ]; then
-                echo "FORCE is set, removing symlink and re-symlinking."
-                rm "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME"
-                ln -s "$file" "$XDG_CONFIG_HOME/$DIR_NAME/$FILE_NAME"
-            fi
-        fi
-    done
-done
-
-#-------------------------------------------------------------------------------------------------#
-############################################# OTHER ###############################################
-#-------------------------------------------------------------------------------------------------#
+import argparse
+import os
+import platform
+import sys
 
 # Make folders/files expected by the configs we just created.
-# TODO clean this up to use arrays somehow.
-mkdir -p "$XDG_CACHE_HOME/less"
-mkdir -p "$XDG_CACHE_HOME/tex/mfvar"
-mkdir -p "$XDG_CACHE_HOME/vim/backup"
-mkdir -p "$XDG_CACHE_HOME/vim/swap"
-mkdir -p "$XDG_CACHE_HOME/nvim/swap"
-mkdir -p "$XDG_CACHE_HOME/nvim/backup"
-mkdir -p "$XDG_CACHE_HOME/nvim/log"
-mkdir -p "$XDG_CACHE_HOME/zsh/"
+NEEDED_DIRS = [
+    "less",
+    os.path.join("tex", "mfvar"),
+    os.path.join("vim", "backup"),
+    os.path.join("vim", "swap"),
+    os.path.join("nvim", "swap"),
+    os.path.join("nvim", "backup"),
+    os.path.join("nvim", "log"),
+    "zsh",
+]
 
-touch "$XDG_CACHE_HOME/less/hist"
-touch "$XDG_CACHE_HOME/zsh/history"
-touch "$XDG_CACHE_HOME/nvim/log/nvimlog"
+NEEDED_FILES = [
+    os.path.join("less", "hist"),
+    os.path.join("zsh", "history"),
+    os.path.join("nvim", "log", "nvimlog"),
+]
+
+
+def run(*, force):
+    """run script-linking script."""
+
+    print(
+        "determining necessary XDG env vars..."
+        "\n"
+    )
+
+    home = os.path.expanduser("~")
+    system_os = platform.system()
+
+    # set sensible defaults appropriately for OS
+    if system_os == "Darwin":
+        xdg_cache_home_default = os.path.join(home, "Library", "Caches")
+        xdg_config_home_default = os.path.join(home, "Library", "Preferences")
+
+    elif system_os == "Linux" or os == "FreeBSD":
+        xdg_cache_home_default = os.path.join(home, ".cache")
+        xdg_config_home_default = os.path.join(home, ".config")
+
+    else:
+        print(f"OS {system_os} currently unsupported!")
+        sys.exit(1)
+
+    xdg_cache_home = os.environ.get("XDG_CACHE_HOME", xdg_cache_home_default)
+    xdg_config_home = os.environ.get("XDG_CONFIG_HOME", xdg_config_home_default)
+
+    print(f"XDG_CONFIG_HOME set to {xdg_config_home}.")
+    print(f"XDG_CACHE_HOME set to {xdg_cache_home}.")
+
+    for directory in [xdg_cache_home, xdg_config_home]:
+        if os.path.isdir(directory):
+            print(f"dir {directory} exists as a directory, good")
+
+        elif os.path.isfile(directory):
+            print(f"dir {directory} is a file! please remove it")
+            sys.exit(1)
+
+        else:
+            print(f"dir {directory} does not exist, creating...")
+            os.makedirs(directory)
+
+    print("directories are ready!")
+
+    configs_dir = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "config",
+    )
+
+    print(
+        "\n"
+        f"linking all configs in {configs_dir} into {xdg_config_home}..."
+        "\n"
+    )
+
+    # go through every config directory in
+    # src/git/config/config
+    config_entry_dirs = sorted([
+        os.path.join(configs_dir, dire)
+        for dire in os.listdir(configs_dir)
+        if os.path.isdir(os.path.join(configs_dir, dire))
+    ])
+    for config_entry in config_entry_dirs:
+
+        print(
+            "\n"
+            f"on entry {config_entry}"
+            "\n"
+        )
+        config_basename = os.path.basename(config_entry)
+
+        # ensure a directory is present wherever we are dumping
+        # these config files.
+        # if there's a link or symlink instead, bail.
+        proposed_path = os.path.join(xdg_config_home, config_basename)
+        if os.path.isfile(proposed_path) or os.path.islink(proposed_path):
+            print(
+                f"found {config_basename} as file or link at {proposed_path}. "
+                "Skipping it, please remove."
+            )
+            continue
+
+        elif not os.path.isdir(proposed_path):
+            print(f"creating directory {config_basename} at {proposed_path}")
+            os.mkdir(proposed_path)
+
+        else:
+            print(f"directory {proposed_path} already exists, great!")
+
+        # go through every FILE in each config directory.
+        # we'll want to symlink these into the directory we made under
+        # XDG_CONFIG_HOME
+        config_files = sorted([
+            os.path.join(config_entry, file)
+            for file in os.listdir(config_entry)
+            if os.path.isfile(os.path.join(config_entry, file)) or \
+            os.path.islink(os.path.join(config_entry, file))
+        ])
+
+        for file in config_files:
+            file_basename = os.path.basename(file)
+
+            print(f"attempting to create a link for {file}")
+
+            proposed_link_name = os.path.join(proposed_path, file_basename)
+
+            if os.path.isdir(proposed_link_name):
+                print(
+                    f"for some reason, {proposed_link_name} exists as a directory. "
+                    "skipping this file."
+                )
+                continue
+
+            elif os.path.islink(proposed_link_name) and not force:
+                print(
+                    f"{proposed_link_name} already exists as a link and force is off. "
+                    "skipping."
+                )
+                continue
+
+            elif os.path.islink(proposed_link_name) and force:
+                print(
+                    f"{proposed_link_name} already exists as a link and force is on. "
+                    f"OVERWRITING! linking {file} -> {proposed_link_name}"
+                )
+
+                os.remove(proposed_link_name)
+                os.symlink(file, proposed_link_name)
+
+            elif os.path.isfile(proposed_link_name):
+                print(f"{proposed_link_name} exists as a file already. skipping.")
+                continue
+
+    print(
+        "\n"
+        "creating needed directories"
+        "\n"
+    )
+    for dire in NEEDED_DIRS:
+
+        print(f"working on needed directory {dire}")
+        joined = os.path.join(xdg_cache_home, dire)
+        if os.path.isfile(joined) or os.path.islink(joined):
+            print(f"expected {joined} to not exist, but it's a file or a link. skipping.")
+            continue
+
+        elif os.path.isdir(joined):
+            print(f"{joined} exists as a directory. skipping.")
+            continue
+
+        elif not os.path.isdir(joined):
+            os.mkdir(joined)
+            print(f"created directory {joined}")
+
+    print(
+        "\n"
+        "creating needed files"
+        "\n"
+    )
+    for file in NEEDED_FILES:
+
+        print(f"working on needed file {file}")
+        joined = os.path.join(xdg_cache_home, file)
+        if os.path.isdir(joined) or os.path.islink(joined):
+            print(f"expected {joined} to not exist, but it's a directory or a link. skipping.")
+            continue
+
+        elif os.path.isfile(joined):
+            print(f"{joined} exists as a file. skipping.")
+            continue
+
+        elif not os.path.isdir(joined):
+            open(joined, "a").close()
+            print(f"created file {joined}")
+
+    print("\ndone!")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="link config files from repo into $XDG_CONFIG_HOME",
+    )
+
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help=(
+            "overwrite existing symlinks in $XDG_CONFIG_HOME subdirs when we are "
+            "symlinking files from this git repo."
+        ),
+        default=False,
+    )
+
+    args = parser.parse_args()
+
+    run(force=args.force)
+
+
+if __name__ == "__main__":
+    main()

@@ -2,7 +2,7 @@
 ## author:  andrew michaud - drew.life                                                           ##
 ## file:    config                                                                               ##
 ## purpose: i3 configuration file                                                                ##
-## updated: 2019-04-13                                                                           ##
+## updated: 2019-06-12                                                                           ##
 ## license: isc                                                                                  ##
 ###################################################################################################
 
@@ -42,13 +42,13 @@ bar {
     colors {
           background $color0
           statusline $color15
-          separator  $color0
+          separator  $color15
 
 #         class              border   backgr.  forgr.
           focused_workspace  $color15 $color15 $color0
           active_workspace   $color7  $color7  $color0
           inactive_workspace $color0  $color0  $color7
-          urgent_workspace   $color2  $color2  $color0
+          urgent_workspace   $color9  $color9  $color0
     }
 }
 
@@ -134,24 +134,24 @@ bindsym $mod+r mode "resize"
 # exit i3 (logs you out of your x session)
 bindsym $mod+Shift+q exec i3-nagbar -t warning -m "log off?" -b "yes" "i3-msg exit"
 
-# start dmenu (a program launcher)
-bindsym $mod+p exec dmenu_run
+# start a program launcher
+bindsym $mod+p exec "rofi -show run"
 
 # terminal
 bindsym $mod+Shift+Return exec mate-terminal
 
 # media controls
-bindsym XF86AudioPlay        exec playerctl play-pause
-bindsym XF86AudioNext        exec playerctl next
-bindsym XF86AudioPrev        exec playerctl previous
-bindsym XF86AudioMute        exec pulseaudio-ctl mute
-bindsym XF86AudioLowerVolume exec pulseaudio-ctl down
-bindsym XF86AudioRaiseVolume exec pulseaudio-ctl up
+bindsym XF86AudioPlay        exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext        exec --no-startup-id playerctl next
+bindsym XF86AudioPrev        exec --no-startup-id playerctl previous
+bindsym XF86AudioMute        exec --no-startup-id pulseaudio-ctl mute
+bindsym XF86AudioLowerVolume exec --no-startup-id pulseaudio-ctl down
+bindsym XF86AudioRaiseVolume exec --no-startup-id pulseaudio-ctl up
 
 # screenshots
 bindsym Print         exec $local/screenshot
-bindsym Control+Print exec $local/screenshot select
-bindsym Shift+Print   exec $local/screenshot delay
+bindsym Control+Print exec $local/screenshot --subcommand select
+bindsym Shift+Print   exec $local/screenshot --subcommand delay
 
 # lock, set wallpaper
 bindsym $mod+Shift+s exec xscreensaver-command -lock
@@ -160,9 +160,9 @@ bindsym $mod+Shift+w exec $local/set_wallpaper pictures/wallpapers
 # cat friend
 bindsym $mod+n exec $local/toggle_oneko
 
-# menu commands with dmenu
+# menu commands with rofi + my custom script
 bindsym $mod+o       exec $local/menu music
-# bindsym $mod+Shift+p exec $local/menu pass
+bindsym $mod+Shift+p exec $local/menu pass
 bindsym $mod+Shift+v exec $local/menu vid
 
 ###################################################################################################
