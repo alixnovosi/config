@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - drew.life                                                             "
 " FILE:    settings.vim                                                                           "
 " PURPOSE: Settings used in (neo)vim.                                                             "
-" UPDATED: 2019-04-13                                                                             "
+" UPDATED: 2019-08-08                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 """ Unix file endings, no backups, no modelines, yes spelling, yes persistent undo history.
@@ -10,11 +10,7 @@ set fileformats=unix nobackup nomodeline spell spelllang=en_us undofile
 scriptencoding utf-8
 
 set mouse=a
-if has("termguicolors")  " set true colors
-    set t_8f=\[[38;2;%lu;%lu;%lum
-    set t_8b=\[[48;2;%lu;%lu;%lum
-    set termguicolors
-endif
+let base16colorspace=256
 
 set incsearch
 
@@ -30,9 +26,7 @@ execute 'set colorcolumn=' . join(map(range(1,259,2), '"+" . v:val'), ',')
 
 """ Highlight current line, no mode in status.
 """ Ignore case in searching unless I use capital letters. Mouse.
-""" Use true color.
 set cursorline noshowmode ignorecase smartcase mouse=a
-set termguicolors background=dark
 
 let g:vim_json_syntax_conceal = 1
 
@@ -64,6 +58,13 @@ silent !stty -ixon > /dev/null 2>/dev/null
 """ Fun with concealing.
 set conceallevel=1
 let g:hsoptions='+'
+
+" Let clangd fully control code completion
+let g:ycm_clangd_uses_ycmd_caching = 0
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("clangd-9")
+
+let g:ale_java_checkstyle_config = '/intellij-java-google-style.xml'
 
 let g:python_host_prog = expand('$XDG_DATA_HOME/virtualenvs/neovim3/bin/python')
 let g:python3_host_prog = expand('$XDG_DATA_HOME/virtualenvs/neovim3/bin/python')
