@@ -2,7 +2,7 @@
 " AUTHOR:  Andrew Michaud - drew.life                                                             "
 " FILE:    plugins.vim                                                                            "
 " PURPOSE: Plugins used by (neo)vim (all).                                                        "
-" UPDATED: 2019-04-08                                                                             "
+" UPDATED: 2019-10-16                                                                             "
 " LICENSE: ISC                                                                                    "
 "-------------------------------------------------------------------------------------------------"
 call plug#begin('$XDG_DATA_HOME/nvim/site/plugins')
@@ -17,6 +17,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'justinj/vim-pico8-syntax'
 Plug 'evanrelf/vim-pico8-color'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'alixnovosi/rgbasm.vim'
 
 """ General programming support.
 Plug 'bronson/vim-trailing-whitespace'
