@@ -28,10 +28,6 @@ floating_modifier Mod4
 focus_follows_mouse no
 
 mode "resize" {
-    bindsym $left       resize shrink width 10 px or 10 ppt
-    bindsym $down       resize grow height 10 px or 10 ppt
-    bindsym $up         resize shrink height 10 px or 10 ppt
-    bindsym $right      resize grow width 10 px or 10 ppt
     bindsym Return mode "default"
 }
 
@@ -144,9 +140,9 @@ bindsym $mod+Shift+Return exec mate-terminal
 bindsym XF86AudioPlay        exec --no-startup-id playerctl play-pause
 bindsym XF86AudioNext        exec --no-startup-id playerctl next
 bindsym XF86AudioPrev        exec --no-startup-id playerctl previous
-bindsym XF86AudioMute        exec --no-startup-id pulseaudio-ctl mute
-bindsym XF86AudioLowerVolume exec --no-startup-id pulseaudio-ctl down
-bindsym XF86AudioRaiseVolume exec --no-startup-id pulseaudio-ctl up
+bindsym XF86AudioMute        exec --no-startup-id amixer set Master toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 3%-
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 3%+
 
 # screenshots
 bindsym Print         exec $local/screenshot
