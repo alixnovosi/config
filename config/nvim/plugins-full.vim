@@ -15,7 +15,6 @@ Plug 'nvie/vim-flake8',                  {'for': 'python'}
 Plug 'gcorne/vim-sass-lint',             {'for': 'sass'}
 Plug 'sheerun/vim-polyglot'
 Plug 'justinj/vim-pico8-syntax'
-Plug 'evanrelf/vim-pico8-color'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'alixnovosi/rgbasm.vim'
 
@@ -46,5 +45,6 @@ Plug 'scrooloose/nerdtree',         {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
+Plug 'embear/vim-localvimrc'
 
 call plug#end()
