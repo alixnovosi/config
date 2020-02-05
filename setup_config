@@ -157,6 +157,9 @@ def run(*, force):
                 print(f"{proposed_link_name} exists as a file already. skipping.")
                 continue
 
+            else:
+                os.symlink(file, proposed_link_name)
+
     print(
         "\n"
         "creating needed directories"
